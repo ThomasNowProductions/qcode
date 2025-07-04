@@ -1,36 +1,168 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# QCode - Kortingscodes Beheren
 
-## Getting Started
+Een moderne Progressive Web App (PWA) voor het opslaan en beheren van kortingscodes, gebouwd met Next.js 15, TypeScript en Tailwind CSS.
 
-First, run the development server:
+## ✨ Features
 
+### 🎯 Hoofdfuncties
+- **Kortingscodes opslaan** - Bewaar al je kortingscodes met details
+- **Intelligent zoeken** - Zoek op code, winkel, categorie of beschrijving
+- **Categorisering** - Organiseer codes per categorie (Kleding, Elektronica, etc.)
+- **Vervaldatum tracking** - Krijg waarschuwingen voor bijna verlopende codes
+- **Favorieten** - Markeer belangrijke codes als favoriet
+- **Gebruik tracking** - Houd bij hoe vaak je codes gebruikt
+
+### 📱 Progressive Web App
+- **Offline functionaliteit** - Werkt zonder internetverbinding
+- **Installeerbaar** - Installeer als app op je telefoon/computer
+- **Responsive design** - Perfect op alle apparaten
+- **Native ervaring** - Voelt aan als een echte app
+
+### 🎨 User Experience
+- **Modern design** - Schone, gebruiksvriendelijke interface
+- **Dark/Light mode** - Automatische thema-ondersteuning
+- **Touch-friendly** - Geoptimaliseerd voor aanrakingsbediening
+- **Accessibility** - Toegankelijk voor iedereen
+
+## 🛠️ Technische Stack
+
+- **Framework**: Next.js 15 met App Router
+- **Taal**: TypeScript voor type-veiligheid
+- **Styling**: Tailwind CSS voor responsive design
+- **Icons**: Lucide React voor consistente iconografie
+- **Data**: LocalStorage met optionele cloud sync
+- **PWA**: Service Worker voor offline functionaliteit
+- **Build**: Turbopack voor snelle ontwikkeling
+
+## 🚀 Snel starten
+
+### Ontwikkeling
 ```bash
+# Installeer dependencies
+npm install
+
+# Start development server
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+
+# Open browser naar http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Productie
+```bash
+# Bouw de applicatie
+npm run build
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+# Start productie server
+npm start
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 📁 Project Structuur
 
-## Learn More
+```
+src/
+├── app/                    # Next.js App Router
+│   ├── layout.tsx         # Root layout met PWA configuratie
+│   ├── page.tsx           # Hoofdpagina
+│   └── globals.css        # Globale styles
+├── components/            # React componenten
+│   ├── Header.tsx         # App header met navigatie
+│   ├── StatsOverview.tsx  # Statistieken overzicht
+│   ├── SearchAndFilter.tsx # Zoek en filter interface
+│   ├── DiscountCodeCard.tsx # Individuele code kaart
+│   ├── AddCodeModal.tsx   # Modal voor nieuwe codes
+│   └── EmptyState.tsx     # Lege status weergave
+├── hooks/                 # Custom React hooks
+│   └── useDiscountCodes.ts # State management voor codes
+├── types/                 # TypeScript definities
+│   └── discount-code.ts   # Code interfaces en types
+└── utils/                 # Utility functies
+    └── storage.ts         # LocalStorage helpers
+```
 
-To learn more about Next.js, take a look at the following resources:
+## 💾 Data Model
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```typescript
+interface DiscountCode {
+  id: string              // Unieke identifier
+  code: string           // De kortingscode zelf
+  store: string          // Winkel naam
+  discount: string       // Korting bedrag/percentage
+  expiryDate?: Date      // Vervaldatum (optioneel)
+  category: string       // Categorie
+  description?: string   // Extra beschrijving
+  isFavorite: boolean    // Favoriet status
+  isArchived: boolean    // Gearchiveerd status
+  dateAdded: Date        // Datum toegevoegd
+  timesUsed: number      // Aantal keer gebruikt
+}
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 🎨 Design Systeem
 
-## Deploy on Vercel
+### Kleuren
+- **Primary**: Blue (#3b82f6) - Hoofdacties en links
+- **Success**: Green (#10b981) - Actieve codes en succes
+- **Warning**: Orange (#f59e0b) - Bijna verlopende codes
+- **Error**: Red (#ef4444) - Verlopen codes en fouten
+- **Gray**: Verschillende tinten voor tekst en achtergronden
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Categorieën
+- Kleding
+- Elektronica
+- Eten & Drinken
+- Sport & Fitness
+- Boeken & Media
+- Reizen
+- Beauty & Verzorging
+- Wonen & Tuin
+- Speelgoed
+- Anders
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 🔄 State Management
+
+De app gebruikt een custom React hook (`useDiscountCodes`) voor centraal state management:
+- LocalStorage voor persistentie
+- Optimistische updates voor snelle UX
+- Automatische backup en sync mogelijkheden
+
+## 📱 PWA Features
+
+### Installatie
+De app kan geïnstalleerd worden op:
+- iOS (Safari)
+- Android (Chrome/Edge)
+- Desktop (Chrome/Edge/Safari)
+
+### Offline Functionaliteit
+- Alle opgeslagen codes zijn offline beschikbaar
+- Nieuwe codes worden lokaal opgeslagen
+- Sync wanneer verbinding hersteld is
+
+### Notificaties
+- Waarschuwingen voor bijna verlopende codes
+- Updates over nieuwe features
+
+## 🎯 Toekomstige Features
+
+- [ ] Cloud synchronisatie tussen apparaten
+- [ ] QR code scanning voor automatische code input
+- [ ] Barcode ondersteuning
+- [ ] Gedeelde codes tussen gebruikers
+- [ ] Winkel integraties voor automatische codes
+- [ ] Push notificaties voor deals
+- [ ] Export/import functionaliteit
+- [ ] Analytics dashboard
+- [ ] Thema aanpassingen
+- [ ] Multi-taal ondersteuning
+
+## 📄 Licentie
+
+MIT License - zie [LICENSE](LICENSE) bestand voor details.
+
+## 🤝 Bijdragen
+
+Bijdragen zijn welkom! Open een issue of stuur een pull request.
+
+## 📞 Contact
+
+Voor vragen of feedback, open een issue op GitHub.
