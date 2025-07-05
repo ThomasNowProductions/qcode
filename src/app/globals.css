@@ -62,12 +62,7 @@
 }
 
 html {
-  background: linear-gradient(135deg, var(--background) 0%, #f8fafc 100%);
   transition: background 0.3s ease;
-}
-
-.dark html {
-  background: var(--background);
 }
 
 body {
