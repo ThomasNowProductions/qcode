@@ -7,39 +7,40 @@ interface HeaderProps {
 }
 
 export function Header({ onNotificationClick, onSettingsClick }: HeaderProps) {
-  const { isDark, toggleDarkMode } = useDarkMode()
+  const { isDark, toggleDarkMode, isLoaded } = useDarkMode()
 
   return (
-    <header className="bg-white dark:bg-gray-900 shadow-sm border-b border-gray-200 dark:border-gray-700 transition-colors">
+    <header className="theme-card shadow-lg border-b transition-all duration-300 sticky top-0 z-50">
       <div className="max-w-4xl mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="bg-blue-500 p-2 rounded-lg">
+            <div className="bg-gradient-to-br from-blue-500 to-blue-600 p-2.5 rounded-xl shadow-lg">
               <Ticket className="h-6 w-6 text-white" />
             </div>
             <div>
-              <h1 className="text-xl font-bold text-gray-900 dark:text-white">QCode</h1>
-              <p className="text-sm text-gray-600 dark:text-gray-300">Kortingscodes beheren</p>
+              <h1 className="text-xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 dark:from-white dark:to-gray-300 bg-clip-text text-transparent">QCode</h1>
+              <p className="text-sm theme-text-secondary font-medium">Kortingscodes beheren</p>
             </div>
           </div>
           <div className="flex items-center gap-2">
             <button 
               onClick={toggleDarkMode}
-              className="p-2 text-gray-400 hover:text-gray-600 dark:text-gray-400 dark:hover:text-gray-200 transition-colors"
+              className="p-2.5 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-all duration-200"
               aria-label={isDark ? 'Schakel naar licht thema' : 'Schakel naar donker thema'}
+              disabled={!isLoaded}
             >
-              {isDark ? <Sun size={20} /> : <Moon size={20} />}
+              {isLoaded && (isDark ? <Sun size={20} /> : <Moon size={20} />)}
             </button>
             <button 
               onClick={onNotificationClick}
-              className="p-2 text-gray-400 hover:text-gray-600 dark:text-gray-400 dark:hover:text-gray-200 transition-colors"
+              className="p-2.5 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-all duration-200"
               aria-label="Notificaties"
             >
               <Bell size={20} />
             </button>
             <button 
               onClick={onSettingsClick}
-              className="p-2 text-gray-400 hover:text-gray-600 dark:text-gray-400 dark:hover:text-gray-200 transition-colors"
+              className="p-2.5 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-all duration-200"
               aria-label="Instellingen"
             >
               <Settings size={20} />

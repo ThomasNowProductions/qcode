@@ -48,14 +48,17 @@ export default function HomePage() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900 transition-colors">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
+      <div className="min-h-screen flex items-center justify-center transition-colors">
+        <div className="flex flex-col items-center gap-4">
+          <div className="animate-spin rounded-full h-12 w-12 border-4 border-blue-200 border-t-blue-600"></div>
+          <p className="theme-text-secondary font-medium">Laden...</p>
+        </div>
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors">
+    <div className="min-h-screen transition-colors">
       {/* Offline Status Banner */}
       <OnlineStatusBanner />
       
@@ -64,7 +67,7 @@ export default function HomePage() {
         onSettingsClick={() => setIsSettingsModalOpen(true)}
       />
       
-      <main className="max-w-4xl mx-auto px-4 py-6">
+      <main className="max-w-4xl mx-auto px-4 py-8">
         {/* Install Prompt */}
         <InstallPrompt />
 
@@ -77,7 +80,7 @@ export default function HomePage() {
         <StatsOverview stats={stats} />
 
         {/* Search and Filter */}
-        <div className="mb-6">
+        <div className="mb-8">
           <SearchAndFilter
             filters={searchFilters}
             onFiltersChange={setSearchFilters}
@@ -85,13 +88,13 @@ export default function HomePage() {
         </div>
 
         {/* Add Button */}
-        <div className="mb-6">
+        <div className="mb-8">
           <button
             onClick={() => setIsAddModalOpen(true)}
-            className="w-full flex items-center justify-center gap-2 bg-blue-500 hover:bg-blue-600 text-white font-semibold py-3 px-4 rounded-lg transition-colors"
+            className="w-full flex items-center justify-center gap-3 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-semibold py-4 px-6 rounded-xl transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-[1.02] group"
           >
-            <Plus size={20} />
-            Nieuwe kortingscode toevoegen
+            <Plus size={24} className="group-hover:rotate-90 transition-transform duration-200" />
+            <span className="text-lg">Nieuwe kortingscode toevoegen</span>
           </button>
         </div>
 
@@ -102,7 +105,7 @@ export default function HomePage() {
             onAddCode={() => setIsAddModalOpen(true)}
           />
         ) : (
-          <div className="space-y-4">
+          <div className="space-y-6">
             {filteredCodes.map((code) => (
               <DiscountCodeCard
                 key={code.id}
