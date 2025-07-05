@@ -11,18 +11,47 @@ Een moderne Progressive Web App (PWA) voor het opslaan en beheren van kortingsco
 - **Vervaldatum tracking** - Krijg waarschuwingen voor bijna verlopende codes
 - **Favorieten** - Markeer belangrijke codes als favoriet
 - **Gebruik tracking** - Houd bij hoe vaak je codes gebruikt
+- **Cloud synchronisatie** - Sync tussen al je apparaten via GitHub Gist of lokale bestanden
 
 ### 📱 Progressive Web App
 - **Offline functionaliteit** - Werkt zonder internetverbinding
 - **Installeerbaar** - Installeer als app op je telefoon/computer
 - **Responsive design** - Perfect op alle apparaten
 - **Native ervaring** - Voelt aan als een echte app
+- **Background sync** - Automatische sync wanneer online
 
 ### 🎨 User Experience
 - **Modern design** - Schone, gebruiksvriendelijke interface
 - **Dark/Light mode** - Automatische thema-ondersteuning
 - **Touch-friendly** - Geoptimaliseerd voor aanrakingsbediening
 - **Accessibility** - Toegankelijk voor iedereen
+- **Real-time sync status** - Zie direct de sync status
+
+## ☁️ Cloud Sync Features
+
+### Ondersteunde Providers
+- **GitHub Gist** - Gebruik je GitHub account voor cloud opslag
+- **Local File** - Sync via lokale bestanden (File System Access API)
+- **Local Cloud** - Lokale opslag voor development/testing
+
+### Sync Functionaliteiten
+- **Automatische sync** - Configureerbare interval sync (5-240 minuten)
+- **Conflict resolutie** - Smart merge, local prefer, of remote prefer
+- **Background sync** - Sync gebeurt automatisch op de achtergrond
+- **Multiple devices** - Sync tussen meerdere apparaten
+- **Offline queue** - Wijzigingen worden gesynchroniseerd wanneer online
+- **Data integriteit** - Checksums voor data validatie
+
+### Conflict Resolutie
+- **Smart Merge** (aanbevolen) - Intelligente samenvoeging van wijzigingen
+- **Local Prefer** - Lokale wijzigingen hebben voorrang
+- **Remote Prefer** - Cloud wijzigingen hebben voorrang
+
+### Setup GitHub Sync
+1. Ga naar [GitHub Personal Access Tokens](https://github.com/settings/tokens)
+2. Maak een nieuwe token met 'gist' scope
+3. Voeg de token toe in de Cloud Sync instellingen
+4. Automatische sync wordt ingeschakeld
 
 ## 🛠️ Technische Stack
 
@@ -30,9 +59,10 @@ Een moderne Progressive Web App (PWA) voor het opslaan en beheren van kortingsco
 - **Taal**: TypeScript voor type-veiligheid
 - **Styling**: Tailwind CSS voor responsive design
 - **Icons**: Lucide React voor consistente iconografie
-- **Data**: LocalStorage met optionele cloud sync
+- **Data**: LocalStorage met cloud sync ondersteuning
 - **PWA**: Service Worker voor offline functionaliteit
 - **Build**: Turbopack voor snelle ontwikkeling
+- **Cloud Sync**: GitHub Gist API, File System Access API
 
 ## 🚀 Snel starten
 
@@ -70,13 +100,19 @@ src/
 │   ├── SearchAndFilter.tsx # Zoek en filter interface
 │   ├── DiscountCodeCard.tsx # Individuele code kaart
 │   ├── AddCodeModal.tsx   # Modal voor nieuwe codes
+│   ├── CloudSync.tsx      # Cloud sync interface
+│   ├── SyncStatusIndicator.tsx # Sync status weergave
 │   └── EmptyState.tsx     # Lege status weergave
 ├── hooks/                 # Custom React hooks
-│   └── useDiscountCodes.ts # State management voor codes
+│   ├── useDiscountCodes.ts # State management voor codes
+│   └── useCloudSync.ts    # Cloud sync functionaliteit
 ├── types/                 # TypeScript definities
-│   └── discount-code.ts   # Code interfaces en types
+│   ├── discount-code.ts   # Code interfaces en types
+│   └── cloud-sync.ts      # Cloud sync interfaces
 └── utils/                 # Utility functies
-    └── storage.ts         # LocalStorage helpers
+    ├── storage.ts         # LocalStorage helpers
+    ├── cloud-providers.ts # Cloud provider implementaties
+    └── sync-utils.ts      # Sync utility functies
 ```
 
 ## 💾 Data Model
@@ -94,6 +130,10 @@ interface DiscountCode {
   isArchived: boolean    // Gearchiveerd status
   dateAdded: Date        // Datum toegevoegd
   timesUsed: number      // Aantal keer gebruikt
+  // Sync metadata
+  lastModified?: Date    // Laatste wijziging
+  syncVersion?: number   // Versie voor conflict resolutie
+  deviceCreated?: string // Apparaat waar code gemaakt is
 }
 ```
 
@@ -120,10 +160,20 @@ interface DiscountCode {
 
 ## 🔄 State Management
 
-De app gebruikt een custom React hook (`useDiscountCodes`) voor centraal state management:
+De app gebruikt custom React hooks voor centraal state management:
+
+### useDiscountCodes
 - LocalStorage voor persistentie
 - Optimistische updates voor snelle UX
-- Automatische backup en sync mogelijkheden
+- Automatische cloud sync integratie
+- Sync metadata tracking
+
+### useCloudSync
+- Multi-provider ondersteuning
+- Automatische sync scheduling
+- Conflict detectie en resolutie
+- Real-time sync status
+- Background sync queue
 
 ## 📱 PWA Features
 
@@ -136,7 +186,9 @@ De app kan geïnstalleerd worden op:
 ### Offline Functionaliteit
 - Alle opgeslagen codes zijn offline beschikbaar
 - Nieuwe codes worden lokaal opgeslagen
-- Sync wanneer verbinding hersteld is
+- Background sync queue voor wijzigingen
+- Automatische sync wanneer verbinding hersteld is
+- Sync status indicatie in de interface
 
 ### Notificaties
 - Waarschuwingen voor bijna verlopende codes
@@ -144,7 +196,7 @@ De app kan geïnstalleerd worden op:
 
 ## 🎯 Toekomstige Features
 
-- [ ] Cloud synchronisatie tussen apparaten
+- [x] Cloud synchronisatie tussen apparaten
 - [ ] QR code scanning voor automatische code input
 - [ ] Barcode ondersteuning
 - [ ] Gedeelde codes tussen gebruikers
@@ -154,6 +206,8 @@ De app kan geïnstalleerd worden op:
 - [ ] Analytics dashboard
 - [ ] Thema aanpassingen
 - [ ] Multi-taal ondersteuning
+- [ ] Dropbox/Google Drive sync providers
+- [ ] End-to-end encryptie voor gevoelige codes
 
 ## 📄 Licentie
 

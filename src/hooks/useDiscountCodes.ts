@@ -3,15 +3,25 @@
 import { useState, useEffect, useCallback } from 'react'
 import { v4 as uuidv4 } from 'uuid'
 import type { DiscountCode, DiscountCodeFormData, SearchFilters } from '@/types/discount-code'
+import { useCloudSync } from './useCloudSync'
 
 const STORAGE_KEY = 'qcode-discount-codes'
 
 export function useDiscountCodes() {
   const [codes, setCodes] = useState<DiscountCode[]>([])
   const [isLoading, setIsLoading] = useState(true)
+  const [isClient, setIsClient] = useState(false)
+  const cloudSync = useCloudSync()
+
+  // Set client flag
+  useEffect(() => {
+    setIsClient(true)
+  }, [])
 
   // Load codes from localStorage
   useEffect(() => {
+    if (!isClient) return
+    
     try {
       const stored = localStorage.getItem(STORAGE_KEY)
       if (stored) {
@@ -27,17 +37,48 @@ export function useDiscountCodes() {
     } finally {
       setIsLoading(false)
     }
-  }, [])
+  }, [isClient])
 
-  // Save codes to localStorage
-  const saveCodes = useCallback((newCodes: DiscountCode[]) => {
+  // Auto-sync on app start if enabled
+  useEffect(() => {
+    if (!isClient || !isLoading && cloudSync.syncSettings.autoSync && cloudSync.syncStatus.isOnline) {
+      const lastSync = cloudSync.getLastSyncTime()
+      const shouldSync = !lastSync || 
+        (Date.now() - lastSync.getTime()) > (cloudSync.syncSettings.syncInterval * 60 * 1000)
+      
+      if (shouldSync) {
+        cloudSync.performFullSync(codes, setCodes)
+      }
+    }
+  }, [isClient, isLoading, cloudSync, codes])
+
+  // Save codes to localStorage and optionally sync to cloud
+  const saveCodes = useCallback((newCodes: DiscountCode[], shouldSync = true) => {
+    if (!isClient) return
+    
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(newCodes))
       setCodes(newCodes)
+      
+      // Auto-sync if enabled and online
+      if (shouldSync && 
+          cloudSync.syncSettings.autoSync && 
+          cloudSync.syncStatus.isOnline && 
+          !cloudSync.syncStatus.isSyncing) {
+        cloudSync.syncToCloud(newCodes)
+      }
     } catch (error) {
       console.error('Error saving discount codes:', error)
     }
-  }, [])
+  }, [cloudSync, isClient])
+
+  // Manual sync function
+  const manualSync = useCallback(() => {
+    return cloudSync.performFullSync(codes, (updatedCodes) => {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedCodes))
+      setCodes(updatedCodes)
+    })
+  }, [codes, cloudSync])
 
   // Add new discount code
   const addCode = useCallback((formData: DiscountCodeFormData) => {
@@ -53,17 +94,26 @@ export function useDiscountCodes() {
       isArchived: false,
       dateAdded: new Date(),
       timesUsed: 0,
+      lastModified: new Date(),
+      syncVersion: 1,
+      deviceCreated: cloudSync.getEnabledProviders().length > 0 ? 
+        localStorage.getItem('qcode-device-id') || 'unknown' : undefined,
     }
 
     const updatedCodes = [newCode, ...codes]
     saveCodes(updatedCodes)
     return newCode
-  }, [codes, saveCodes])
+  }, [codes, saveCodes, cloudSync])
 
   // Update existing discount code
   const updateCode = useCallback((id: string, updates: Partial<DiscountCode>) => {
     const updatedCodes = codes.map(code =>
-      code.id === id ? { ...code, ...updates } : code
+      code.id === id ? { 
+        ...code, 
+        ...updates,
+        lastModified: new Date(),
+        syncVersion: (code.syncVersion || 1) + 1
+      } : code
     )
     saveCodes(updatedCodes)
   }, [codes, saveCodes])
@@ -198,5 +248,7 @@ export function useDiscountCodes() {
     filterCodes,
     getExpiringSoon,
     getStats,
+    manualSync,
+    cloudSync,
   }
 }

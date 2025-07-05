@@ -11,6 +11,10 @@ export interface DiscountCode {
   dateAdded: Date
   timesUsed: number
   qrCode?: string
+  // Sync-related metadata
+  lastModified?: Date
+  syncVersion?: number
+  deviceCreated?: string
 }
 
 export interface DiscountCodeFormData {

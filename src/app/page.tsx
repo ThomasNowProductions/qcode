@@ -13,6 +13,7 @@ import { NotificationBanner } from '@/components/NotificationBanner'
 import { InstallPrompt } from '@/components/InstallPrompt'
 import { SettingsModal } from '@/components/SettingsModal'
 import { OnlineStatusBanner } from '@/components/OfflineIndicator'
+import { CloudSync } from '@/components/CloudSync'
 import type { SearchFilters, DiscountCode } from '@/types/discount-code'
 
 export default function HomePage() {
@@ -29,6 +30,7 @@ export default function HomePage() {
     filterCodes,
     getStats,
     getExpiringSoon,
+    manualSync,
   } = useDiscountCodes()
 
   const [searchFilters, setSearchFilters] = useState<SearchFilters>({
@@ -40,6 +42,7 @@ export default function HomePage() {
 
   const [isAddModalOpen, setIsAddModalOpen] = useState(false)
   const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false)
+  const [isCloudSyncOpen, setIsCloudSyncOpen] = useState(false)
   const [showNotificationBanner, setShowNotificationBanner] = useState(true)
 
   const filteredCodes = filterCodes(searchFilters)
@@ -65,6 +68,7 @@ export default function HomePage() {
       <Header 
         onNotificationClick={() => setShowNotificationBanner(!showNotificationBanner)}
         onSettingsClick={() => setIsSettingsModalOpen(true)}
+        onSyncClick={() => setIsCloudSyncOpen(true)}
       />
       
       <main className="max-w-4xl mx-auto px-4 py-8">
@@ -133,6 +137,13 @@ export default function HomePage() {
       <SettingsModal
         isOpen={isSettingsModalOpen}
         onClose={() => setIsSettingsModalOpen(false)}
+      />
+
+      {/* Cloud Sync Modal */}
+      <CloudSync
+        isOpen={isCloudSyncOpen}
+        onClose={() => setIsCloudSyncOpen(false)}
+        onManualSync={manualSync}
       />
     </div>
   )
