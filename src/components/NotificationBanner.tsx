@@ -42,35 +42,40 @@ export function NotificationBanner({ expiringSoon }: NotificationBannerProps) {
   }
 
   return (
-    <div className="bg-orange-50 border-l-4 border-orange-400 p-4 mb-6">
+    <div className="bg-orange-100 dark:from-orange-900 dark:to-amber-900 border-l-4 border-orange-500 dark:border-orange-700 rounded-xl p-6 mb-6 shadow-lg">
       <div className="flex">
         <div className="flex-shrink-0">
-          <AlertTriangle className="h-5 w-5 text-orange-400" />
+          <div className="bg-orange-500 dark:from-orange-500 dark:to-amber-500 p-2 rounded-lg shadow-md">
+            <AlertTriangle className="h-5 w-5 text-white" />
+          </div>
         </div>
-        <div className="ml-3 flex-1">
-          <h3 className="text-sm font-medium text-orange-800">
+        <div className="ml-4 flex-1">
+          <h3 className="text-base font-bold text-gray-900 dark:text-orange-400 mb-2 leading-tight">
             {visibleCodes.length === 1 
               ? 'Kortingscode verloopt binnenkort' 
               : `${visibleCodes.length} kortingscodes verlopen binnenkort`
             }
           </h3>
-          <div className="mt-2 text-sm text-orange-700">
+          <div className="space-y-2">
             {visibleCodes.slice(0, 3).map((code) => {
               const daysUntilExpiry = code.expiryDate 
                 ? Math.ceil((code.expiryDate.getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24))
                 : 0
 
               return (
-                <div key={code.id} className="flex items-center justify-between py-1">
-                  <span>
-                    <strong>{code.store}</strong> ({code.code}) - 
-                    {daysUntilExpiry === 0 ? ' verloopt vandaag' : 
-                     daysUntilExpiry === 1 ? ' verloopt morgen' : 
-                     ` verloopt over ${daysUntilExpiry} dagen`}
+                <div key={code.id} className="flex items-center justify-between py-2 px-3 bg-white dark:bg-gray-800 rounded-lg border border-orange-300 dark:border-orange-700">
+                  <span className="text-sm text-gray-900 dark:text-orange-300">
+                    <strong className="font-semibold">{code.store}</strong> 
+                    <span className="font-mono text-xs ml-1">({code.code})</span> - 
+                    <span className="ml-1">
+                      {daysUntilExpiry === 0 ? ' verloopt vandaag' : 
+                       daysUntilExpiry === 1 ? ' verloopt morgen' : 
+                       ` verloopt over ${daysUntilExpiry} dagen`}
+                    </span>
                   </span>
                   <button
                     onClick={() => handleDismissCode(code.id)}
-                    className="ml-2 text-orange-600 hover:text-orange-800"
+                    className="ml-2 text-orange-600 hover:text-orange-800 dark:text-orange-400 dark:hover:text-orange-300 hover:bg-orange-200 dark:hover:bg-orange-900/30 p-1 rounded transition-colors"
                   >
                     <X size={14} />
                   </button>
@@ -78,22 +83,20 @@ export function NotificationBanner({ expiringSoon }: NotificationBannerProps) {
               )
             })}
             {visibleCodes.length > 3 && (
-              <p className="text-xs mt-1">
+              <p className="text-xs text-gray-700 dark:text-orange-400 font-medium mt-2">
                 En {visibleCodes.length - 3} meer...
               </p>
             )}
           </div>
         </div>
-        <div className="ml-auto pl-3">
-          <div className="-mx-1.5 -my-1.5">
-            <button
-              onClick={handleDismiss}
-              className="inline-flex rounded-md bg-orange-50 p-1.5 text-orange-500 hover:bg-orange-100 focus:outline-none focus:ring-2 focus:ring-orange-600 focus:ring-offset-2 focus:ring-offset-orange-50"
-            >
-              <span className="sr-only">Sluiten</span>
-              <X className="h-5 w-5" />
-            </button>
-          </div>
+        <div className="ml-4 flex-shrink-0">
+          <button
+            onClick={handleDismiss}
+            className="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-orange-200 dark:bg-orange-900/30 text-orange-700 dark:text-orange-400 hover:bg-orange-300 dark:hover:bg-orange-900/50 transition-all duration-200"
+          >
+            <span className="sr-only">Sluiten</span>
+            <X className="h-4 w-4" />
+          </button>
         </div>
       </div>
     </div>

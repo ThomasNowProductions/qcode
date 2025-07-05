@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 
 export function useDarkMode() {
   const [isDark, setIsDark] = useState(false)
+  const [isLoaded, setIsLoaded] = useState(false)
 
   useEffect(() => {
     // Check for saved preference or system preference
@@ -13,9 +14,12 @@ export function useDarkMode() {
     } else {
       setIsDark(window.matchMedia('(prefers-color-scheme: dark)').matches)
     }
+    setIsLoaded(true)
   }, [])
 
   useEffect(() => {
+    if (!isLoaded) return
+    
     // Apply dark mode class to document
     if (isDark) {
       document.documentElement.classList.add('dark')
@@ -25,11 +29,11 @@ export function useDarkMode() {
     
     // Save preference
     localStorage.setItem('darkMode', isDark.toString())
-  }, [isDark])
+  }, [isDark, isLoaded])
 
   const toggleDarkMode = () => {
     setIsDark(!isDark)
   }
 
-  return { isDark, toggleDarkMode }
+  return { isDark, toggleDarkMode, isLoaded }
 }
