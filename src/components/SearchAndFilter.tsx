@@ -25,7 +25,8 @@ export function SearchAndFilter({ filters, onFiltersChange }: SearchAndFilterPro
   }
 
   return (
-    <div className="bg-white/70 dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200/50 dark:border-gray-700 p-6 space-y-6 transition-all duration-300 card-hover">
+    <div className="theme-card rounded-xl shadow-lg border p-6 space-y-6 transition-all duration-300 card-hover">
+      <h3 className="text-lg font-semibold theme-text-primary mb-4">Zoeken & Filteren</h3>
       {/* Search */}
       <div className="relative">
         <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
@@ -34,19 +35,19 @@ export function SearchAndFilter({ filters, onFiltersChange }: SearchAndFilterPro
           placeholder="Zoek op code, winkel of beschrijving..."
           value={filters.searchTerm}
           onChange={(e) => handleSearchChange(e.target.value)}
-          className="w-full pl-12 pr-4 py-3 border border-gray-200 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500 bg-white/50 dark:bg-gray-700 rounded-xl transition-all duration-200 font-medium"
+          className="theme-input w-full pl-12 pr-4 py-3 rounded-xl focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 placeholder:text-gray-400 dark:placeholder:text-gray-500 transition-all duration-200 font-medium"
         />
       </div>
 
       {/* Filters Row */}
       <div className="flex flex-wrap gap-4">
         {/* Category Filter */}
-        <div className="flex items-center gap-3 bg-gray-50 dark:bg-gray-700 rounded-lg px-4 py-2">
+        <div className="flex items-center gap-3 theme-filter rounded-lg px-4 py-2">
           <Filter size={16} className="text-gray-500 dark:text-gray-400" />
           <select
             value={filters.category}
             onChange={(e) => handleCategoryChange(e.target.value)}
-            className="border-0 bg-transparent text-gray-900 dark:text-white text-sm focus:ring-0 focus:outline-none font-medium cursor-pointer"
+            className="border-0 bg-transparent theme-text-primary text-sm focus:ring-0 focus:outline-none font-medium cursor-pointer"
           >
             <option value="all">Alle categorieën</option>
             {DISCOUNT_CATEGORIES.map((category) => (
@@ -58,12 +59,12 @@ export function SearchAndFilter({ filters, onFiltersChange }: SearchAndFilterPro
         </div>
 
         {/* Sort */}
-        <div className="flex items-center gap-3 bg-gray-50 dark:bg-gray-700 rounded-lg px-4 py-2">
+        <div className="flex items-center gap-3 theme-filter rounded-lg px-4 py-2">
           <SortAsc size={16} className="text-gray-500 dark:text-gray-400" />
           <select
             value={filters.sortBy}
             onChange={(e) => handleSortChange(e.target.value as SearchFilters['sortBy'])}
-            className="border-0 bg-transparent text-gray-900 dark:text-white text-sm focus:ring-0 focus:outline-none font-medium cursor-pointer"
+            className="border-0 bg-transparent theme-text-primary text-sm focus:ring-0 focus:outline-none font-medium cursor-pointer"
           >
             <option value="dateAdded">Nieuwste eerst</option>
             <option value="expiryDate">Vervaldatum</option>
@@ -74,11 +75,11 @@ export function SearchAndFilter({ filters, onFiltersChange }: SearchAndFilterPro
         </div>
 
         {/* Status Filter */}
-        <div className="flex items-center gap-3 bg-gray-50 dark:bg-gray-700 rounded-lg px-4 py-2">
+        <div className="flex items-center gap-3 theme-filter rounded-lg px-4 py-2">
           <select
             value={filters.filterBy}
             onChange={(e) => handleFilterChange(e.target.value as SearchFilters['filterBy'])}
-            className="border-0 bg-transparent text-gray-900 dark:text-white text-sm focus:ring-0 focus:outline-none font-medium cursor-pointer"
+            className="border-0 bg-transparent theme-text-primary text-sm focus:ring-0 focus:outline-none font-medium cursor-pointer"
           >
             <option value="all">Alle codes</option>
             <option value="active">Actieve codes</option>

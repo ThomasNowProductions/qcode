@@ -78,11 +78,11 @@ export function DiscountCodeCard({
   }
 
   return (
-    <div className={`bg-white/70 dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200/50 dark:border-gray-700 p-6 transition-all duration-300 card-hover ${isExpired ? 'opacity-75' : ''}`}>
+    <div className={`theme-card rounded-xl shadow-lg border p-6 transition-all duration-300 card-hover ${isExpired ? 'opacity-75' : ''}`}>
       <div className="flex items-start justify-between mb-4">
         <div className="flex-1">
           <div className="flex items-center gap-3 mb-2">
-            <h3 className="font-bold text-gray-900 dark:text-white text-lg">{code.store}</h3>
+            <h3 className="font-bold theme-text-primary text-lg">{code.store}</h3>
             <span className="bg-gradient-to-r from-blue-100 to-blue-200 dark:from-blue-900 dark:to-blue-800 text-blue-800 dark:text-blue-200 text-xs font-semibold px-3 py-1.5 rounded-full border border-blue-200 dark:border-blue-700">
               {code.category}
             </span>
@@ -90,7 +90,7 @@ export function DiscountCodeCard({
               <Heart className="w-5 h-5 text-red-500 fill-current drop-shadow-sm" />
             )}
           </div>
-          <div className="flex items-center gap-3 text-sm text-gray-600 dark:text-gray-300">
+          <div className="flex items-center gap-3 text-sm theme-text-secondary">
             <div className="flex items-center gap-1.5">
               <Store size={14} className="text-gray-400" />
               <span className="font-medium">{code.discount}</span>
@@ -114,13 +114,13 @@ export function DiscountCodeCard({
             <MoreVertical size={16} />
           </button>
           {showMenu && (
-            <div className="absolute right-0 top-10 bg-white/95 dark:bg-gray-800 border border-gray-200/50 dark:border-gray-700 rounded-xl shadow-xl py-2 z-10 min-w-[180px]">
+            <div className="absolute right-0 top-10 theme-menu border rounded-xl shadow-xl py-2 z-10 min-w-[180px]">
               <button
                 onClick={() => {
                   onToggleFavorite()
                   setShowMenu(false)
                 }}
-                className="w-full px-4 py-2.5 text-left text-sm hover:bg-gray-50 dark:hover:bg-gray-700 flex items-center gap-3 text-gray-700 dark:text-gray-200 transition-colors"
+                className="w-full px-4 py-2.5 text-left text-sm theme-menu-hover flex items-center gap-3 theme-text-secondary transition-colors"
               >
                 <Heart size={14} className={code.isFavorite ? 'text-red-500 fill-current' : 'text-gray-400'} />
                 {code.isFavorite ? 'Uit favorieten' : 'Toevoegen aan favorieten'}
@@ -130,7 +130,7 @@ export function DiscountCodeCard({
                   onToggleArchived()
                   setShowMenu(false)
                 }}
-                className="w-full px-4 py-2.5 text-left text-sm hover:bg-gray-50 dark:hover:bg-gray-700 flex items-center gap-3 text-gray-700 dark:text-gray-200 transition-colors"
+                className="w-full px-4 py-2.5 text-left text-sm theme-menu-hover flex items-center gap-3 theme-text-secondary transition-colors"
               >
                 {code.isArchived ? (
                   <>
@@ -160,11 +160,11 @@ export function DiscountCodeCard({
       </div>
 
       {/* Code Display */}
-      <div className="bg-gradient-to-r from-gray-50 to-gray-100 dark:from-gray-700 dark:to-gray-800 border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-xl p-4 mb-4">
+      <div className="theme-code-display border-2 border-dashed rounded-xl p-4 mb-4">
         <div className="flex items-center justify-between">
           <div>
-            <p className="text-xs text-gray-500 dark:text-gray-400 mb-1 font-semibold uppercase tracking-wide">KORTINGSCODE</p>
-            <p className="font-mono text-xl font-bold text-gray-900 dark:text-white tracking-wider">{code.code}</p>
+            <p className="text-xs theme-text-muted mb-1 font-semibold uppercase tracking-wide">KORTINGSCODE</p>
+            <p className="font-mono text-xl font-bold theme-text-primary tracking-wider">{code.code}</p>
           </div>
           <button
             onClick={handleCopyCode}
@@ -187,12 +187,12 @@ export function DiscountCodeCard({
 
       {/* Description */}
       {code.description && (
-        <p className="text-sm text-gray-600 dark:text-gray-300 mb-4 leading-relaxed">{code.description}</p>
+        <p className="text-sm theme-text-secondary mb-4 leading-relaxed">{code.description}</p>
       )}
 
       {/* Footer */}
       <div className="flex items-center justify-between">
-        <div className="flex items-center gap-4 text-xs text-gray-500 dark:text-gray-400">
+        <div className="flex items-center gap-4 text-xs theme-text-muted">
           <span className="font-medium">Gebruikt: {code.timesUsed}x</span>
           <span className="font-medium">Toegevoegd: {format(code.dateAdded, 'd MMM yyyy', { locale: nl })}</span>
         </div>

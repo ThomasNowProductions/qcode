@@ -10,7 +10,7 @@ export function Header({ onNotificationClick, onSettingsClick }: HeaderProps) {
   const { isDark, toggleDarkMode, isLoaded } = useDarkMode()
 
   return (
-    <header className="bg-white/80 dark:bg-gray-900 shadow-lg border-b border-gray-200/50 dark:border-gray-700 transition-all duration-300 sticky top-0 z-50">
+    <header className="theme-card shadow-lg border-b transition-all duration-300 sticky top-0 z-50">
       <div className="max-w-4xl mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
@@ -19,7 +19,7 @@ export function Header({ onNotificationClick, onSettingsClick }: HeaderProps) {
             </div>
             <div>
               <h1 className="text-xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 dark:from-white dark:to-gray-300 bg-clip-text text-transparent">QCode</h1>
-              <p className="text-sm text-gray-600 dark:text-gray-300 font-medium">Kortingscodes beheren</p>
+              <p className="text-sm theme-text-secondary font-medium">Kortingscodes beheren</p>
             </div>
           </div>
           <div className="flex items-center gap-2">

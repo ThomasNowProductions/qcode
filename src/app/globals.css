@@ -1,57 +1,107 @@
 @import "tailwindcss";
 
 :root {
+  /* Base colors */
   --background: #fafbfc;
+  --background-light: #f8fafc;
   --foreground: #1a1a1a;
+  
+  /* Card system */
   --card-bg: #ffffff;
   --card-border: #e5e7eb;
   --card-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
   --card-shadow-hover: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  
+  /* Input system */
   --input-bg: #ffffff;
   --input-border: #d1d5db;
   --input-focus: #3b82f6;
+  
+  /* Text system */
   --text-primary: #111827;
   --text-secondary: #6b7280;
   --text-muted: #9ca3af;
+  
+  /* Accent colors */
   --accent-blue: #3b82f6;
   --accent-blue-hover: #2563eb;
   --accent-green: #10b981;
   --accent-red: #ef4444;
   --accent-orange: #f59e0b;
   --accent-yellow: #eab308;
+  
+  /* Status colors */
   --success-bg: #f0fdf4;
   --success-border: #bbf7d0;
   --warning-bg: #fffbeb;
   --warning-border: #fde68a;
   --error-bg: #fef2f2;
   --error-border: #fecaca;
+  
+  /* Component-specific colors */
+  --filter-bg: #f9fafb;
+  --filter-border: #e5e7eb;
+  --code-display-bg: #f9fafb;
+  --code-display-bg-light: #f3f4f6;
+  --code-display-border: #d1d5db;
+  --stat-card-bg: #f9fafb;
+  --stat-card-bg-light: #f3f4f6;
+  --stat-card-border: #e5e7eb;
+  --menu-bg: #ffffff;
+  --menu-border: #e5e7eb;
+  --menu-hover: #f9fafb;
 }
 
 .dark {
+  /* Base colors */
   --background: #111827;
+  --background-light: #0f172a;
   --foreground: #ededed;
+  
+  /* Card system */
   --card-bg: #1f2937;
   --card-border: #374151;
   --card-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.3), 0 1px 2px -1px rgb(0 0 0 / 0.3);
   --card-shadow-hover: 0 4px 6px -1px rgb(0 0 0 / 0.3), 0 2px 4px -2px rgb(0 0 0 / 0.3);
+  
+  /* Input system */
   --input-bg: #374151;
   --input-border: #4b5563;
   --input-focus: #60a5fa;
+  
+  /* Text system */
   --text-primary: #f9fafb;
   --text-secondary: #d1d5db;
   --text-muted: #9ca3af;
+  
+  /* Accent colors */
   --accent-blue: #60a5fa;
   --accent-blue-hover: #93c5fd;
   --accent-green: #34d399;
   --accent-red: #f87171;
   --accent-orange: #fbbf24;
   --accent-yellow: #fde047;
+  
+  /* Status colors */
   --success-bg: #064e3b;
   --success-border: #065f46;
   --warning-bg: #451a03;
   --warning-border: #92400e;
   --error-bg: #450a0a;
   --error-border: #7f1d1d;
+  
+  /* Component-specific colors */
+  --filter-bg: #374151;
+  --filter-border: #4b5563;
+  --code-display-bg: #374151;
+  --code-display-bg-light: #4b5563;
+  --code-display-border: #4b5563;
+  --stat-card-bg: #374151;
+  --stat-card-bg-light: #4b5563;
+  --stat-card-border: #4b5563;
+  --menu-bg: #1f2937;
+  --menu-border: #374151;
+  --menu-hover: #374151;
 }
 
 @theme inline {
@@ -66,7 +116,7 @@ html {
 }
 
 body {
-  background: linear-gradient(135deg, var(--background) 0%, #f8fafc 100%);
+  background: linear-gradient(135deg, var(--background) 0%, var(--background-light) 100%);
   color: var(--foreground);
   font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
   transition: background 0.3s ease, color 0.3s ease;
@@ -127,4 +177,92 @@ button, input, select, textarea {
 .card-hover:hover {
   transform: translateY(-1px);
   box-shadow: var(--card-shadow-hover);
+}
+
+/* Theme-aware utility classes */
+.theme-card {
+  background-color: var(--card-bg);
+  border-color: var(--card-border);
+  color: var(--text-primary);
+}
+
+.theme-text-primary {
+  color: var(--text-primary);
+}
+
+.theme-text-secondary {
+  color: var(--text-secondary);
+}
+
+.theme-text-muted {
+  color: var(--text-muted);
+}
+
+.theme-input {
+  background-color: var(--input-bg);
+  border-color: var(--input-border);
+  color: var(--text-primary);
+}
+
+.theme-input:focus {
+  border-color: var(--input-focus);
+  box-shadow: 0 0 0 3px rgb(59 130 246 / 0.1);
+}
+
+.theme-filter {
+  background-color: var(--filter-bg);
+  border-color: var(--filter-border);
+}
+
+.theme-code-display {
+  background: linear-gradient(to right, var(--code-display-bg), var(--code-display-bg-light));
+  border-color: var(--code-display-border);
+}
+
+.theme-stat-card {
+  background: linear-gradient(to bottom right, var(--stat-card-bg), var(--stat-card-bg-light));
+  border-color: var(--stat-card-border);
+}
+
+.theme-menu {
+  background-color: var(--menu-bg);
+  border-color: var(--menu-border);
+}
+
+.theme-menu-hover:hover {
+  background-color: var(--menu-hover);
+}
+
+/* Theme-aware stat gradients */
+.stat-gradient-green {
+  background: linear-gradient(135deg, var(--accent-green) 0%, #059669 100%);
+}
+
+.stat-gradient-red {
+  background: linear-gradient(135deg, var(--accent-red) 0%, #dc2626 100%);
+}
+
+.stat-gradient-yellow {
+  background: linear-gradient(135deg, var(--accent-yellow) 0%, #ca8a04 100%);
+}
+
+.stat-gradient-orange {
+  background: linear-gradient(135deg, var(--accent-orange) 0%, #d97706 100%);
+}
+
+/* Dark mode adjustments for better contrast */
+.dark .stat-gradient-green {
+  background: linear-gradient(135deg, var(--accent-green) 0%, #10b981 100%);
+}
+
+.dark .stat-gradient-red {
+  background: linear-gradient(135deg, var(--accent-red) 0%, #ef4444 100%);
+}
+
+.dark .stat-gradient-yellow {
+  background: linear-gradient(135deg, var(--accent-yellow) 0%, #eab308 100%);
+}
+
+.dark .stat-gradient-orange {
+  background: linear-gradient(135deg, var(--accent-orange) 0%, #f59e0b 100%);
 }

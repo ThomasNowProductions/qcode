@@ -51,7 +51,7 @@ export default function HomePage() {
       <div className="min-h-screen flex items-center justify-center transition-colors">
         <div className="flex flex-col items-center gap-4">
           <div className="animate-spin rounded-full h-12 w-12 border-4 border-blue-200 border-t-blue-600"></div>
-          <p className="text-gray-600 dark:text-gray-300 font-medium">Laden...</p>
+          <p className="theme-text-secondary font-medium">Laden...</p>
         </div>
       </div>
     )

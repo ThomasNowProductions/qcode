@@ -42,7 +42,7 @@ export function NotificationBanner({ expiringSoon }: NotificationBannerProps) {
   }
 
   return (
-    <div className="bg-white/70 dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200/50 dark:border-gray-700 p-6 mb-6 transition-all duration-300 card-hover ring-2 ring-orange-400 dark:ring-amber-500">
+    <div className="theme-card rounded-xl shadow-lg border p-6 mb-6 transition-all duration-300 ring-2 ring-orange-400 dark:ring-amber-500">
       <div className="flex">
         <div className="flex-shrink-0">
           <div className="bg-orange-500 dark:from-orange-500 dark:to-amber-500 p-2 rounded-lg shadow-md">
@@ -50,7 +50,7 @@ export function NotificationBanner({ expiringSoon }: NotificationBannerProps) {
           </div>
         </div>
         <div className="ml-4 flex-1">
-          <h3 className="text-base font-bold text-gray-900 dark:text-orange-400 mb-2 leading-tight">
+          <h3 className="text-base font-bold theme-text-primary mb-2 leading-tight">
             {visibleCodes.length === 1 
               ? 'Kortingscode verloopt binnenkort' 
               : `${visibleCodes.length} kortingscodes verlopen binnenkort`
@@ -63,8 +63,8 @@ export function NotificationBanner({ expiringSoon }: NotificationBannerProps) {
                 : 0
 
               return (
-                <div key={code.id} className="flex items-center justify-between py-2 px-3 bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-700 dark:to-gray-800 border border-gray-200 dark:border-gray-600 rounded-xl">
-                  <span className="text-sm text-gray-900 dark:text-orange-300">
+                <div key={code.id} className="flex items-center justify-between py-2 px-3 theme-code-display border rounded-xl">
+                  <span className="text-sm theme-text-primary">
                     <strong className="font-semibold">{code.store}</strong> 
                     <span className="font-mono text-xs ml-1">({code.code})</span> - 
                     <span className="ml-1">
@@ -83,7 +83,7 @@ export function NotificationBanner({ expiringSoon }: NotificationBannerProps) {
               )
             })}
             {visibleCodes.length > 3 && (
-              <p className="text-xs text-gray-700 dark:text-orange-400 font-medium mt-2">
+              <p className="text-xs theme-text-secondary font-medium mt-2">
                 En {visibleCodes.length - 3} meer...
               </p>
             )}
