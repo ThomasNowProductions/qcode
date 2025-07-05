@@ -42,7 +42,7 @@ export function NotificationBanner({ expiringSoon }: NotificationBannerProps) {
   }
 
   return (
-    <div className="bg-orange-100 dark:from-orange-900 dark:to-amber-900 border-l-4 border-orange-500 dark:border-orange-700 rounded-xl p-6 mb-6 shadow-lg">
+    <div className="bg-white/70 dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200/50 dark:border-gray-700 p-6 mb-6 transition-all duration-300 card-hover ring-2 ring-orange-400 dark:ring-amber-500">
       <div className="flex">
         <div className="flex-shrink-0">
           <div className="bg-orange-500 dark:from-orange-500 dark:to-amber-500 p-2 rounded-lg shadow-md">
@@ -63,7 +63,7 @@ export function NotificationBanner({ expiringSoon }: NotificationBannerProps) {
                 : 0
 
               return (
-                <div key={code.id} className="flex items-center justify-between py-2 px-3 bg-white dark:bg-gray-800 rounded-lg border border-orange-300 dark:border-orange-700">
+                <div key={code.id} className="flex items-center justify-between py-2 px-3 bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-700 dark:to-gray-800 border border-gray-200 dark:border-gray-600 rounded-xl">
                   <span className="text-sm text-gray-900 dark:text-orange-300">
                     <strong className="font-semibold">{code.store}</strong> 
                     <span className="font-mono text-xs ml-1">({code.code})</span> - 
