@@ -1,7 +1,5 @@
 import { useState, useEffect } from 'react'
-import { AlertTriangle, X, Bell } from 'lucide-react'
-import { format } from 'date-fns'
-import { nl } from 'date-fns/locale'
+import { AlertTriangle, X } from 'lucide-react'
 import type { DiscountCode } from '@/types/discount-code'
 
 interface NotificationBannerProps {

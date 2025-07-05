@@ -6,7 +6,6 @@ import {
   Copy, 
   Calendar, 
   Store, 
-  Tag, 
   MoreVertical, 
   Archive, 
   Trash2,

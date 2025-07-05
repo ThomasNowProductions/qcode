@@ -1,60 +1,23 @@
 import { useState, useEffect } from 'react'
 import { Download, X, Smartphone } from 'lucide-react'
-
-interface BeforeInstallPromptEvent extends Event {
-  prompt(): Promise<void>
-  userChoice: Promise<{ outcome: 'accepted' | 'dismissed' }>
-}
+import { usePWA } from '../hooks/usePWA'
 
 export function InstallPrompt() {
-  const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null)
+  const { isInstallable, isInstalled, installApp } = usePWA()
   const [showPrompt, setShowPrompt] = useState(false)
-  const [isInstalled, setIsInstalled] = useState(false)
 
   useEffect(() => {
-    // Check if app is already installed
-    const checkIfInstalled = () => {
-      const isStandalone = window.matchMedia('(display-mode: standalone)').matches
-      const isInWebAppiOS = (window.navigator as any).standalone === true
-      setIsInstalled(isStandalone || isInWebAppiOS)
+    // Show prompt only if installable and not dismissed
+    const dismissed = localStorage.getItem('qcode-install-dismissed')
+    if (isInstallable && !dismissed && !isInstalled) {
+      setShowPrompt(true)
     }
-
-    checkIfInstalled()
-
-    // Listen for beforeinstallprompt event
-    const handleBeforeInstallPrompt = (e: Event) => {
-      e.preventDefault()
-      setDeferredPrompt(e as BeforeInstallPromptEvent)
-      
-      // Don't show prompt if already dismissed or installed
-      const dismissed = localStorage.getItem('qcode-install-dismissed')
-      if (!dismissed && !isInstalled) {
-        setShowPrompt(true)
-      }
-    }
-
-    window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt)
-
-    return () => {
-      window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt)
-    }
-  }, [isInstalled])
+  }, [isInstallable, isInstalled])
 
   const handleInstallClick = async () => {
-    if (!deferredPrompt) return
-
-    try {
-      await deferredPrompt.prompt()
-      const { outcome } = await deferredPrompt.userChoice
-      
-      if (outcome === 'accepted') {
-        setIsInstalled(true)
-      }
-      
-      setDeferredPrompt(null)
+    const success = await installApp()
+    if (success) {
       setShowPrompt(false)
-    } catch (error) {
-      console.error('Error installing app:', error)
     }
   }
 
@@ -63,22 +26,22 @@ export function InstallPrompt() {
     localStorage.setItem('qcode-install-dismissed', 'true')
   }
 
-  // Don't show if installed or no prompt available
-  if (isInstalled || !showPrompt || !deferredPrompt) {
+  // Don't show if installed or not installable
+  if (isInstalled || !showPrompt || !isInstallable) {
     return null
   }
 
   return (
-    <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
+    <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4 mb-6">
       <div className="flex items-start">
         <div className="flex-shrink-0">
-          <Smartphone className="h-6 w-6 text-blue-600" />
+          <Smartphone className="h-6 w-6 text-blue-600 dark:text-blue-400" />
         </div>
         <div className="ml-3 flex-1">
-          <h3 className="text-sm font-medium text-blue-900">
+          <h3 className="text-sm font-medium text-blue-900 dark:text-blue-100">
             Installeer QCode als app
           </h3>
-          <p className="mt-1 text-sm text-blue-700">
+          <p className="mt-1 text-sm text-blue-700 dark:text-blue-300">
             Krijg snelle toegang vanaf je startscherm en gebruik de app offline. 
             Geen app store nodig!
           </p>
@@ -92,7 +55,7 @@ export function InstallPrompt() {
             </button>
             <button
               onClick={handleDismiss}
-              className="text-blue-600 hover:text-blue-700 text-sm font-medium"
+              className="text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 text-sm font-medium"
             >
               Niet nu
             </button>
@@ -101,7 +64,7 @@ export function InstallPrompt() {
         <div className="ml-auto">
           <button
             onClick={handleDismiss}
-            className="text-blue-400 hover:text-blue-600"
+            className="text-blue-400 hover:text-blue-600 dark:text-blue-500 dark:hover:text-blue-400"
           >
             <X size={20} />
           </button>
@@ -111,27 +74,4 @@ export function InstallPrompt() {
   )
 }
 
-// Hook to detect if app is installed
-export function useIsAppInstalled() {
-  const [isInstalled, setIsInstalled] = useState(false)
 
-  useEffect(() => {
-    const checkIfInstalled = () => {
-      const isStandalone = window.matchMedia('(display-mode: standalone)').matches
-      const isInWebAppiOS = (window.navigator as any).standalone === true
-      setIsInstalled(isStandalone || isInWebAppiOS)
-    }
-
-    checkIfInstalled()
-
-    // Listen for changes in display mode
-    const mediaQuery = window.matchMedia('(display-mode: standalone)')
-    mediaQuery.addEventListener('change', checkIfInstalled)
-
-    return () => {
-      mediaQuery.removeEventListener('change', checkIfInstalled)
-    }
-  }, [])
-
-  return isInstalled
-}

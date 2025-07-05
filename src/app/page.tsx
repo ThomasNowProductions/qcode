@@ -12,6 +12,7 @@ import { EmptyState } from '@/components/EmptyState'
 import { NotificationBanner } from '@/components/NotificationBanner'
 import { InstallPrompt } from '@/components/InstallPrompt'
 import { SettingsModal } from '@/components/SettingsModal'
+import { OnlineStatusBanner } from '@/components/OfflineIndicator'
 import type { SearchFilters, DiscountCode } from '@/types/discount-code'
 
 export default function HomePage() {
@@ -55,6 +56,9 @@ export default function HomePage() {
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors">
+      {/* Offline Status Banner */}
+      <OnlineStatusBanner />
+      
       <Header 
         onNotificationClick={() => setShowNotificationBanner(!showNotificationBanner)}
         onSettingsClick={() => setIsSettingsModalOpen(true)}

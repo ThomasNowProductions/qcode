@@ -15,10 +15,10 @@ export function useDiscountCodes() {
     try {
       const stored = localStorage.getItem(STORAGE_KEY)
       if (stored) {
-        const parsedCodes = JSON.parse(stored).map((code: any) => ({
+        const parsedCodes = JSON.parse(stored).map((code: Record<string, unknown>) => ({
           ...code,
-          dateAdded: new Date(code.dateAdded),
-          expiryDate: code.expiryDate ? new Date(code.expiryDate) : undefined,
+          dateAdded: new Date(code.dateAdded as string),
+          expiryDate: code.expiryDate ? new Date(code.expiryDate as string) : undefined,
         }))
         setCodes(parsedCodes)
       }

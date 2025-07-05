@@ -20,6 +20,11 @@ export const metadata: Metadata = {
     icon: "/icon-192x192.png",
     apple: "/icon-192x192.png",
   },
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: "QCode",
+  },
 };
 
 export const viewport: Viewport = {

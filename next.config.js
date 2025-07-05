@@ -1,13 +1,30 @@
+const withPWA = require('next-pwa')({
+  dest: 'public',
+  register: true,
+  skipWaiting: true,
+  runtimeCaching: [
+    {
+      urlPattern: /^https?.*/,
+      handler: 'NetworkFirst',
+      options: {
+        cacheName: 'offlineCache',
+        expiration: {
+          maxEntries: 200,
+          maxAgeSeconds: 7 * 24 * 60 * 60, // 7 days
+        },
+      },
+    },
+  ],
+  buildExcludes: [/middleware-manifest\.json$/],
+})
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // PWA configuration will be added here when we set up next-pwa properly
-  experimental: {
-    turbo: {
-      rules: {
-        // Add any specific turbopack rules if needed
-      }
+  turbopack: {
+    rules: {
+      // Add any specific turbopack rules if needed
     }
   }
 }
 
-module.exports = nextConfig
+module.exports = withPWA(nextConfig)

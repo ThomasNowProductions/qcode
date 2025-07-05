@@ -1,7 +1,14 @@
 import type { DiscountCode } from '@/types/discount-code'
 
+interface ServiceWorkerRegistrationWithSync extends ServiceWorkerRegistration {
+  sync: {
+    register(tag: string): Promise<void>
+  }
+}
+
 const STORAGE_KEY = 'qcode-discount-codes'
 const SETTINGS_KEY = 'qcode-settings'
+const PENDING_SYNC_KEY = 'qcode-pending-sync'
 
 export interface AppSettings {
   theme: 'light' | 'dark' | 'system'
@@ -10,11 +17,65 @@ export interface AppSettings {
   autoArchiveExpired: boolean
 }
 
+export interface PendingSync {
+  type: 'add' | 'update' | 'delete'
+  data: DiscountCode
+  timestamp: number
+}
+
 export const defaultSettings: AppSettings = {
   theme: 'system',
   notifications: true,
   expiryWarningDays: 7,
   autoArchiveExpired: false,
+}
+
+// Background Sync Support
+export const addToPendingSync = (type: PendingSync['type'], data: DiscountCode): void => {
+  try {
+    if (typeof window === 'undefined') return
+    
+    const pending = getPendingSync()
+    const newPending: PendingSync = {
+      type,
+      data,
+      timestamp: Date.now()
+    }
+    
+    pending.push(newPending)
+    localStorage.setItem(PENDING_SYNC_KEY, JSON.stringify(pending))
+    
+    // Register background sync if available
+    if ('serviceWorker' in navigator && 'sync' in window.ServiceWorkerRegistration.prototype) {
+      navigator.serviceWorker.ready.then(registration => {
+        const syncRegistration = registration as ServiceWorkerRegistrationWithSync
+        return syncRegistration.sync.register('discount-codes-sync')
+      }).catch(console.error)
+    }
+  } catch (error) {
+    console.error('Error adding to pending sync:', error)
+  }
+}
+
+export const getPendingSync = (): PendingSync[] => {
+  try {
+    if (typeof window === 'undefined') return []
+    
+    const stored = localStorage.getItem(PENDING_SYNC_KEY)
+    return stored ? JSON.parse(stored) : []
+  } catch (error) {
+    console.error('Error getting pending sync:', error)
+    return []
+  }
+}
+
+export const clearPendingSync = (): void => {
+  try {
+    if (typeof window === 'undefined') return
+    localStorage.removeItem(PENDING_SYNC_KEY)
+  } catch (error) {
+    console.error('Error clearing pending sync:', error)
+  }
 }
 
 // Discount Codes Storage
@@ -26,10 +87,10 @@ export const loadDiscountCodes = (): DiscountCode[] => {
     if (!stored) return []
     
     const codes = JSON.parse(stored)
-    return codes.map((code: any) => ({
+    return codes.map((code: Record<string, unknown>) => ({
       ...code,
-      dateAdded: new Date(code.dateAdded),
-      expiryDate: code.expiryDate ? new Date(code.expiryDate) : undefined,
+      dateAdded: new Date(code.dateAdded as string),
+      expiryDate: code.expiryDate ? new Date(code.expiryDate as string) : undefined,
     }))
   } catch (error) {
     console.error('Error loading discount codes:', error)
@@ -37,11 +98,16 @@ export const loadDiscountCodes = (): DiscountCode[] => {
   }
 }
 
-export const saveDiscountCodes = (codes: DiscountCode[]): void => {
+export const saveDiscountCodes = (codes: DiscountCode[], syncType?: PendingSync['type'], changedCode?: DiscountCode): void => {
   try {
     if (typeof window === 'undefined') return
     
     localStorage.setItem(STORAGE_KEY, JSON.stringify(codes))
+    
+    // Add to background sync queue if specified
+    if (syncType && changedCode) {
+      addToPendingSync(syncType, changedCode)
+    }
   } catch (error) {
     console.error('Error saving discount codes:', error)
   }
@@ -91,10 +157,10 @@ export const importCodes = (jsonData: string): DiscountCode[] => {
       throw new Error('Invalid import format')
     }
     
-    return importData.codes.map((code: any) => ({
+    return importData.codes.map((code: Record<string, unknown>) => ({
       ...code,
-      dateAdded: new Date(code.dateAdded || new Date()),
-      expiryDate: code.expiryDate ? new Date(code.expiryDate) : undefined,
+      dateAdded: new Date((code.dateAdded as string) || new Date()),
+      expiryDate: code.expiryDate ? new Date(code.expiryDate as string) : undefined,
     }))
   } catch (error) {
     console.error('Error importing codes:', error)
@@ -122,10 +188,10 @@ export const restoreBackup = (backupData: string): void => {
     const backup = JSON.parse(backupData)
     
     if (backup.codes) {
-      const codes = backup.codes.map((code: any) => ({
+      const codes = backup.codes.map((code: Record<string, unknown>) => ({
         ...code,
-        dateAdded: new Date(code.dateAdded || new Date()),
-        expiryDate: code.expiryDate ? new Date(code.expiryDate) : undefined,
+        dateAdded: new Date((code.dateAdded as string) || new Date()),
+        expiryDate: code.expiryDate ? new Date(code.expiryDate as string) : undefined,
       }))
       saveDiscountCodes(codes)
     }
