@@ -51,7 +51,7 @@ export function StatsOverview({ stats }: StatsOverviewProps) {
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         {statItems.map((item) => (
           <div key={item.label} className="text-center group">
-            <div className={`bg-gradient-to-br ${item.bgColor} dark:from-gray-700 dark:to-gray-800 border ${item.borderColor} dark:border-gray-600 rounded-xl p-4 mb-3 transition-all duration-200 group-hover:scale-105`}>
+            <div className={`bg-gradient-to-br ${item.bgColor} dark:from-gray-700 dark:to-gray-800 border ${item.borderColor} dark:border-gray-600 rounded-xl p-4 mb-3 transition-all duration-200`}>
               <div className={`bg-gradient-to-br ${item.color} w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-2 shadow-lg`}>
                 <span className="text-white font-bold text-lg">{item.value}</span>
               </div>
