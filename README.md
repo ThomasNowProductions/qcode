@@ -150,7 +150,7 @@ De app kan geïnstalleerd worden op:
 - [ ] Gedeelde codes tussen gebruikers
 - [ ] Winkel integraties voor automatische codes
 - [ ] Push notificaties voor deals
-- [ ] Export/import functionaliteit
+- [x] Export/import functionaliteit
 - [ ] Analytics dashboard
 - [ ] Thema aanpassingen
 - [ ] Multi-taal ondersteuning
