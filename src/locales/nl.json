@@ -18,11 +18,13 @@
     "settings": "Instellingen"
   },
   "homePage": {
+    "welcome": "Welkom bij QCode!",
+    "welcomeMessage": "Begin met het toevoegen van je eerste kortingscode. Bewaar al je kortingen op één plek en mis nooit meer een deal!",
     "addNewCode": "Nieuwe kortingscode toevoegen",
     "noCodes": {
       "title": "Geen kortingscodes gevonden",
       "subtitle": "Voeg je eerste kortingscode toe om te beginnen",
-      "addButton": "Kortingscode toevoegen"
+      "addButton": "Eerste code toevoegen"
     },
     "noCodesFiltered": {
       "title": "Geen kortingscodes gevonden",
@@ -31,6 +33,7 @@
     }
   },
   "filters": {
+    "title": "Zoeken & Filteren",
     "searchPlaceholder": "Zoek op code of winkel...",
     "category": {
       "label": "Categorie",
@@ -39,11 +42,11 @@
     },
     "sortBy": {
       "label": "Sorteren",
-      "dateAdded": "Datum toegevoegd",
+      "dateAdded": "Nieuwste eerst",
       "expiryDate": "Vervaldatum",
       "discount": "Korting",
       "store": "Winkel",
-      "timesUsed": "Aantal keer gebruikt"
+      "timesUsed": "Meest gebruikt"
     },
     "filterBy": {
       "label": "Tonen",
@@ -56,15 +59,22 @@
   "codeCard": {
     "expires": "Verloopt op",
     "expired": "Verlopen",
+    "expiryToday": "Verloopt vandaag",
+    "expiryTomorrow": "Verloopt morgen",
+    "expiryDays": "Verloopt over {{days}} dagen",
+    "noExpiryDate": "Geen vervaldatum",
+    "discountCodeLabel": "KORTINGSCODE",
     "timesUsed": "{{count}}x gebruikt",
-    "copyCode": "Kopieer code",
-    "codeCopied": "Code gekopieerd!",
+    "copyCode": "Kopiëren",
+    "codeCopied": "Gekopieerd!",
     "archive": "Archiveren",
-    "unarchive": "De-archiveren",
-    "favorite": "Favoriet maken",
-    "unfavorite": "Verwijderen uit favorieten",
+    "unarchive": "Uit archief halen",
+    "favorite": "Toevoegen aan favorieten",
+    "unfavorite": "Uit favorieten",
     "details": "Details bekijken",
-    "used": "Als gebruikt markeren"
+    "used": "Gebruikt",
+    "added": "Toegevoegd",
+    "use": "Gebruiken"
   },
   "addCode": {
     "title": "Nieuwe kortingscode",
@@ -88,14 +98,22 @@
   "notifications": {
     "title": "Notificaties",
     "expiringSoon": "Kortingscodes die binnenkort verlopen",
+    "singleExpiring": "Kortingscode verloopt binnenkort",
+    "multipleExpiring": "{{count}} kortingscodes verlopen binnenkort",
+    "expiryToday": " verloopt vandaag",
+    "expiryTomorrow": " verloopt morgen",
+    "expiryDays": " verloopt over {{days}} dagen",
+    "andMore": "En {{count}} meer...",
     "noExpiring": "Geen kortingscodes die binnenkort verlopen",
     "daysLeft": "{{count}} dagen resterend"
   },
   "stats": {
+    "title": "Overzicht",
     "totalCodes": "Totaal aantal codes",
-    "activeCodes": "Actieve codes",
-    "expiredCodes": "Verlopen codes",
-    "favoriteCodes": "Favoriete codes",
+    "activeCodes": "Actief",
+    "expiredCodes": "Verlopen",
+    "favoriteCodes": "Favorieten",
+    "expiringSoon": "Binnenkort verlopen",
     "archivedCodes": "Gearchiveerde codes"
   },
   "settings": {
@@ -164,5 +182,31 @@
     "installButton": "Installeren",
     "laterButton": "Later",
     "offlineAlert": "Je bent offline. Wijzigingen worden lokaal opgeslagen."
+  },
+  "validation": {
+    "codeRequired": "Kortingscode is verplicht",
+    "storeRequired": "Winkel is verplicht",
+    "discountRequired": "Korting is verplicht",
+    "expiryDateInPast": "Vervaldatum kan niet in het verleden zijn"
+  },
+  "confirmDialog": {
+    "deleteAllCodes": "Weet je zeker dat je alle kortingscodes wilt verwijderen? Deze actie kan niet ongedaan gemaakt worden.",
+    "confirm": "OK",
+    "cancel": "Annuleren"
+  },
+  "errors": {
+    "importFailed": "Fout bij importeren: "
+  },
+  "categories": {
+    "Kleding": "Kleding",
+    "Elektronica": "Elektronica",
+    "Eten & Drinken": "Eten & Drinken",
+    "Sport & Fitness": "Sport & Fitness",
+    "Boeken & Media": "Boeken & Media",
+    "Reizen": "Reizen",
+    "Beauty & Verzorging": "Beauty & Verzorging",
+    "Wonen & Tuin": "Wonen & Tuin",
+    "Speelgoed": "Speelgoed",
+    "Anders": "Anders"
   }
 }

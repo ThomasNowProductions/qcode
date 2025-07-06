@@ -49,4 +49,10 @@ export const DISCOUNT_CATEGORIES = [
   'Anders'
 ] as const
 
+// Category keys for translation (keep in sync with DISCOUNT_CATEGORIES)
+export const CATEGORY_TRANSLATION_KEYS = DISCOUNT_CATEGORIES.reduce((acc, category) => {
+  acc[category] = `categories.${category}`
+  return acc
+}, {} as Record<string, string>)
+
 export type DiscountCategory = typeof DISCOUNT_CATEGORIES[number]

@@ -1,5 +1,6 @@
 import { Plus, ShoppingBag, Sparkles } from 'lucide-react'
 import { loadDemoData } from '@/utils/demo-data'
+import { useTranslation } from 'react-i18next'
 
 interface EmptyStateProps {
   hasAnyCodes: boolean
@@ -7,6 +8,7 @@ interface EmptyStateProps {
 }
 
 export function EmptyState({ hasAnyCodes, onAddCode }: EmptyStateProps) {
+  const { t } = useTranslation()
   if (!hasAnyCodes) {
     // No codes at all
     return (
@@ -15,11 +17,10 @@ export function EmptyState({ hasAnyCodes, onAddCode }: EmptyStateProps) {
           <ShoppingBag size={36} className="text-blue-600 dark:text-blue-400" />
         </div>
         <h3 className="text-2xl font-bold theme-text-primary mb-3">
-          Welkom bij QCode!
+          {t('homePage.welcome', 'Welcome to QCode!')}
         </h3>
         <p className="theme-text-secondary mb-8 max-w-md mx-auto leading-relaxed">
-          Begin met het toevoegen van je eerste kortingscode. 
-          Bewaar al je kortingen op één plek en mis nooit meer een deal!
+          {t('homePage.welcomeMessage', 'Begin by adding your first discount code. Keep all your discounts in one place and never miss a deal!')}
         </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <button
@@ -27,14 +28,14 @@ export function EmptyState({ hasAnyCodes, onAddCode }: EmptyStateProps) {
             className="inline-flex items-center gap-3 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-semibold py-3 px-6 rounded-xl transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105"
           >
             <Plus size={20} />
-            Eerste code toevoegen
+            {t('homePage.noCodes.addButton')}
           </button>
           <button
             onClick={loadDemoData}
             className="inline-flex items-center gap-3 bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 text-white font-semibold py-3 px-6 rounded-xl transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105"
           >
             <Sparkles size={20} />
-            Probeer met voorbeelddata
+            {t('settings.import.demoButton')}
           </button>
         </div>
       </div>
@@ -48,17 +49,17 @@ export function EmptyState({ hasAnyCodes, onAddCode }: EmptyStateProps) {
         <ShoppingBag size={28} className="text-gray-500 dark:text-gray-400" />
       </div>
       <h3 className="text-xl font-bold theme-text-primary mb-3">
-        Geen codes gevonden
+        {t('homePage.noCodesFiltered.title')}
       </h3>
       <p className="theme-text-secondary mb-6 leading-relaxed">
-        Er zijn geen kortingscodes die voldoen aan je huidige filters.
+        {t('homePage.noCodesFiltered.subtitle')}
       </p>
       <button
         onClick={onAddCode}
         className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 font-semibold hover:bg-blue-50 dark:hover:bg-blue-900/20 px-4 py-2 rounded-lg transition-all duration-200"
       >
         <Plus size={16} />
-        Nieuwe code toevoegen
+        {t('homePage.addNewCode')}
       </button>
     </div>
   )

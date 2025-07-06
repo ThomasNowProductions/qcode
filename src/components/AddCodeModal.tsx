@@ -1,7 +1,8 @@
 import { useState } from 'react'
 import { X } from 'lucide-react'
 import type { DiscountCodeFormData } from '@/types/discount-code'
-import { DISCOUNT_CATEGORIES } from '@/types/discount-code'
+import { DISCOUNT_CATEGORIES, CATEGORY_TRANSLATION_KEYS } from '@/types/discount-code'
+import { useTranslation } from 'react-i18next'
 
 interface AddCodeModalProps {
   isOpen: boolean
@@ -10,6 +11,7 @@ interface AddCodeModalProps {
 }
 
 export function AddCodeModal({ isOpen, onClose, onAdd }: AddCodeModalProps) {
+  const { t } = useTranslation()
   const [formData, setFormData] = useState<DiscountCodeFormData>({
     code: '',
     store: '',
@@ -25,15 +27,15 @@ export function AddCodeModal({ isOpen, onClose, onAdd }: AddCodeModalProps) {
     const newErrors: Partial<DiscountCodeFormData> = {}
 
     if (!formData.code.trim()) {
-      newErrors.code = 'Kortingscode is verplicht'
+      newErrors.code = t('validation.codeRequired', 'Discount code is required')
     }
 
     if (!formData.store.trim()) {
-      newErrors.store = 'Winkel is verplicht'
+      newErrors.store = t('validation.storeRequired', 'Store is required')
     }
 
     if (!formData.discount.trim()) {
-      newErrors.discount = 'Korting is verplicht'
+      newErrors.discount = t('validation.discountRequired', 'Discount is required')
     }
 
     if (formData.expiryDate) {
@@ -42,7 +44,7 @@ export function AddCodeModal({ isOpen, onClose, onAdd }: AddCodeModalProps) {
       today.setHours(0, 0, 0, 0)
       
       if (expiryDate < today) {
-        newErrors.expiryDate = 'Vervaldatum kan niet in het verleden zijn'
+        newErrors.expiryDate = t('validation.expiryDateInPast', 'Expiry date cannot be in the past')
       }
     }
 
@@ -87,7 +89,7 @@ export function AddCodeModal({ isOpen, onClose, onAdd }: AddCodeModalProps) {
       <div className="theme-card rounded-lg shadow-xl max-w-md w-full max-h-[90vh] overflow-y-auto">
         <div className="flex items-center justify-between p-6 border-b border-[var(--card-border)]">
           <h2 className="text-xl font-semibold theme-text-primary">
-            Nieuwe kortingscode toevoegen
+            {t('addCode.title')}
           </h2>
           <button
             onClick={onClose}
@@ -101,14 +103,14 @@ export function AddCodeModal({ isOpen, onClose, onAdd }: AddCodeModalProps) {
           {/* Code */}
           <div>
             <label htmlFor="code" className="block text-sm font-medium theme-text-secondary mb-1">
-              Kortingscode *
+              {t('addCode.codeLabel')}
             </label>
             <input
               type="text"
               id="code"
               value={formData.code}
               onChange={(e) => handleChange('code', e.target.value)}
-              placeholder="Bijv. SAVE20"
+              placeholder={t('addCode.codePlaceholder')}
               className={`w-full px-3 py-2 border rounded-lg theme-input focus:ring-2 focus:ring-[var(--input-focus)] focus:border-transparent ${
                 errors.code ? 'border-red-500' : ''
               }`}
@@ -121,14 +123,14 @@ export function AddCodeModal({ isOpen, onClose, onAdd }: AddCodeModalProps) {
           {/* Store */}
           <div>
             <label htmlFor="store" className="block text-sm font-medium theme-text-secondary mb-1">
-              Winkel *
+              {t('addCode.storeLabel')}
             </label>
             <input
               type="text"
               id="store"
               value={formData.store}
               onChange={(e) => handleChange('store', e.target.value)}
-              placeholder="Bijv. Bol.com"
+              placeholder={t('addCode.storePlaceholder')}
               className={`w-full px-3 py-2 border rounded-lg theme-input focus:ring-2 focus:ring-[var(--input-focus)] focus:border-transparent ${
                 errors.store ? 'border-red-500' : ''
               }`}
@@ -141,14 +143,14 @@ export function AddCodeModal({ isOpen, onClose, onAdd }: AddCodeModalProps) {
           {/* Discount */}
           <div>
             <label htmlFor="discount" className="block text-sm font-medium theme-text-secondary mb-1">
-              Korting *
+              {t('addCode.discountLabel')}
             </label>
             <input
               type="text"
               id="discount"
               value={formData.discount}
               onChange={(e) => handleChange('discount', e.target.value)}
-              placeholder="Bijv. 20% of €10"
+              placeholder={t('addCode.discountPlaceholder')}
               className={`w-full px-3 py-2 border rounded-lg theme-input focus:ring-2 focus:ring-[var(--input-focus)] focus:border-transparent ${
                 errors.discount ? 'border-red-500' : ''
               }`}
@@ -161,7 +163,7 @@ export function AddCodeModal({ isOpen, onClose, onAdd }: AddCodeModalProps) {
           {/* Category */}
           <div>
             <label htmlFor="category" className="block text-sm font-medium theme-text-secondary mb-1">
-              Categorie
+              {t('addCode.categoryLabel')}
             </label>
             <select
               id="category"
@@ -171,7 +173,7 @@ export function AddCodeModal({ isOpen, onClose, onAdd }: AddCodeModalProps) {
             >
               {DISCOUNT_CATEGORIES.map((category) => (
                 <option key={category} value={category}>
-                  {category}
+                  {t(CATEGORY_TRANSLATION_KEYS[category])}
                 </option>
               ))}
             </select>
@@ -180,7 +182,7 @@ export function AddCodeModal({ isOpen, onClose, onAdd }: AddCodeModalProps) {
           {/* Expiry Date */}
           <div>
             <label htmlFor="expiryDate" className="block text-sm font-medium theme-text-secondary mb-1">
-              Vervaldatum (optioneel)
+              {t('addCode.expiryDateLabel')}
             </label>
             <input
               type="date"
@@ -200,13 +202,13 @@ export function AddCodeModal({ isOpen, onClose, onAdd }: AddCodeModalProps) {
           {/* Description */}
           <div>
             <label htmlFor="description" className="block text-sm font-medium theme-text-secondary mb-1">
-              Beschrijving (optioneel)
+              {t('addCode.descriptionLabel')}
             </label>
             <textarea
               id="description"
               value={formData.description}
               onChange={(e) => handleChange('description', e.target.value)}
-              placeholder="Extra informatie over de code..."
+              placeholder={t('addCode.descriptionPlaceholder')}
               rows={3}
               className="w-full px-3 py-2 border rounded-lg theme-input focus:ring-2 focus:ring-[var(--input-focus)] focus:border-transparent resize-none"
             />
@@ -219,13 +221,13 @@ export function AddCodeModal({ isOpen, onClose, onAdd }: AddCodeModalProps) {
               onClick={onClose}
               className="flex-1 px-4 py-2 border border-[var(--input-border)] theme-text-secondary rounded-lg hover:bg-[var(--filter-bg)] transition-colors"
             >
-              Annuleren
+              {t('common.cancel')}
             </button>
             <button
               type="submit"
               className="flex-1 px-4 py-2 bg-[var(--accent-blue)] hover:bg-[var(--accent-blue-hover)] text-white rounded-lg transition-colors"
             >
-              Toevoegen
+              {t('addCode.saveButton')}
             </button>
           </div>
         </form>

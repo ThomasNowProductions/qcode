@@ -1,3 +1,5 @@
+import { useTranslation } from 'react-i18next'
+
 interface StatsOverviewProps {
   stats: {
     total: number
@@ -11,27 +13,29 @@ interface StatsOverviewProps {
 }
 
 export function StatsOverview({ stats }: StatsOverviewProps) {
+  const { t } = useTranslation()
+  
   const statItems = [
     { 
-      label: 'Actief', 
+      label: t('stats.activeCodes'), 
       value: stats.active, 
       gradientClass: 'stat-gradient-green',
       bgClass: 'stat-bg-green'
     },
     { 
-      label: 'Verlopen', 
+      label: t('stats.expiredCodes'), 
       value: stats.expired, 
       gradientClass: 'stat-gradient-red',
       bgClass: 'stat-bg-red'
     },
     { 
-      label: 'Favorieten', 
+      label: t('stats.favoriteCodes'), 
       value: stats.favorites, 
       gradientClass: 'stat-gradient-yellow',
       bgClass: 'stat-bg-yellow'
     },
     { 
-      label: 'Binnenkort verlopen', 
+      label: t('stats.expiringSoon', { count: stats.expiringSoon }), 
       value: stats.expiringSoon, 
       gradientClass: 'stat-gradient-orange',
       bgClass: 'stat-bg-orange'
@@ -42,7 +46,7 @@ export function StatsOverview({ stats }: StatsOverviewProps) {
     <div className="theme-card rounded-xl shadow-lg border p-6 mb-6 transition-all duration-300 card-hover">
       <h2 className="text-lg font-semibold theme-text-primary mb-4 flex items-center gap-2">
         <div className="w-1 h-6 bg-gradient-to-b from-blue-500 to-blue-600 rounded-full"></div>
-        Overzicht
+        {t('stats.title', 'Overview')}
       </h2>
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         {statItems.map((item) => (
@@ -58,10 +62,10 @@ export function StatsOverview({ stats }: StatsOverviewProps) {
       </div>
       <div className="mt-6 pt-4 border-t border-gray-200/50 dark:border-[var(--card-border)] flex justify-between text-sm">
         <span className="theme-text-secondary font-medium">
-          Totaal aantal codes: <span className="theme-text-primary font-semibold">{stats.total}</span>
+          {t('stats.totalCodes')}: <span className="theme-text-primary font-semibold">{stats.total}</span>
         </span>
         <span className="theme-text-secondary font-medium">
-          Totaal gebruikt: <span className="theme-text-primary font-semibold">{stats.totalUsages}x</span>
+          {t('codeCard.timesUsed', { count: stats.totalUsages })}
         </span>
       </div>
     </div>

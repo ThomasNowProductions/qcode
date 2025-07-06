@@ -1,12 +1,14 @@
 import { useState, useEffect } from 'react'
 import { AlertTriangle, X } from 'lucide-react'
 import type { DiscountCode } from '@/types/discount-code'
+import { useTranslation } from 'react-i18next'
 
 interface NotificationBannerProps {
   expiringSoon: DiscountCode[]
 }
 
 export function NotificationBanner({ expiringSoon }: NotificationBannerProps) {
+  const { t } = useTranslation()
   const [isVisible, setIsVisible] = useState(false)
   const [dismissedCodes, setDismissedCodes] = useState<Set<string>>(new Set())
 
@@ -52,8 +54,8 @@ export function NotificationBanner({ expiringSoon }: NotificationBannerProps) {
         <div className="ml-4 flex-1">
           <h3 className="text-base font-bold theme-text-primary mb-2 leading-tight">
             {visibleCodes.length === 1 
-              ? 'Kortingscode verloopt binnenkort' 
-              : `${visibleCodes.length} kortingscodes verlopen binnenkort`
+              ? t('notifications.singleExpiring', 'Discount code expiring soon') 
+              : t('notifications.multipleExpiring', '{{count}} discount codes expiring soon', { count: visibleCodes.length })
             }
           </h3>
           <div className="space-y-2">
@@ -68,9 +70,9 @@ export function NotificationBanner({ expiringSoon }: NotificationBannerProps) {
                     <strong className="font-semibold">{code.store}</strong> 
                     <span className="font-mono text-xs ml-1">({code.code})</span> - 
                     <span className="ml-1">
-                      {daysUntilExpiry === 0 ? ' verloopt vandaag' : 
-                       daysUntilExpiry === 1 ? ' verloopt morgen' : 
-                       ` verloopt over ${daysUntilExpiry} dagen`}
+                      {daysUntilExpiry === 0 ? t('notifications.expiryToday', ' expires today') : 
+                       daysUntilExpiry === 1 ? t('notifications.expiryTomorrow', ' expires tomorrow') : 
+                       t('notifications.expiryDays', ' expires in {{days}} days', { days: daysUntilExpiry })}
                     </span>
                   </span>
                   <button
@@ -84,7 +86,7 @@ export function NotificationBanner({ expiringSoon }: NotificationBannerProps) {
             })}
             {visibleCodes.length > 3 && (
               <p className="text-xs theme-text-secondary font-medium mt-2">
-                En {visibleCodes.length - 3} meer...
+                {t('notifications.andMore', 'And {{count}} more...', { count: visibleCodes.length - 3 })}
               </p>
             )}
           </div>
@@ -94,7 +96,7 @@ export function NotificationBanner({ expiringSoon }: NotificationBannerProps) {
             onClick={handleDismiss}
             className="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-orange-200 dark:bg-orange-900/30 text-orange-700 dark:text-orange-400 hover:bg-orange-300 dark:hover:bg-orange-900/50 transition-all duration-200"
           >
-            <span className="sr-only">Sluiten</span>
+            <span className="sr-only">{t('common.close')}</span>
             <X className="h-4 w-4" />
           </button>
         </div>

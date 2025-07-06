@@ -43,14 +43,14 @@ export function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
         localStorage.setItem('qcode-discount-codes', JSON.stringify(importedCodes))
         window.location.reload()
       } catch (error) {
-        alert('Fout bij importeren: ' + (error as Error).message)
+        alert(t('errors.importFailed', 'Error importing: ') + (error as Error).message)
       }
     }
     reader.readAsText(file)
   }
 
   const handleClearAll = () => {
-    if (confirm('Weet je zeker dat je alle kortingscodes wilt verwijderen? Deze actie kan niet ongedaan gemaakt worden.')) {
+    if (confirm(t('confirmDialog.deleteAllCodes'))) {
       localStorage.removeItem('qcode-discount-codes')
       window.location.reload()
     }

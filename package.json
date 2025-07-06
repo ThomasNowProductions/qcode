@@ -8,6 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "test": "jest",
+    "test:translations": "jest translations.test.ts",
     "export": "next build && next export",
     "deploy:vercel": "vercel",
     "deploy:vercel:prod": "vercel --prod"

@@ -18,11 +18,13 @@
     "settings": "Settings"
   },
   "homePage": {
+    "welcome": "Welcome to QCode!",
+    "welcomeMessage": "Begin by adding your first discount code. Keep all your discounts in one place and never miss a deal!",
     "addNewCode": "Add new discount code",
     "noCodes": {
       "title": "No discount codes found",
       "subtitle": "Add your first discount code to get started",
-      "addButton": "Add discount code"
+      "addButton": "Add first code"
     },
     "noCodesFiltered": {
       "title": "No discount codes found",
@@ -31,6 +33,7 @@
     }
   },
   "filters": {
+    "title": "Search & Filter",
     "searchPlaceholder": "Search by code or store...",
     "category": {
       "label": "Category",
@@ -39,11 +42,11 @@
     },
     "sortBy": {
       "label": "Sort by",
-      "dateAdded": "Date added",
+      "dateAdded": "Latest first",
       "expiryDate": "Expiry date",
       "discount": "Discount",
       "store": "Store",
-      "timesUsed": "Times used"
+      "timesUsed": "Most used"
     },
     "filterBy": {
       "label": "Show",
@@ -56,15 +59,22 @@
   "codeCard": {
     "expires": "Expires on",
     "expired": "Expired",
+    "expiryToday": "Expires today",
+    "expiryTomorrow": "Expires tomorrow",
+    "expiryDays": "Expires in {{days}} days",
+    "noExpiryDate": "No expiry date",
+    "discountCodeLabel": "DISCOUNT CODE",
     "timesUsed": "Used {{count}} times",
     "copyCode": "Copy code",
-    "codeCopied": "Code copied!",
+    "codeCopied": "Copied!",
     "archive": "Archive",
     "unarchive": "Unarchive",
     "favorite": "Add to favorites",
     "unfavorite": "Remove from favorites",
     "details": "View details",
-    "used": "Mark as used"
+    "used": "Used",
+    "added": "Added",
+    "use": "Use"
   },
   "addCode": {
     "title": "New discount code",
@@ -88,14 +98,22 @@
   "notifications": {
     "title": "Notifications",
     "expiringSoon": "Discount codes expiring soon",
+    "singleExpiring": "Discount code expiring soon",
+    "multipleExpiring": "{{count}} discount codes expiring soon",
+    "expiryToday": " expires today",
+    "expiryTomorrow": " expires tomorrow",
+    "expiryDays": " expires in {{days}} days",
+    "andMore": "And {{count}} more...",
     "noExpiring": "No discount codes expiring soon",
     "daysLeft": "{{count}} days left"
   },
   "stats": {
+    "title": "Overview",
     "totalCodes": "Total codes",
-    "activeCodes": "Active codes",
-    "expiredCodes": "Expired codes",
-    "favoriteCodes": "Favorite codes",
+    "activeCodes": "Active",
+    "expiredCodes": "Expired",
+    "favoriteCodes": "Favorites",
+    "expiringSoon": "Expiring soon",
     "archivedCodes": "Archived codes"
   },
   "settings": {
@@ -164,5 +182,31 @@
     "installButton": "Install",
     "laterButton": "Later",
     "offlineAlert": "You are offline. Changes will be saved locally."
+  },
+  "validation": {
+    "codeRequired": "Discount code is required",
+    "storeRequired": "Store is required",
+    "discountRequired": "Discount is required",
+    "expiryDateInPast": "Expiry date cannot be in the past"
+  },
+  "confirmDialog": {
+    "deleteAllCodes": "Are you sure you want to delete all discount codes? This action cannot be undone.",
+    "confirm": "OK",
+    "cancel": "Cancel"
+  },
+  "errors": {
+    "importFailed": "Error importing: "
+  },
+  "categories": {
+    "Kleding": "Clothing",
+    "Elektronica": "Electronics",
+    "Eten & Drinken": "Food & Drinks",
+    "Sport & Fitness": "Sports & Fitness",
+    "Boeken & Media": "Books & Media",
+    "Reizen": "Travel",
+    "Beauty & Verzorging": "Beauty & Personal Care",
+    "Wonen & Tuin": "Home & Garden",
+    "Speelgoed": "Toys",
+    "Anders": "Other"
   }
 }

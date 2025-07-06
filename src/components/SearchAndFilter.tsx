@@ -1,6 +1,7 @@
 import { Search, Filter, SortAsc } from 'lucide-react'
 import type { SearchFilters } from '@/types/discount-code'
-import { DISCOUNT_CATEGORIES } from '@/types/discount-code'
+import { DISCOUNT_CATEGORIES, CATEGORY_TRANSLATION_KEYS } from '@/types/discount-code'
+import { useTranslation } from 'react-i18next'
 
 interface SearchAndFilterProps {
   filters: SearchFilters
@@ -8,6 +9,8 @@ interface SearchAndFilterProps {
 }
 
 export function SearchAndFilter({ filters, onFiltersChange }: SearchAndFilterProps) {
+  const { t } = useTranslation()
+  
   const handleSearchChange = (searchTerm: string) => {
     onFiltersChange({ ...filters, searchTerm })
   }
@@ -26,13 +29,13 @@ export function SearchAndFilter({ filters, onFiltersChange }: SearchAndFilterPro
 
   return (
     <div className="theme-card rounded-xl shadow-lg border p-6 space-y-6 transition-all duration-300 card-hover">
-      <h3 className="text-lg font-semibold theme-text-primary mb-4">Zoeken & Filteren</h3>
+      <h3 className="text-lg font-semibold theme-text-primary mb-4">{t('filters.title', 'Search & Filter')}</h3>
       {/* Search */}
       <div className="relative">
         <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
         <input
           type="text"
-          placeholder="Zoek op code, winkel of beschrijving..."
+          placeholder={t('filters.searchPlaceholder')}
           value={filters.searchTerm}
           onChange={(e) => handleSearchChange(e.target.value)}
           className="theme-input w-full pl-12 pr-4 py-3 rounded-xl focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 placeholder:text-gray-400 dark:placeholder:text-gray-500 transition-all duration-200 font-medium"
@@ -49,10 +52,10 @@ export function SearchAndFilter({ filters, onFiltersChange }: SearchAndFilterPro
             onChange={(e) => handleCategoryChange(e.target.value)}
             className="border-0 bg-transparent theme-text-primary text-sm focus:ring-0 focus:outline-none font-medium cursor-pointer"
           >
-            <option value="all">Alle categorieën</option>
+            <option value="all">{t('filters.category.all')}</option>
             {DISCOUNT_CATEGORIES.map((category) => (
               <option key={category} value={category}>
-                {category}
+                {t(CATEGORY_TRANSLATION_KEYS[category])}
               </option>
             ))}
           </select>
@@ -66,11 +69,11 @@ export function SearchAndFilter({ filters, onFiltersChange }: SearchAndFilterPro
             onChange={(e) => handleSortChange(e.target.value as SearchFilters['sortBy'])}
             className="border-0 bg-transparent theme-text-primary text-sm focus:ring-0 focus:outline-none font-medium cursor-pointer"
           >
-            <option value="dateAdded">Nieuwste eerst</option>
-            <option value="expiryDate">Vervaldatum</option>
-            <option value="store">Winkel</option>
-            <option value="category">Categorie</option>
-            <option value="timesUsed">Meest gebruikt</option>
+            <option value="dateAdded">{t('filters.sortBy.dateAdded')}</option>
+            <option value="expiryDate">{t('filters.sortBy.expiryDate')}</option>
+            <option value="store">{t('filters.sortBy.store')}</option>
+            <option value="category">{t('filters.category.label')}</option>
+            <option value="timesUsed">{t('filters.sortBy.timesUsed')}</option>
           </select>
         </div>
 
@@ -81,11 +84,11 @@ export function SearchAndFilter({ filters, onFiltersChange }: SearchAndFilterPro
             onChange={(e) => handleFilterChange(e.target.value as SearchFilters['filterBy'])}
             className="border-0 bg-transparent theme-text-primary text-sm focus:ring-0 focus:outline-none font-medium cursor-pointer"
           >
-            <option value="all">Alle codes</option>
-            <option value="active">Actieve codes</option>
-            <option value="expired">Verlopen codes</option>
-            <option value="favorites">Favorieten</option>
-            <option value="archived">Gearchiveerd</option>
+            <option value="all">{t('filters.filterBy.all')}</option>
+            <option value="active">{t('filters.filterBy.active')}</option>
+            <option value="expired">{t('filters.filterBy.expired')}</option>
+            <option value="favorites">{t('filters.category.favorites')}</option>
+            <option value="archived">{t('filters.filterBy.archived')}</option>
           </select>
         </div>
       </div>
