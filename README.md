@@ -1,4 +1,4 @@
-# QCode - Kortingscodes App
+# QCode - Discount Code Manager
 
 A Progressive Web App (PWA) for managing discount codes.
 
