@@ -207,7 +207,7 @@ De app kan geïnstalleerd worden op:
 - [x] Export/import functionaliteit
 - [ ] Analytics dashboard
 - [ ] Thema aanpassingen
-- [ ] Multi-taal ondersteuning
+- [x] Multi-taal ondersteuning
 - [ ] End-to-end encryptie voor gevoelige codes
 
 ## 📄 Licentie

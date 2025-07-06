@@ -207,7 +207,7 @@ The app can be installed on:
 - [x] Export/import functionality
 - [ ] Analytics dashboard
 - [ ] Theme customization
-- [ ] Multi-language support
+- [x] Multi-language support
 - [ ] End-to-end encryption for sensitive codes
 
 ## 📄 License
