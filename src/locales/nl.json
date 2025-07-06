@@ -1,0 +1,168 @@
+{
+  "common": {
+    "appName": "QCode",
+    "tagline": "Kortingscodes beheren",
+    "loading": "Laden...",
+    "close": "Sluiten",
+    "save": "Opslaan",
+    "cancel": "Annuleren",
+    "edit": "Bewerken",
+    "delete": "Verwijderen",
+    "search": "Zoeken...",
+    "noResults": "Geen resultaten gevonden"
+  },
+  "header": {
+    "darkMode": "Schakel naar donker thema",
+    "lightMode": "Schakel naar licht thema",
+    "notifications": "Notificaties",
+    "settings": "Instellingen"
+  },
+  "homePage": {
+    "addNewCode": "Nieuwe kortingscode toevoegen",
+    "noCodes": {
+      "title": "Geen kortingscodes gevonden",
+      "subtitle": "Voeg je eerste kortingscode toe om te beginnen",
+      "addButton": "Kortingscode toevoegen"
+    },
+    "noCodesFiltered": {
+      "title": "Geen kortingscodes gevonden",
+      "subtitle": "Probeer andere zoek- of filtercriteria",
+      "resetButton": "Filters resetten"
+    }
+  },
+  "filters": {
+    "searchPlaceholder": "Zoek op code of winkel...",
+    "category": {
+      "label": "Categorie",
+      "all": "Alle categorieën",
+      "favorites": "Favorieten"
+    },
+    "sortBy": {
+      "label": "Sorteren",
+      "dateAdded": "Datum toegevoegd",
+      "expiryDate": "Vervaldatum",
+      "discount": "Korting",
+      "store": "Winkel",
+      "timesUsed": "Aantal keer gebruikt"
+    },
+    "filterBy": {
+      "label": "Tonen",
+      "all": "Alle codes",
+      "active": "Actieve codes",
+      "expired": "Verlopen codes",
+      "archived": "Gearchiveerd"
+    }
+  },
+  "codeCard": {
+    "expires": "Verloopt op",
+    "expired": "Verlopen",
+    "timesUsed": "{{count}}x gebruikt",
+    "copyCode": "Kopieer code",
+    "codeCopied": "Code gekopieerd!",
+    "archive": "Archiveren",
+    "unarchive": "De-archiveren",
+    "favorite": "Favoriet maken",
+    "unfavorite": "Verwijderen uit favorieten",
+    "details": "Details bekijken",
+    "used": "Als gebruikt markeren"
+  },
+  "addCode": {
+    "title": "Nieuwe kortingscode",
+    "editTitle": "Kortingscode bewerken",
+    "codeLabel": "Kortingscode *",
+    "codePlaceholder": "Bijv. WELKOM10",
+    "storeLabel": "Winkel *",
+    "storePlaceholder": "Bijv. Bol.com",
+    "discountLabel": "Korting *",
+    "discountPlaceholder": "Bijv. 10% of €5",
+    "expiryDateLabel": "Vervaldatum",
+    "categoryLabel": "Categorie",
+    "categoryPlaceholder": "Bijv. Kleding",
+    "descriptionLabel": "Beschrijving",
+    "descriptionPlaceholder": "Bijv. Alleen geldig voor nieuwe klanten",
+    "saveButton": "Opslaan",
+    "editButton": "Wijzigingen opslaan",
+    "cancelButton": "Annuleren",
+    "required": "* Verplicht veld"
+  },
+  "notifications": {
+    "title": "Notificaties",
+    "expiringSoon": "Kortingscodes die binnenkort verlopen",
+    "noExpiring": "Geen kortingscodes die binnenkort verlopen",
+    "daysLeft": "{{count}} dagen resterend"
+  },
+  "stats": {
+    "totalCodes": "Totaal aantal codes",
+    "activeCodes": "Actieve codes",
+    "expiredCodes": "Verlopen codes",
+    "favoriteCodes": "Favoriete codes",
+    "archivedCodes": "Gearchiveerde codes"
+  },
+  "settings": {
+    "title": "Instellingen",
+    "tabs": {
+      "about": "Over QCode",
+      "export": "Exporteren",
+      "import": "Importeren",
+      "language": "Taal"
+    },
+    "about": {
+      "version": "Versie 1.0.0",
+      "subtitle": "Kortingscodes beheren, simpel en effectief",
+      "aboutApp": "Over deze app",
+      "aboutText": "QCode is een Progressive Web App die je helpt al je kortingscodes op één plek te bewaren. De app werkt volledig offline en je data wordt lokaal op je apparaat opgeslagen.",
+      "privacy": "Privacy & Beveiliging",
+      "privacyPoints": [
+        "Al je data wordt lokaal opgeslagen",
+        "Geen accounts of registratie nodig",
+        "Geen data wordt gedeeld met derden",
+        "Volledig offline te gebruiken"
+      ],
+      "footer": "Gebouwd met ❤️ using Next.js, TypeScript & Tailwind CSS"
+    },
+    "export": {
+      "title": "Exporteer je kortingscodes",
+      "subtitle": "Maak een backup van al je kortingscodes. Je kunt deze later importeren of delen met andere apparaten.",
+      "codesFound": "{{count}} kortingscodes gevonden",
+      "including": "Inclusief gearchiveerde en verlopen codes",
+      "exportButton": "Exporteren",
+      "tip": "💡 Tip: Bewaar je backup op een veilige plek zoals cloud storage."
+    },
+    "import": {
+      "title": "Importeer kortingscodes",
+      "subtitle": "Importeer kortingscodes uit een backup bestand. Dit vervangt al je huidige codes.",
+      "selectButton": "Selecteer backup bestand",
+      "onlyJson": "Alleen .json bestanden worden ondersteund",
+      "demoTitle": "Of probeer voorbeelddata",
+      "demoSubtitle": "Laad enkele voorbeelden om de app uit te proberen.",
+      "demoButton": "Voorbeelddata laden",
+      "dangerTitle": "Gevaarlijke acties",
+      "dangerSubtitle": "Dit verwijdert alle je kortingscodes permanent.",
+      "clearButton": "Alles verwijderen"
+    },
+    "language": {
+      "title": "Taal wijzigen",
+      "subtitle": "Kies de taal voor de app interface",
+      "auto": "Automatisch (op basis van browser)",
+      "dutch": "Nederlands",
+      "english": "Engels"
+    }
+  },
+  "cloudSync": {
+    "title": "Cloud Synchronisatie",
+    "subtitle": "Synchroniseer je kortingscodes over meerdere apparaten",
+    "status": {
+      "syncing": "Synchroniseren...",
+      "synced": "Gesynchroniseerd",
+      "error": "Synchronisatie fout",
+      "offline": "Offline"
+    }
+  },
+  "pwa": {
+    "installTitle": "Installeer QCode App",
+    "installText": "Installeer QCode als app voor snellere toegang en offline gebruik",
+    "installButton": "Installeren",
+    "laterButton": "Later",
+    "offlineAlert": "Je bent offline. Wijzigingen worden lokaal opgeslagen."
+  }
+}

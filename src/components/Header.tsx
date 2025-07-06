@@ -1,6 +1,7 @@
-import { Ticket, Bell, Settings, Moon, Sun } from 'lucide-react'
+import { Ticket, Bell, Settings, Moon, Sun, Globe } from 'lucide-react'
 import { useDarkMode } from '../hooks/useDarkMode'
 import { SyncStatusIndicator } from './SyncStatusIndicator'
+import { useTranslation } from 'react-i18next'
 
 interface HeaderProps {
   onNotificationClick: () => void
@@ -9,6 +10,7 @@ interface HeaderProps {
 }
 
 export function Header({ onNotificationClick, onSettingsClick, onSyncClick }: HeaderProps) {
+  const { t } = useTranslation()
   const { isDark, toggleDarkMode, isLoaded } = useDarkMode()
 
   return (
@@ -20,8 +22,8 @@ export function Header({ onNotificationClick, onSettingsClick, onSyncClick }: He
               <Ticket className="h-6 w-6 text-white" />
             </div>
             <div>
-              <h1 className="text-xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 dark:from-white dark:to-gray-300 bg-clip-text text-transparent">QCode</h1>
-              <p className="text-sm theme-text-secondary font-medium">Kortingscodes beheren</p>
+              <h1 className="text-xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 dark:from-white dark:to-gray-300 bg-clip-text text-transparent">{t('common.appName')}</h1>
+              <p className="text-sm theme-text-secondary font-medium">{t('common.tagline')}</p>
             </div>
           </div>
           <div className="flex items-center gap-2">
@@ -29,7 +31,7 @@ export function Header({ onNotificationClick, onSettingsClick, onSyncClick }: He
             <button 
               onClick={toggleDarkMode}
               className="p-2.5 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-all duration-200"
-              aria-label={isDark ? 'Schakel naar licht thema' : 'Schakel naar donker thema'}
+              aria-label={isDark ? t('header.lightMode') : t('header.darkMode')}
               disabled={!isLoaded}
             >
               {isLoaded && (isDark ? <Sun size={20} /> : <Moon size={20} />)}
@@ -37,14 +39,14 @@ export function Header({ onNotificationClick, onSettingsClick, onSyncClick }: He
             <button 
               onClick={onNotificationClick}
               className="p-2.5 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-all duration-200"
-              aria-label="Notificaties"
+              aria-label={t('header.notifications')}
             >
               <Bell size={20} />
             </button>
             <button 
               onClick={onSettingsClick}
               className="p-2.5 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-all duration-200"
-              aria-label="Instellingen"
+              aria-label={t('header.settings')}
             >
               <Settings size={20} />
             </button>

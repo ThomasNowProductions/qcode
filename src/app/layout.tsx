@@ -1,6 +1,8 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import { I18nProvider } from "@/components/I18nProvider";
+import { HtmlLanguageAttribute } from "@/components/HtmlLanguageAttribute";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -39,11 +41,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="nl">
+    <html>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen transition-colors`}
       >
-        {children}
+        <I18nProvider>
+          <HtmlLanguageAttribute>
+            {children}
+          </HtmlLanguageAttribute>
+        </I18nProvider>
       </body>
     </html>
   );

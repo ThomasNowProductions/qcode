@@ -1,0 +1,168 @@
+{
+  "common": {
+    "appName": "QCode",
+    "tagline": "Manage Discount Codes",
+    "loading": "Loading...",
+    "close": "Close",
+    "save": "Save",
+    "cancel": "Cancel",
+    "edit": "Edit",
+    "delete": "Delete",
+    "search": "Search...",
+    "noResults": "No results found"
+  },
+  "header": {
+    "darkMode": "Switch to dark theme",
+    "lightMode": "Switch to light theme",
+    "notifications": "Notifications",
+    "settings": "Settings"
+  },
+  "homePage": {
+    "addNewCode": "Add new discount code",
+    "noCodes": {
+      "title": "No discount codes found",
+      "subtitle": "Add your first discount code to get started",
+      "addButton": "Add discount code"
+    },
+    "noCodesFiltered": {
+      "title": "No discount codes found",
+      "subtitle": "Try different search or filter criteria",
+      "resetButton": "Reset filters"
+    }
+  },
+  "filters": {
+    "searchPlaceholder": "Search by code or store...",
+    "category": {
+      "label": "Category",
+      "all": "All categories",
+      "favorites": "Favorites"
+    },
+    "sortBy": {
+      "label": "Sort by",
+      "dateAdded": "Date added",
+      "expiryDate": "Expiry date",
+      "discount": "Discount",
+      "store": "Store",
+      "timesUsed": "Times used"
+    },
+    "filterBy": {
+      "label": "Show",
+      "all": "All codes",
+      "active": "Active codes",
+      "expired": "Expired codes",
+      "archived": "Archived"
+    }
+  },
+  "codeCard": {
+    "expires": "Expires on",
+    "expired": "Expired",
+    "timesUsed": "Used {{count}} times",
+    "copyCode": "Copy code",
+    "codeCopied": "Code copied!",
+    "archive": "Archive",
+    "unarchive": "Unarchive",
+    "favorite": "Add to favorites",
+    "unfavorite": "Remove from favorites",
+    "details": "View details",
+    "used": "Mark as used"
+  },
+  "addCode": {
+    "title": "New discount code",
+    "editTitle": "Edit discount code",
+    "codeLabel": "Discount code *",
+    "codePlaceholder": "E.g. WELCOME10",
+    "storeLabel": "Store *",
+    "storePlaceholder": "E.g. Amazon",
+    "discountLabel": "Discount *",
+    "discountPlaceholder": "E.g. 10% or $5",
+    "expiryDateLabel": "Expiry date",
+    "categoryLabel": "Category",
+    "categoryPlaceholder": "E.g. Clothing",
+    "descriptionLabel": "Description",
+    "descriptionPlaceholder": "E.g. Only valid for new customers",
+    "saveButton": "Save",
+    "editButton": "Save changes",
+    "cancelButton": "Cancel",
+    "required": "* Required field"
+  },
+  "notifications": {
+    "title": "Notifications",
+    "expiringSoon": "Discount codes expiring soon",
+    "noExpiring": "No discount codes expiring soon",
+    "daysLeft": "{{count}} days left"
+  },
+  "stats": {
+    "totalCodes": "Total codes",
+    "activeCodes": "Active codes",
+    "expiredCodes": "Expired codes",
+    "favoriteCodes": "Favorite codes",
+    "archivedCodes": "Archived codes"
+  },
+  "settings": {
+    "title": "Settings",
+    "tabs": {
+      "about": "About QCode",
+      "export": "Export",
+      "import": "Import",
+      "language": "Language"
+    },
+    "about": {
+      "version": "Version 1.0.0",
+      "subtitle": "Manage discount codes, simple and effective",
+      "aboutApp": "About this app",
+      "aboutText": "QCode is a Progressive Web App that helps you keep all your discount codes in one place. The app works completely offline and your data is stored locally on your device.",
+      "privacy": "Privacy & Security",
+      "privacyPoints": [
+        "All your data is stored locally",
+        "No accounts or registration required",
+        "No data is shared with third parties",
+        "Fully functional offline"
+      ],
+      "footer": "Built with ❤️ using Next.js, TypeScript & Tailwind CSS"
+    },
+    "export": {
+      "title": "Export your discount codes",
+      "subtitle": "Make a backup of all your discount codes. You can import this later or share with other devices.",
+      "codesFound": "{{count}} discount codes found",
+      "including": "Including archived and expired codes",
+      "exportButton": "Export",
+      "tip": "💡 Tip: Store your backup in a secure place like cloud storage."
+    },
+    "import": {
+      "title": "Import discount codes",
+      "subtitle": "Import discount codes from a backup file. This will replace all your current codes.",
+      "selectButton": "Select backup file",
+      "onlyJson": "Only .json files are supported",
+      "demoTitle": "Or try sample data",
+      "demoSubtitle": "Load some examples to try out the app.",
+      "demoButton": "Load sample data",
+      "dangerTitle": "Dangerous actions",
+      "dangerSubtitle": "This will permanently delete all your discount codes.",
+      "clearButton": "Delete everything"
+    },
+    "language": {
+      "title": "Change language",
+      "subtitle": "Choose the language for the app interface",
+      "auto": "Automatic (based on browser)",
+      "dutch": "Dutch",
+      "english": "English"
+    }
+  },
+  "cloudSync": {
+    "title": "Cloud Synchronization",
+    "subtitle": "Synchronize your discount codes across multiple devices",
+    "status": {
+      "syncing": "Syncing...",
+      "synced": "Synced",
+      "error": "Sync error",
+      "offline": "Offline"
+    }
+  },
+  "pwa": {
+    "installTitle": "Install QCode App",
+    "installText": "Install QCode as an app for faster access and offline use",
+    "installButton": "Install",
+    "laterButton": "Later",
+    "offlineAlert": "You are offline. Changes will be saved locally."
+  }
+}

@@ -14,9 +14,11 @@ import { InstallPrompt } from '@/components/InstallPrompt'
 import { SettingsModal } from '@/components/SettingsModal'
 import { OnlineStatusBanner } from '@/components/OfflineIndicator'
 import { CloudSync } from '@/components/CloudSync'
+import { useTranslation } from 'react-i18next'
 import type { SearchFilters, DiscountCode } from '@/types/discount-code'
 
 export default function HomePage() {
+  const { t } = useTranslation()
   const {
     codes,
     isLoading,
@@ -54,7 +56,7 @@ export default function HomePage() {
       <div className="min-h-screen flex items-center justify-center transition-colors">
         <div className="flex flex-col items-center gap-4">
           <div className="animate-spin rounded-full h-12 w-12 border-4 border-blue-200 border-t-blue-600"></div>
-          <p className="theme-text-secondary font-medium">Laden...</p>
+          <p className="theme-text-secondary font-medium">{t('common.loading')}</p>
         </div>
       </div>
     )
@@ -98,7 +100,7 @@ export default function HomePage() {
             className="w-full flex items-center justify-center gap-3 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-semibold py-4 px-6 rounded-xl transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-[1.02] group"
           >
             <Plus size={24} className="group-hover:rotate-90 transition-transform duration-200" />
-            <span className="text-lg">Nieuwe kortingscode toevoegen</span>
+            <span className="text-lg">{t('homePage.addNewCode')}</span>
           </button>
         </div>
 
