@@ -206,7 +206,6 @@ De app kan geïnstalleerd worden op:
 - [ ] Analytics dashboard
 - [ ] Thema aanpassingen
 - [ ] Multi-taal ondersteuning
-- [ ] Dropbox/Google Drive sync providers
 - [ ] End-to-end encryptie voor gevoelige codes
 
 ## 📄 Licentie
