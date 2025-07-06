@@ -1,3 +1,5 @@
+[🇺🇸 English version](README.EN.md)
+
 # QCode - Kortingscodes Beheren
 
 Een moderne Progressive Web App (PWA) voor het opslaan en beheren van kortingscodes, gebouwd met Next.js 15, TypeScript en Tailwind CSS.
