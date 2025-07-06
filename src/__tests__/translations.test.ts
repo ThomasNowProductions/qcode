@@ -8,7 +8,8 @@ import nlTranslations from '../locales/nl.json';
  * @param path Current path in the object structure
  * @returns Array of missing keys with their paths
  */
-function findMissingKeys(obj: any, referenceObj: any, path = ''): string[] {
+// Explicitly allow working with translation JSON objects
+function findMissingKeys(obj: Record<string, unknown>, referenceObj: Record<string, unknown>, path = ''): string[] {
   const missingKeys: string[] = [];
 
   // Check all keys in the reference object
@@ -29,7 +30,11 @@ function findMissingKeys(obj: any, referenceObj: any, path = ''): string[] {
         missingKeys.push(`${newPath} (type mismatch: expected object)`);
       } else {
         // Both are objects, check recursively
-        const nestedMissingKeys = findMissingKeys(obj[key], referenceObj[key], newPath);
+        const nestedMissingKeys = findMissingKeys(
+          obj[key] as Record<string, unknown>,
+          referenceObj[key] as Record<string, unknown>,
+          newPath
+        );
         missingKeys.push(...nestedMissingKeys);
       }
     }
