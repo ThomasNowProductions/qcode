@@ -1,4 +1,4 @@
-import { Ticket, Bell, Settings, Moon, Sun, Globe } from 'lucide-react'
+import { Ticket, Bell, Settings, Moon, Sun } from 'lucide-react'
 import { useDarkMode } from '../hooks/useDarkMode'
 import { SyncStatusIndicator } from './SyncStatusIndicator'
 import { useTranslation } from 'react-i18next'

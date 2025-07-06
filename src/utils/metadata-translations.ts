@@ -1,5 +1,3 @@
-import { useTranslation } from 'react-i18next'
-
 // Return both the English and Dutch translations for metadata
 export function useMetadataTranslations() {
   const metadataTranslations = {

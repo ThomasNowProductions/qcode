@@ -46,3 +46,4 @@ next-env.d.ts
 /public/workbox-*
 /public/worker-*
 /public/fallback-*
+/public/sw.js

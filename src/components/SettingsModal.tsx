@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { X, Download, Upload, Trash2, Info, Heart, Shield, Globe } from 'lucide-react'
+import { X, Download, Upload, Trash2, Info, Heart, Shield } from 'lucide-react'
 import { useDiscountCodes } from '@/hooks/useDiscountCodes'
 import { exportCodes, importCodes } from '@/utils/storage'
 import { loadDemoData } from '@/utils/demo-data'
