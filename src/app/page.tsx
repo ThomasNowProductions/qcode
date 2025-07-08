@@ -15,7 +15,7 @@ import { SettingsModal } from '@/components/SettingsModal'
 import { OnlineStatusBanner } from '@/components/OfflineIndicator'
 import { CloudSync } from '@/components/CloudSync'
 import { useTranslation } from 'react-i18next'
-import type { SearchFilters, DiscountCode } from '@/types/discount-code'
+import type { SearchFilters } from '@/types/discount-code'
 
 export default function HomePage() {
   const { t } = useTranslation()
@@ -23,7 +23,6 @@ export default function HomePage() {
     codes,
     isLoading,
     addCode,
-    updateCode,
     deleteCode,
     toggleFavorite,
     toggleArchived,
@@ -121,7 +120,6 @@ export default function HomePage() {
                 onToggleArchived={() => toggleArchived(code.id)}
                 onIncrementUsage={() => incrementUsage(code.id)}
                 onDelete={() => deleteCode(code.id)}
-                onEdit={(updates: Partial<DiscountCode>) => updateCode(code.id, updates)}
               />
             ))}
           </div>

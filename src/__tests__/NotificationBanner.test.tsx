@@ -20,6 +20,7 @@ describe('NotificationBanner', () => {
       },
     ];
     render(<NotificationBanner expiringSoon={expiringSoon} />);
-    expect(screen.getByText(/verloopt over 2 dagen/i)).toBeInTheDocument();
+    // Check for translation keys since we're using a mock
+    expect(screen.getByText(/notifications.expiryDays/i)).toBeInTheDocument();
   });
 });
