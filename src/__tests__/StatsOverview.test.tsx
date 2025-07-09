@@ -23,5 +23,6 @@ describe('StatsOverview', () => {
   expect(screen.getByText(/stats.expiredCodes/i)).toBeInTheDocument();
   expect(screen.getByText(/stats.favoriteCodes/i)).toBeInTheDocument();
   expect(screen.getByText(/stats.expiringSoon/i)).toBeInTheDocument();
+  expect(screen.getByText(/codeCard.timesUsed/i)).toBeInTheDocument();
   });
 });
