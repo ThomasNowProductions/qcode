@@ -22,7 +22,7 @@ interface DiscountCodeCardProps {
   onToggleArchived: () => void
   onIncrementUsage: () => void
   onDelete: () => void
-  onEdit: (updates: Partial<DiscountCode>) => void
+  
 }
 
 export function DiscountCodeCard({

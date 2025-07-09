@@ -17,12 +17,12 @@ describe('StatsOverview', () => {
         }}
       />
     );
-  // Check for both 'Totaal aantal codes:' and 'Totaal gebruikt:'
-  expect(screen.getByText(/totaal aantal codes:/i)).toBeInTheDocument();
-  expect(screen.getByText(/totaal gebruikt:/i)).toBeInTheDocument();
-  expect(screen.getByText(/actief/i)).toBeInTheDocument();
-  expect(screen.getByText(/^Verlopen$/i)).toBeInTheDocument();
-  expect(screen.getByText(/favorieten/i)).toBeInTheDocument();
-  expect(screen.getByText(/binnenkort verlopen/i)).toBeInTheDocument();
+  // Check for translation keys since we're using a mock
+  expect(screen.getByText(/stats.totalCodes/i)).toBeInTheDocument();
+  expect(screen.getByText(/stats.activeCodes/i)).toBeInTheDocument();
+  expect(screen.getByText(/stats.expiredCodes/i)).toBeInTheDocument();
+  expect(screen.getByText(/stats.favoriteCodes/i)).toBeInTheDocument();
+  expect(screen.getByText(/stats.expiringSoon/i)).toBeInTheDocument();
+  expect(screen.getByText(/codeCard.timesUsed/i)).toBeInTheDocument();
   });
 });

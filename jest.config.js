@@ -2,15 +2,12 @@ module.exports = {
   preset: 'ts-jest',
   testEnvironment: 'jsdom',
   transform: {
-    '^.+\\.(ts|tsx)$': 'ts-jest',
-  },
-  globals: {
-    'ts-jest': {
+    '^.+\\.(ts|tsx)$': ['ts-jest', {
       tsconfig: {
         jsx: 'react-jsx',
         allowJs: true,
       },
-    },
+    }],
   },
   testMatch: [
     '**/__tests__/**/*.[jt]s?(x)',

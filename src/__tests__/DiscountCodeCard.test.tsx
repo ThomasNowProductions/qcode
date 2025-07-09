@@ -27,7 +27,6 @@ describe('DiscountCodeCard', () => {
         onToggleArchived={() => {}}
         onIncrementUsage={() => {}}
         onDelete={() => {}}
-        onEdit={() => {}}
       />
     );
     expect(screen.getByText(/SUMMER2025/i)).toBeInTheDocument();

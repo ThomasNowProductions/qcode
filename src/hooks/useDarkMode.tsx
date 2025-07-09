@@ -18,7 +18,7 @@ export function useDarkMode() {
   }, [])
 
   useEffect(() => {
-if (!isLoaded) return
+    if (!isLoaded) return
     
     // Apply dark mode class to document
     if (isDark) {
