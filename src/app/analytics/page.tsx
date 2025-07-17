@@ -16,6 +16,19 @@ export default function AnalyticsPage() {
   const { t } = useTranslation()
   const { codes, isLoading } = useDiscountCodes()
   const [activeTab, setActiveTab] = useState<'overview' | 'usage' | 'savings' | 'lifecycle' | 'performance'>('overview')
+  
+  // Handler functions for Header component
+  const handleNotificationClick = () => {
+    // Analytics page doesn't need notification functionality currently
+  }
+  
+  const handleSettingsClick = () => {
+    // Analytics page doesn't need settings functionality currently
+  }
+  
+  const handleSyncClick = () => {
+    // Analytics page doesn't need sync functionality currently
+  }
 
   if (isLoading) {
     return (
@@ -40,7 +53,11 @@ export default function AnalyticsPage() {
 
   return (
     <div className="min-h-screen transition-colors">
-      <Header />
+      <Header 
+        onNotificationClick={handleNotificationClick}
+        onSettingsClick={handleSettingsClick}
+        onSyncClick={handleSyncClick}
+      />
       
       <main className="max-w-6xl mx-auto px-4 py-8">
         {/* Page Header */}
