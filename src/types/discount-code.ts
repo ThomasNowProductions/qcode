@@ -11,6 +11,8 @@ export interface DiscountCode {
   dateAdded: Date
   timesUsed: number
   qrCode?: string
+  // Usage tracking for better analytics
+  usageHistory?: Array<{ date: Date; estimatedSavings?: number }>
   // Sync-related metadata
   lastModified?: Date
   syncVersion?: number

@@ -1,6 +1,15 @@
 import { DiscountCode } from '@/types/discount-code'
 import { isAfter, isBefore, subDays, subMonths, format } from 'date-fns'
 
+// Configuration constants for analytics calculations
+const DEFAULT_AVERAGE_PURCHASE = 50 // €50 default average purchase for percentage discounts
+const ANALYTICS_CONFIG = {
+  defaultAveragePurchase: DEFAULT_AVERAGE_PURCHASE,
+  // Could be extended with store-specific or category-specific averages
+  storeAverages: {} as Record<string, number>,
+  categoryAverages: {} as Record<string, number>
+}
+
 export interface AnalyticsData {
   usage: UsageAnalytics
   savings: SavingsAnalytics
@@ -87,10 +96,22 @@ function calculateUsageAnalytics(codes: DiscountCode[]): UsageAnalytics {
   // Usage over time (last 30 days)
   const usageOverTime = generateUsageOverTime(codes, 30)
 
-  // Recent activity (codes used in last 7 days)
+  // Recent activity - use actual usage history when available, fall back to timesUsed > 0
   const recentActivity = codes
     .filter(code => code.timesUsed > 0)
-    .map(code => ({ code, lastUsed: new Date(code.dateAdded) })) // Simplified - in real app track actual usage dates
+    .map(code => {
+      // Use the most recent usage date from history if available
+      if (code.usageHistory && code.usageHistory.length > 0) {
+        const sortedHistory = [...code.usageHistory].sort((a, b) => {
+          const dateA = new Date(a.date)
+          const dateB = new Date(b.date)
+          return dateB.getTime() - dateA.getTime()
+        })
+        return { code, lastUsed: new Date(sortedHistory[0].date) }
+      }
+      // Fall back to dateAdded for backwards compatibility
+      return { code, lastUsed: new Date(code.dateAdded) }
+    })
     .sort((a, b) => b.lastUsed.getTime() - a.lastUsed.getTime())
     .slice(0, 10)
 
@@ -108,7 +129,7 @@ function calculateUsageAnalytics(codes: DiscountCode[]): UsageAnalytics {
 function calculateSavingsAnalytics(codes: DiscountCode[]): SavingsAnalytics {
   // Estimate savings based on usage and discount amount
   const savingsData = codes.map(code => {
-    const savings = estimateSavings(code.discount) * code.timesUsed
+    const savings = estimateSavings(code.discount, code.store, code.category) * code.timesUsed
     return { code, savings }
   })
 
@@ -116,7 +137,7 @@ function calculateSavingsAnalytics(codes: DiscountCode[]): SavingsAnalytics {
 
   // Savings by store
   const storeSavings = codes.reduce((acc, code) => {
-    const savings = estimateSavings(code.discount) * code.timesUsed
+    const savings = estimateSavings(code.discount, code.store, code.category) * code.timesUsed
     acc[code.store] = (acc[code.store] || 0) + savings
     return acc
   }, {} as Record<string, number>)
@@ -127,7 +148,7 @@ function calculateSavingsAnalytics(codes: DiscountCode[]): SavingsAnalytics {
 
   // Savings by category
   const categorySavings = codes.reduce((acc, code) => {
-    const savings = estimateSavings(code.discount) * code.timesUsed
+    const savings = estimateSavings(code.discount, code.store, code.category) * code.timesUsed
     acc[code.category] = (acc[code.category] || 0) + savings
     return acc
   }, {} as Record<string, number>)
@@ -141,7 +162,8 @@ function calculateSavingsAnalytics(codes: DiscountCode[]): SavingsAnalytics {
 
   // Potential savings from unused codes
   const unusedCodes = codes.filter(code => code.timesUsed === 0 && !isExpired(code))
-  const potentialSavings = unusedCodes.reduce((sum, code) => sum + estimateSavings(code.discount), 0)
+  const potentialSavings = unusedCodes.reduce((sum, code) => 
+    sum + estimateSavings(code.discount, code.store, code.category), 0)
 
   return {
     totalSavingsEstimate,
@@ -262,15 +284,22 @@ function calculatePerformanceAnalytics(codes: DiscountCode[]): PerformanceAnalyt
 }
 
 // Helper functions
-function estimateSavings(discount: string): number {
+function estimateSavings(discount: string, store?: string, category?: string): number {
   // Parse discount string to estimate savings
-  // This is a simplified estimation
   if (discount.includes('€')) {
     return parseFloat(discount.replace('€', '')) || 0
   } else if (discount.includes('%')) {
     const percentage = parseFloat(discount.replace('%', '')) || 0
-    // Assume average purchase of €50 for percentage discounts
-    return (percentage / 100) * 50
+    
+    // Use store-specific average if available, then category-specific, then default
+    let averagePurchase = ANALYTICS_CONFIG.defaultAveragePurchase
+    if (store && ANALYTICS_CONFIG.storeAverages[store]) {
+      averagePurchase = ANALYTICS_CONFIG.storeAverages[store]
+    } else if (category && ANALYTICS_CONFIG.categoryAverages[category]) {
+      averagePurchase = ANALYTICS_CONFIG.categoryAverages[category]
+    }
+    
+    return (percentage / 100) * averagePurchase
   }
   return 0
 }
@@ -288,11 +317,22 @@ function generateUsageOverTime(codes: DiscountCode[], days: number): Array<{ dat
     const date = subDays(now, i)
     const dateStr = format(date, 'yyyy-MM-dd')
     
-    // This is simplified - in a real app, you'd track actual usage dates
-    // For now, we'll simulate based on code creation dates
-    const usageCount = codes.filter(code => 
-      format(code.dateAdded, 'yyyy-MM-dd') === dateStr
-    ).reduce((sum, code) => sum + code.timesUsed, 0)
+    // Use actual usage history when available
+    let usageCount = 0
+    codes.forEach(code => {
+      if (code.usageHistory && code.usageHistory.length > 0) {
+        // Count actual usages on this date
+        const usagesOnDate = code.usageHistory.filter(usage => 
+          format(new Date(usage.date), 'yyyy-MM-dd') === dateStr
+        ).length
+        usageCount += usagesOnDate
+      } else if (code.timesUsed > 0) {
+        // Fall back to creation date for codes without usage history
+        if (format(new Date(code.dateAdded), 'yyyy-MM-dd') === dateStr) {
+          usageCount += code.timesUsed
+        }
+      }
+    })
     
     result.push({ date: format(date, 'MMM dd'), usageCount })
   }

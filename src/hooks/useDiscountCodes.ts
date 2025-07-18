@@ -29,6 +29,10 @@ export function useDiscountCodes() {
           ...code,
           dateAdded: new Date(code.dateAdded as string),
           expiryDate: code.expiryDate ? new Date(code.expiryDate as string) : undefined,
+          usageHistory: code.usageHistory ? (code.usageHistory as Array<{ date: string | Date; estimatedSavings?: number }>).map(usage => ({
+            ...usage,
+            date: new Date(usage.date)
+          })) : undefined,
         }))
         setCodes(parsedCodes)
       }
@@ -138,7 +142,18 @@ export function useDiscountCodes() {
   const incrementUsage = useCallback((id: string) => {
     const code = codes.find(c => c.id === id)
     if (code) {
-      updateCode(id, { timesUsed: code.timesUsed + 1 })
+      const now = new Date()
+      const usageHistory = code.usageHistory || []
+      const newUsageEntry = { 
+        date: now,
+        // Could store actual savings amount if we had purchase amount
+        estimatedSavings: undefined 
+      }
+      
+      updateCode(id, { 
+        timesUsed: code.timesUsed + 1,
+        usageHistory: [...usageHistory, newUsageEntry]
+      })
     }
   }, [codes, updateCode])
 
