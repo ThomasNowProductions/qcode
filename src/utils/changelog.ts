@@ -105,7 +105,7 @@ export const fetchCommitsSince = async (since: Date): Promise<ChangelogEntry[]> 
     ]
 
     // Only return commits newer than the last visit
-    return mockCommits.filter(commit => commit.date > since)
+    return mockCommits.filter(commit => commit.date.getTime() > since.getTime())
   } catch (error) {
     console.error('Failed to fetch commits:', error)
     return []
