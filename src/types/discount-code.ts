@@ -3,6 +3,7 @@ export interface DiscountCode {
   code: string
   store: string
   discount: string // "10%" of "€5"
+  originalPrice?: number // Original price for percentage discounts
   expiryDate?: Date
   category: string
   description?: string
@@ -23,6 +24,7 @@ export interface DiscountCodeFormData {
   code: string
   store: string
   discount: string
+  originalPrice?: string // Optional original price for percentage discounts
   expiryDate?: string
   category: string
   description?: string

@@ -91,6 +91,7 @@ export function useDiscountCodes() {
       code: formData.code.trim(),
       store: formData.store.trim(),
       discount: formData.discount.trim(),
+      originalPrice: formData.originalPrice ? parseFloat(formData.originalPrice) : undefined,
       expiryDate: formData.expiryDate ? new Date(formData.expiryDate) : undefined,
       category: formData.category,
       description: formData.description?.trim() || '',
@@ -144,10 +145,19 @@ export function useDiscountCodes() {
     if (code) {
       const now = new Date()
       const usageHistory = code.usageHistory || []
+      
+      // Calculate actual savings for this usage
+      let actualSavings: number | undefined = undefined
+      if (code.discount.includes('€')) {
+        actualSavings = parseFloat(code.discount.replace('€', '')) || 0
+      } else if (code.discount.includes('%') && code.originalPrice) {
+        const percentage = parseFloat(code.discount.replace('%', '')) || 0
+        actualSavings = (percentage / 100) * code.originalPrice
+      }
+      
       const newUsageEntry = { 
         date: now,
-        // Could store actual savings amount if we had purchase amount
-        estimatedSavings: undefined 
+        estimatedSavings: actualSavings
       }
       
       updateCode(id, { 

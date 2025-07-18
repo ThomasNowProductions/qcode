@@ -129,7 +129,7 @@ function calculateUsageAnalytics(codes: DiscountCode[]): UsageAnalytics {
 function calculateSavingsAnalytics(codes: DiscountCode[]): SavingsAnalytics {
   // Estimate savings based on usage and discount amount
   const savingsData = codes.map(code => {
-    const savings = estimateSavings(code.discount, code.store, code.category) * code.timesUsed
+    const savings = estimateSavings(code) * code.timesUsed
     return { code, savings }
   })
 
@@ -137,7 +137,7 @@ function calculateSavingsAnalytics(codes: DiscountCode[]): SavingsAnalytics {
 
   // Savings by store
   const storeSavings = codes.reduce((acc, code) => {
-    const savings = estimateSavings(code.discount, code.store, code.category) * code.timesUsed
+    const savings = estimateSavings(code) * code.timesUsed
     acc[code.store] = (acc[code.store] || 0) + savings
     return acc
   }, {} as Record<string, number>)
@@ -148,7 +148,7 @@ function calculateSavingsAnalytics(codes: DiscountCode[]): SavingsAnalytics {
 
   // Savings by category
   const categorySavings = codes.reduce((acc, code) => {
-    const savings = estimateSavings(code.discount, code.store, code.category) * code.timesUsed
+    const savings = estimateSavings(code) * code.timesUsed
     acc[code.category] = (acc[code.category] || 0) + savings
     return acc
   }, {} as Record<string, number>)
@@ -163,7 +163,7 @@ function calculateSavingsAnalytics(codes: DiscountCode[]): SavingsAnalytics {
   // Potential savings from unused codes
   const unusedCodes = codes.filter(code => code.timesUsed === 0 && !isExpired(code))
   const potentialSavings = unusedCodes.reduce((sum, code) => 
-    sum + estimateSavings(code.discount, code.store, code.category), 0)
+    sum + estimateSavings(code), 0)
 
   return {
     totalSavingsEstimate,
@@ -284,14 +284,21 @@ function calculatePerformanceAnalytics(codes: DiscountCode[]): PerformanceAnalyt
 }
 
 // Helper functions
-function estimateSavings(discount: string, store?: string, category?: string): number {
+function estimateSavings(code: DiscountCode): number {
+  const { discount, originalPrice, store, category } = code
+  
   // Parse discount string to estimate savings
   if (discount.includes('€')) {
     return parseFloat(discount.replace('€', '')) || 0
   } else if (discount.includes('%')) {
     const percentage = parseFloat(discount.replace('%', '')) || 0
     
-    // Use store-specific average if available, then category-specific, then default
+    // Use the actual original price if provided
+    if (originalPrice && originalPrice > 0) {
+      return (percentage / 100) * originalPrice
+    }
+    
+    // Fall back to configured averages
     let averagePurchase = ANALYTICS_CONFIG.defaultAveragePurchase
     if (store && ANALYTICS_CONFIG.storeAverages[store]) {
       averagePurchase = ANALYTICS_CONFIG.storeAverages[store]
