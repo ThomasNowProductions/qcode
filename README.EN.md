@@ -205,7 +205,7 @@ The app can be installed on:
 - [ ] Store integrations for automatic codes
 - [ ] Push notifications for deals
 - [x] Export/import functionality
-- [ ] Analytics dashboard
+- [x] Analytics dashboard
 - [ ] Theme customization
 - [x] Multi-language support
 - [ ] End-to-end encryption for sensitive codes
