@@ -3,6 +3,7 @@ export interface DiscountCode {
   code: string
   store: string
   discount: string // "10%" of "€5"
+  originalPrice?: number // Original price for percentage discounts
   expiryDate?: Date
   category: string
   description?: string
@@ -11,6 +12,8 @@ export interface DiscountCode {
   dateAdded: Date
   timesUsed: number
   qrCode?: string
+  // Usage tracking for better analytics
+  usageHistory?: Array<{ date: Date; estimatedSavings?: number }>
   // Sync-related metadata
   lastModified?: Date
   syncVersion?: number
@@ -21,6 +24,7 @@ export interface DiscountCodeFormData {
   code: string
   store: string
   discount: string
+  originalPrice?: string // Optional original price for percentage discounts
   expiryDate?: string
   category: string
   description?: string

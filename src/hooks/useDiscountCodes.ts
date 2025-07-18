@@ -29,6 +29,10 @@ export function useDiscountCodes() {
           ...code,
           dateAdded: new Date(code.dateAdded as string),
           expiryDate: code.expiryDate ? new Date(code.expiryDate as string) : undefined,
+          usageHistory: code.usageHistory ? (code.usageHistory as Array<{ date: string | Date; estimatedSavings?: number }>).map(usage => ({
+            ...usage,
+            date: new Date(usage.date)
+          })) : undefined,
         }))
         setCodes(parsedCodes)
       }
@@ -87,6 +91,7 @@ export function useDiscountCodes() {
       code: formData.code.trim(),
       store: formData.store.trim(),
       discount: formData.discount.trim(),
+      originalPrice: formData.originalPrice ? parseFloat(formData.originalPrice) : undefined,
       expiryDate: formData.expiryDate ? new Date(formData.expiryDate) : undefined,
       category: formData.category,
       description: formData.description?.trim() || '',
@@ -138,7 +143,27 @@ export function useDiscountCodes() {
   const incrementUsage = useCallback((id: string) => {
     const code = codes.find(c => c.id === id)
     if (code) {
-      updateCode(id, { timesUsed: code.timesUsed + 1 })
+      const now = new Date()
+      const usageHistory = code.usageHistory || []
+      
+      // Calculate actual savings for this usage
+      let actualSavings: number | undefined = undefined
+      if (code.discount.includes('€')) {
+        actualSavings = parseFloat(code.discount.replace('€', '')) || 0
+      } else if (code.discount.includes('%') && code.originalPrice) {
+        const percentage = parseFloat(code.discount.replace('%', '')) || 0
+        actualSavings = (percentage / 100) * code.originalPrice
+      }
+      
+      const newUsageEntry = { 
+        date: now,
+        estimatedSavings: actualSavings
+      }
+      
+      updateCode(id, { 
+        timesUsed: code.timesUsed + 1,
+        usageHistory: [...usageHistory, newUsageEntry]
+      })
     }
   }, [codes, updateCode])
 

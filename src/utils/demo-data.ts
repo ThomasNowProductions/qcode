@@ -27,6 +27,10 @@ export const generateDemoData = (): DiscountCode[] => {
       isArchived: false,
       dateAdded: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000), // 5 days ago
       timesUsed: 2,
+      usageHistory: [
+        { date: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000) }, // 3 days ago
+        { date: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000) }  // 1 day ago
+      ]
     },
     {
       id: 'demo-3',
@@ -40,6 +44,9 @@ export const generateDemoData = (): DiscountCode[] => {
       isArchived: false,
       dateAdded: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000), // 1 day ago
       timesUsed: 1,
+      usageHistory: [
+        { date: new Date(Date.now() - 6 * 60 * 60 * 1000) } // 6 hours ago
+      ]
     },
     {
       id: 'demo-4',
@@ -66,6 +73,11 @@ export const generateDemoData = (): DiscountCode[] => {
       isArchived: false,
       dateAdded: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000), // 10 days ago
       timesUsed: 3,
+      usageHistory: [
+        { date: new Date(Date.now() - 8 * 24 * 60 * 60 * 1000) }, // 8 days ago
+        { date: new Date(Date.now() - 6 * 24 * 60 * 60 * 1000) }, // 6 days ago  
+        { date: new Date(Date.now() - 4 * 24 * 60 * 60 * 1000) }  // 4 days ago
+      ]
     },
     {
       id: 'demo-6',
@@ -92,6 +104,9 @@ export const generateDemoData = (): DiscountCode[] => {
       isArchived: false,
       dateAdded: new Date(Date.now() - 6 * 24 * 60 * 60 * 1000), // 6 days ago
       timesUsed: 1,
+      usageHistory: [
+        { date: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000) } // 2 days ago
+      ]
     },
     {
       id: 'demo-8',
@@ -105,6 +120,13 @@ export const generateDemoData = (): DiscountCode[] => {
       isArchived: true,
       dateAdded: new Date(Date.now() - 15 * 24 * 60 * 60 * 1000), // 15 days ago
       timesUsed: 5,
+      usageHistory: [
+        { date: new Date(Date.now() - 14 * 24 * 60 * 60 * 1000) }, // 14 days ago
+        { date: new Date(Date.now() - 12 * 24 * 60 * 60 * 1000) }, // 12 days ago
+        { date: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000) }, // 10 days ago
+        { date: new Date(Date.now() - 8 * 24 * 60 * 60 * 1000) },  // 8 days ago
+        { date: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000) }   // 3 days ago
+      ]
     },
   ]
 

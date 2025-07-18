@@ -16,6 +16,7 @@ export function AddCodeModal({ isOpen, onClose, onAdd }: AddCodeModalProps) {
     code: '',
     store: '',
     discount: '',
+    originalPrice: '',
     expiryDate: '',
     category: DISCOUNT_CATEGORIES[0],
     description: '',
@@ -66,6 +67,7 @@ export function AddCodeModal({ isOpen, onClose, onAdd }: AddCodeModalProps) {
       code: '',
       store: '',
       discount: '',
+      originalPrice: '',
       expiryDate: '',
       category: DISCOUNT_CATEGORIES[0],
       description: '',
@@ -158,6 +160,31 @@ export function AddCodeModal({ isOpen, onClose, onAdd }: AddCodeModalProps) {
             {errors.discount && (
               <p className="text-red-500 text-sm mt-1">{errors.discount}</p>
             )}
+          </div>
+
+          {/* Original Price */}
+          <div>
+            <label htmlFor="originalPrice" className="block text-sm font-medium theme-text-secondary mb-1">
+              {t('addCode.originalPriceLabel', 'Original Price')}
+            </label>
+            <input
+              type="number"
+              id="originalPrice"
+              value={formData.originalPrice}
+              onChange={(e) => handleChange('originalPrice', e.target.value)}
+              placeholder={t('addCode.originalPricePlaceholder', '50.00')}
+              min="0"
+              step="0.01"
+              className={`w-full px-3 py-2 border rounded-lg theme-input focus:ring-2 focus:ring-[var(--input-focus)] focus:border-transparent ${
+                errors.originalPrice ? 'border-red-500' : ''
+              }`}
+            />
+            {errors.originalPrice && (
+              <p className="text-red-500 text-sm mt-1">{errors.originalPrice}</p>
+            )}
+            <p className="text-xs theme-text-secondary mt-1">
+              {t('addCode.originalPriceHelp', 'Optional: Helps calculate accurate savings and better analytics')}
+            </p>
           </div>
 
           {/* Category */}
