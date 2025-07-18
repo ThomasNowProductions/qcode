@@ -5,9 +5,10 @@ import { useTranslation } from 'react-i18next'
 
 interface NotificationBannerProps {
   expiringSoon: DiscountCode[]
+  onCodeClick?: (codeId: string) => void
 }
 
-export function NotificationBanner({ expiringSoon }: NotificationBannerProps) {
+export function NotificationBanner({ expiringSoon, onCodeClick }: NotificationBannerProps) {
   const { t } = useTranslation()
   const [isVisible, setIsVisible] = useState(false)
   const [dismissedCodes, setDismissedCodes] = useState<Set<string>>(new Set())
@@ -65,7 +66,14 @@ export function NotificationBanner({ expiringSoon }: NotificationBannerProps) {
                 : 0
 
               return (
-                <div key={code.id} className="flex items-center justify-between py-2 px-3 theme-code-display border rounded-xl">
+                <div 
+                  key={code.id} 
+                  className={`flex items-center justify-between py-2 px-3 theme-code-display border rounded-xl ${
+                    onCodeClick ? 'cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors' : ''
+                  }`}
+                  onClick={() => onCodeClick?.(code.id)}
+                  title={onCodeClick ? t('notifications.clickToJump', 'Click to jump to this code') : undefined}
+                >
                   <span className="text-sm theme-text-primary">
                     <strong className="font-semibold">{code.store}</strong> 
                     <span className="font-mono text-xs ml-1">({code.code})</span> - 
@@ -76,7 +84,10 @@ export function NotificationBanner({ expiringSoon }: NotificationBannerProps) {
                     </span>
                   </span>
                   <button
-                    onClick={() => handleDismissCode(code.id)}
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      handleDismissCode(code.id)
+                    }}
                     className="ml-2 text-orange-600 hover:text-orange-800 dark:text-orange-400 dark:hover:text-orange-300 hover:bg-orange-200 dark:hover:bg-orange-900/30 p-1 rounded transition-colors"
                   >
                     <X size={14} />

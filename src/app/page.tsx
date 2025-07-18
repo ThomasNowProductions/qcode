@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useRef, createRef } from 'react'
 import { Plus } from 'lucide-react'
 import { useDiscountCodes } from '@/hooks/useDiscountCodes'
 import { Header } from '@/components/Header'
@@ -46,6 +46,36 @@ export default function HomePage() {
   const [isCloudSyncOpen, setIsCloudSyncOpen] = useState(false)
   const [showNotificationBanner, setShowNotificationBanner] = useState(true)
 
+  // Create refs for each discount code for scrolling
+  const codeRefs = useRef<{ [key: string]: React.RefObject<HTMLDivElement | null> }>({})
+
+  // Function to get or create a ref for a code
+  const getCodeRef = (codeId: string) => {
+    if (!codeRefs.current[codeId]) {
+      codeRefs.current[codeId] = createRef<HTMLDivElement | null>()
+    }
+    return codeRefs.current[codeId]
+  }
+
+  // Function to scroll to a specific code
+  const scrollToCode = (codeId: string) => {
+    const ref = codeRefs.current[codeId]
+    if (ref?.current) {
+      ref.current.scrollIntoView({ 
+        behavior: 'smooth', 
+        block: 'center',
+        inline: 'nearest'
+      })
+      // Add a subtle highlight effect
+      ref.current.style.boxShadow = '0 0 0 3px rgba(59, 130, 246, 0.5)'
+      setTimeout(() => {
+        if (ref.current) {
+          ref.current.style.boxShadow = ''
+        }
+      }, 2000)
+    }
+  }
+
   const filteredCodes = filterCodes(searchFilters)
   const stats = getStats()
   const expiringSoon = getExpiringSoon()
@@ -78,7 +108,10 @@ export default function HomePage() {
 
         {/* Notification Banner */}
         {showNotificationBanner && (
-          <NotificationBanner expiringSoon={expiringSoon} />
+          <NotificationBanner 
+            expiringSoon={expiringSoon} 
+            onCodeClick={scrollToCode}
+          />
         )}
 
         {/* Statistics Overview */}
@@ -114,6 +147,7 @@ export default function HomePage() {
             {filteredCodes.map((code) => (
               <DiscountCodeCard
                 key={code.id}
+                ref={getCodeRef(code.id)}
                 code={code}
                 isExpired={isExpired(code)}
                 onToggleFavorite={() => toggleFavorite(code.id)}

@@ -105,7 +105,8 @@
     "expiryDays": " expires in {{days}} days",
     "andMore": "And {{count}} more...",
     "noExpiring": "No discount codes expiring soon",
-    "daysLeft": "{{count}} days left"
+    "daysLeft": "{{count}} days left",
+    "clickToJump": "Click to jump to this code"
   },
   "stats": {
     "title": "Overview",
