@@ -333,7 +333,7 @@ export function SettingsModal({ isOpen, onClose, onAdvancedReleaseNotes }: Setti
                         Enable Changelog Popup
                       </span>
                       <p className="text-xs theme-text-muted">
-                        Show the "What's New" popup when updates are detected
+                        Show the &ldquo;What&rsquo;s New&rdquo; popup when updates are detected
                       </p>
                     </div>
                   </label>

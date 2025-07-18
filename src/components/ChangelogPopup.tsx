@@ -44,7 +44,7 @@ export function ChangelogPopup({ onAdvancedReleaseNotes }: ChangelogPopupProps) 
   if (shouldHidePopup) {
     return null
   }
-  const { aiSummary, entries } = changelogData
+  const { aiSummary, entries } = changelogData!
 
   return (
     <div className="fixed inset-0 bg-black/60 flex items-center justify-center p-4 z-50 animate-in fade-in duration-300">
@@ -62,11 +62,11 @@ export function ChangelogPopup({ onAdvancedReleaseNotes }: ChangelogPopupProps) 
             <div className="bg-white/20 p-2 rounded-full">
               <Sparkles size={24} className="text-white" />
             </div>
-            <h2 className="text-xl font-bold">{aiSummary.title}</h2>
+            <h2 className="text-xl font-bold">{aiSummary!.title}</h2>
           </div>
           
           <p className="text-white/90 leading-relaxed">
-            {aiSummary.summary}
+            {aiSummary!.summary}
           </p>
         </div>
 
@@ -76,7 +76,7 @@ export function ChangelogPopup({ onAdvancedReleaseNotes }: ChangelogPopupProps) 
           <div className="mb-6">
             <h3 className="font-semibold theme-text-primary mb-3">What&apos;s New:</h3>
             <div className="space-y-2">
-              {aiSummary.highlights.map((highlight, index) => (
+              {aiSummary!.highlights.map((highlight, index) => (
                 <div key={index} className="flex items-start gap-3 p-3 rounded-lg theme-filter">
                   <span className="text-lg">{highlight.split(' ')[0]}</span>
                   <span className="text-sm theme-text-secondary flex-1">
@@ -93,7 +93,7 @@ export function ChangelogPopup({ onAdvancedReleaseNotes }: ChangelogPopupProps) 
               How this affects you:
             </h4>
             <p className="text-sm text-blue-800 dark:text-blue-300">
-              {aiSummary.userImpact}
+              {aiSummary!.userImpact}
             </p>
           </div>
 

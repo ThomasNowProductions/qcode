@@ -85,7 +85,9 @@ export function ReleaseNotesModal({ isOpen, onClose }: ReleaseNotesModalProps) {
                   </p>
                   <div className="space-y-2">
                     {changelogData.aiSummary.highlights.map((highlight, index) => {
-                      const [firstWord, restOfString] = splitHighlight(highlight);
+                      const words = highlight.split(' ');
+                      const firstWord = words[0];
+                      const restOfString = words.slice(1).join(' ');
                       return (
                         <div key={index} className="flex items-center gap-2 text-sm text-blue-700 dark:text-blue-400">
                           <span>{firstWord}</span>
