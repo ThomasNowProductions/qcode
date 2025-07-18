@@ -119,7 +119,7 @@ export const fetchPullRequestsSince = async (since: Date): Promise<ChangelogEntr
     const mockPRs: ChangelogEntry[] = []
 
     // Only return PRs newer than the last visit
-    return mockPRs.filter(pr => pr.date > since)
+    return mockPRs.filter(pr => pr.date.getTime() > since.getTime())
   } catch (error) {
     console.error('Failed to fetch pull requests:', error)
     return []
