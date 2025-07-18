@@ -14,6 +14,8 @@ import { InstallPrompt } from '@/components/InstallPrompt'
 import { SettingsModal } from '@/components/SettingsModal'
 import { OnlineStatusBanner } from '@/components/OfflineIndicator'
 import { CloudSync } from '@/components/CloudSync'
+import { ChangelogPopup } from '@/components/ChangelogPopup'
+import { ReleaseNotesModal } from '@/components/ReleaseNotesModal'
 import { useTranslation } from 'react-i18next'
 import type { SearchFilters } from '@/types/discount-code'
 
@@ -44,6 +46,7 @@ export default function HomePage() {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false)
   const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false)
   const [isCloudSyncOpen, setIsCloudSyncOpen] = useState(false)
+  const [isReleaseNotesOpen, setIsReleaseNotesOpen] = useState(false)
   const [showNotificationBanner, setShowNotificationBanner] = useState(true)
 
   // Create refs for each discount code for scrolling
@@ -171,6 +174,7 @@ export default function HomePage() {
       <SettingsModal
         isOpen={isSettingsModalOpen}
         onClose={() => setIsSettingsModalOpen(false)}
+        onAdvancedReleaseNotes={() => setIsReleaseNotesOpen(true)}
       />
 
       {/* Cloud Sync Modal */}
@@ -178,6 +182,17 @@ export default function HomePage() {
         isOpen={isCloudSyncOpen}
         onClose={() => setIsCloudSyncOpen(false)}
         onManualSync={manualSync}
+      />
+
+      {/* Changelog Popup */}
+      <ChangelogPopup
+        onAdvancedReleaseNotes={() => setIsReleaseNotesOpen(true)}
+      />
+
+      {/* Release Notes Modal */}
+      <ReleaseNotesModal
+        isOpen={isReleaseNotesOpen}
+        onClose={() => setIsReleaseNotesOpen(false)}
       />
     </div>
   )
