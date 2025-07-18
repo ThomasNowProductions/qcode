@@ -165,7 +165,7 @@ export function AddCodeModal({ isOpen, onClose, onAdd }: AddCodeModalProps) {
           {/* Original Price */}
           <div>
             <label htmlFor="originalPrice" className="block text-sm font-medium theme-text-secondary mb-1">
-              {t('addCode.originalPriceLabel', 'Original Price (for % discounts)')}
+              {t('addCode.originalPriceLabel', 'Original Price')}
             </label>
             <input
               type="number"
@@ -183,7 +183,7 @@ export function AddCodeModal({ isOpen, onClose, onAdd }: AddCodeModalProps) {
               <p className="text-red-500 text-sm mt-1">{errors.originalPrice}</p>
             )}
             <p className="text-xs theme-text-secondary mt-1">
-              {t('addCode.originalPriceHelp', 'Optional: Helps calculate accurate savings for percentage discounts')}
+              {t('addCode.originalPriceHelp', 'Optional: Helps calculate accurate savings and better analytics')}
             </p>
           </div>
 
