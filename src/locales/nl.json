@@ -170,10 +170,55 @@
     "title": "Cloud Synchronisatie",
     "subtitle": "Synchroniseer je kortingscodes over meerdere apparaten",
     "status": {
+      "title": "Synchronisatie Status",
+      "label": "Status",
+      "lastSync": "Laatste Synchronisatie",
+      "never": "Nooit",
       "syncing": "Synchroniseren...",
       "synced": "Gesynchroniseerd",
-      "error": "Synchronisatie fout",
-      "offline": "Offline"
+      "notSynced": "Niet gesynchroniseerd",
+      "error": "Fout",
+      "offline": "Offline",
+      "conflictsNeedResolution": "conflicten vereisen oplossing"
+    },
+    "manualSync": {
+      "title": "Handmatig Synchroniseren",
+      "syncNow": "Nu Synchroniseren"
+    },
+    "autoSync": {
+      "title": "Automatisch Synchroniseren",
+      "enableAutoSync": "Automatische synchronisatie inschakelen",
+      "syncInterval": "Synchronisatie Interval",
+      "intervals": {
+        "5min": "Elke 5 minuten",
+        "15min": "Elke 15 minuten",
+        "30min": "Elke 30 minuten",
+        "1hour": "Elk uur",
+        "4hours": "Elke 4 uur"
+      }
+    },
+    "conflictResolution": {
+      "title": "Conflict Oplossing",
+      "local": "Lokale wijzigingen voorkeur geven",
+      "remote": "Externe wijzigingen voorkeur geven",
+      "merge": "Slimme samenvoeging (aanbevolen)"
+    },
+    "providers": {
+      "title": "Cloud Providers",
+      "addProvider": "Provider Toevoegen",
+      "enabled": "Ingeschakeld",
+      "githubSetup": {
+        "title": "GitHub Gist Provider Toevoegen",
+        "tokenLabel": "GitHub Persoonlijke Toegang Token",
+        "tokenPlaceholder": "ghp_...",
+        "tokenHelp": "Maak een token aan op github.com/settings/tokens met 'gist' bereik",
+        "addButton": "Provider Toevoegen",
+        "cancelButton": "Annuleren"
+      }
+    },
+    "activity": {
+      "title": "Recente Activiteit",
+      "clear": "Wissen"
     }
   },
   "pwa": {

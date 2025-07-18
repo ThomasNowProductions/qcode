@@ -167,13 +167,58 @@
     }
   },
   "cloudSync": {
-    "title": "Cloud Synchronization",
+    "title": "Cloud Sync",
     "subtitle": "Synchronize your discount codes across multiple devices",
     "status": {
+      "title": "Sync Status",
+      "label": "Status",
+      "lastSync": "Last Sync",
+      "never": "Never",
       "syncing": "Syncing...",
       "synced": "Synced",
-      "error": "Sync error",
-      "offline": "Offline"
+      "notSynced": "Not synced",
+      "error": "Error",
+      "offline": "Offline",
+      "conflictsNeedResolution": "conflicts need resolution"
+    },
+    "manualSync": {
+      "title": "Manual Sync",
+      "syncNow": "Sync Now"
+    },
+    "autoSync": {
+      "title": "Auto Sync",
+      "enableAutoSync": "Enable automatic sync",
+      "syncInterval": "Sync Interval",
+      "intervals": {
+        "5min": "Every 5 minutes",
+        "15min": "Every 15 minutes",
+        "30min": "Every 30 minutes",
+        "1hour": "Every hour",
+        "4hours": "Every 4 hours"
+      }
+    },
+    "conflictResolution": {
+      "title": "Conflict Resolution",
+      "local": "Prefer local changes",
+      "remote": "Prefer remote changes",
+      "merge": "Smart merge (recommended)"
+    },
+    "providers": {
+      "title": "Cloud Providers",
+      "addProvider": "Add Provider",
+      "enabled": "Enabled",
+      "githubSetup": {
+        "title": "Add GitHub Gist Provider",
+        "tokenLabel": "GitHub Personal Access Token",
+        "tokenPlaceholder": "ghp_...",
+        "tokenHelp": "Create a token at github.com/settings/tokens with 'gist' scope",
+        "addButton": "Add Provider",
+        "cancelButton": "Cancel"
+      }
+    },
+    "activity": {
+      "title": "Recent Activity",
+      "clear": "Clear"
     }
   },
   "pwa": {
