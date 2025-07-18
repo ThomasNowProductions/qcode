@@ -23,7 +23,11 @@ export function I18nProvider({ children }: I18nProviderProps) {
       } else if (savedLanguage === 'en' || savedLanguage === 'nl') {
         i18n.changeLanguage(savedLanguage);
       } else {
-        i18n.changeLanguage('en'); // Default to English if no saved preference
+        // First-time visitor: default to 'auto' behavior (detect system language)
+        const browserLang = navigator.language.split('-')[0];
+        const supportedLanguage = ['en', 'nl'].includes(browserLang) ? browserLang : 'en';
+        localStorage.setItem('qcode-language', 'auto');
+        i18n.changeLanguage(supportedLanguage);
       }
     }
   }, []);
