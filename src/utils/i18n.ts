@@ -49,6 +49,11 @@ if (!i18n.isInitialized) {
       i18n.changeLanguage(supportedLanguage);
     } else if (savedLanguage === 'en' || savedLanguage === 'nl') {
       i18n.changeLanguage(savedLanguage);
+    } else {
+      // First-time visitor: detect system language
+      const browserLang = navigator.language.split('-')[0];
+      const supportedLanguage = ['en', 'nl'].includes(browserLang) ? browserLang : 'en';
+      i18n.changeLanguage(supportedLanguage);
     }
   }
 }

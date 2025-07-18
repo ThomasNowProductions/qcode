@@ -15,6 +15,10 @@ export const useLanguage = () => {
     const savedLanguage = localStorage.getItem('qcode-language') as LanguageOption | null;
     if (savedLanguage) {
       setLanguage(savedLanguage);
+    } else {
+      // First-time visitor: default to 'auto' (detect system language)
+      setLanguage('auto');
+      localStorage.setItem('qcode-language', 'auto');
     }
   }, []);
 
