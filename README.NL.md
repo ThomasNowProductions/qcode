@@ -205,7 +205,7 @@ De app kan geïnstalleerd worden op:
 - [ ] Winkel integraties voor automatische codes
 - [ ] Push notificaties voor deals
 - [x] Export/import functionaliteit
-- [ ] Analytics dashboard
+- [x] Analytics dashboard
 - [ ] Thema aanpassingen
 - [x] Multi-taal ondersteuning
 - [ ] End-to-end encryptie voor gevoelige codes
