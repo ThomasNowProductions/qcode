@@ -1,20 +1,44 @@
 import { useState } from 'react'
-import { X, Download, Upload, Trash2, Info, Heart, Shield } from 'lucide-react'
+import { X, Download, Upload, Trash2, Info, Heart, Shield, Settings, Sparkles, FileText } from 'lucide-react'
 import { useDiscountCodes } from '@/hooks/useDiscountCodes'
 import { exportCodes, importCodes } from '@/utils/storage'
 import { loadDemoData } from '@/utils/demo-data'
 import { useTranslation } from 'react-i18next'
 import { LanguageSwitcher } from './LanguageSwitcher'
+import type { DeveloperSettings } from '@/types/changelog'
 
 interface SettingsModalProps {
   isOpen: boolean
   onClose: () => void
+  onAdvancedReleaseNotes?: () => void
 }
 
-export function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
+export function SettingsModal({ isOpen, onClose, onAdvancedReleaseNotes }: SettingsModalProps) {
   const { t } = useTranslation()
   const { codes } = useDiscountCodes()
-  const [activeTab, setActiveTab] = useState<'export' | 'import' | 'about' | 'language'>('about')
+  const [activeTab, setActiveTab] = useState<'export' | 'import' | 'about' | 'language' | 'developer'>('about')
+
+  // Developer settings
+  const [developerSettings, setDeveloperSettings] = useState<DeveloperSettings>(() => {
+    try {
+      const saved = localStorage.getItem('qcode-developer-settings')
+      return saved ? JSON.parse(saved) : {
+        showAdvancedReleaseNotes: false,
+        enableChangelogPopup: true
+      }
+    } catch {
+      return {
+        showAdvancedReleaseNotes: false,
+        enableChangelogPopup: true
+      }
+    }
+  })
+
+  const updateDeveloperSettings = (updates: Partial<DeveloperSettings>) => {
+    const newSettings = { ...developerSettings, ...updates }
+    setDeveloperSettings(newSettings)
+    localStorage.setItem('qcode-developer-settings', JSON.stringify(newSettings))
+  }
 
   const handleExport = () => {
     const exportData = exportCodes(codes)
@@ -113,6 +137,16 @@ export function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
               }`}
             >
               {t('settings.tabs.import')}
+            </button>
+            <button
+              onClick={() => setActiveTab('developer')}
+              className={`py-4 px-1 border-b-2 font-medium text-sm transition-all duration-200 whitespace-nowrap ${
+                activeTab === 'developer'
+                  ? 'border-blue-600 text-blue-900 dark:border-blue-400 dark:text-blue-300 font-semibold'
+                  : 'border-transparent text-gray-600 hover:text-gray-800 dark:text-gray-400 dark:hover:text-gray-200 hover:border-gray-300 dark:hover:border-gray-600'
+              }`}
+            >
+              Developer
             </button>
           </nav>
         </div>
@@ -233,24 +267,6 @@ export function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
                   </p>
                 </div>
 
-                <div className="bg-gradient-to-r from-purple-50 to-purple-100 dark:from-purple-900/30 dark:to-purple-800/30 border border-purple-300 dark:border-purple-600 rounded-lg p-4 shadow-sm">
-                  <h4 className="font-semibold text-slate-900 dark:text-purple-100 mb-2">
-                    {t('settings.import.demoTitle')}
-                  </h4>
-                  <p className="text-sm text-slate-800 dark:text-purple-200 mb-3">
-                    {t('settings.import.demoSubtitle')}
-                  </p>
-                  <button
-                    onClick={() => {
-                      loadDemoData()
-                      window.location.reload()
-                    }}
-                    className="inline-flex items-center gap-2 bg-gradient-to-r from-purple-700 to-purple-800 hover:from-purple-800 hover:to-purple-900 text-white font-semibold px-4 py-2.5 rounded-lg transition-all duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
-                  >
-                    {t('settings.import.demoButton')}
-                  </button>
-                </div>
-
                 <div className="bg-gradient-to-r from-red-50 to-red-100 dark:from-red-900/30 dark:to-red-800/30 border border-red-300 dark:border-red-600 rounded-lg p-4 shadow-sm">
                   <h4 className="font-semibold text-slate-900 dark:text-red-100 mb-2">{t('settings.import.dangerTitle')}</h4>
                   <p className="text-sm text-slate-800 dark:text-red-200 mb-3">
@@ -263,6 +279,125 @@ export function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
                     <Trash2 size={16} />
                     {t('settings.import.clearButton')}
                   </button>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {activeTab === 'developer' && (
+            <div className="space-y-6">
+              <div>
+                <h3 className="text-lg font-medium theme-text-primary mb-2 flex items-center gap-2">
+                  <Settings size={20} />
+                  Developer Options
+                </h3>
+                <p className="text-sm theme-text-secondary mb-6">
+                  Advanced settings and tools for developers and power users.
+                </p>
+              </div>
+
+              {/* Release Notes Settings */}
+              <div className="theme-filter rounded-lg p-4">
+                <h4 className="font-semibold theme-text-primary mb-3 flex items-center gap-2">
+                  <FileText size={16} />
+                  Release Notes
+                </h4>
+                
+                <div className="space-y-4">
+                  <label className="flex items-center gap-3">
+                    <input
+                      type="checkbox"
+                      checked={developerSettings.showAdvancedReleaseNotes}
+                      onChange={(e) => updateDeveloperSettings({ showAdvancedReleaseNotes: e.target.checked })}
+                      className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                    />
+                    <div>
+                      <span className="text-sm font-medium theme-text-primary">
+                        Show Advanced Release Notes Persistently
+                      </span>
+                      <p className="text-xs theme-text-muted">
+                        Keep the advanced release notes accessible from the main menu
+                      </p>
+                    </div>
+                  </label>
+
+                  <label className="flex items-center gap-3">
+                    <input
+                      type="checkbox"
+                      checked={developerSettings.enableChangelogPopup}
+                      onChange={(e) => updateDeveloperSettings({ enableChangelogPopup: e.target.checked })}
+                      className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                    />
+                    <div>
+                      <span className="text-sm font-medium theme-text-primary">
+                        Enable Changelog Popup
+                      </span>
+                      <p className="text-xs theme-text-muted">
+                        Show the &quot;What&apos;s New&quot; popup when updates are detected
+                      </p>
+                    </div>
+                  </label>
+
+                  {onAdvancedReleaseNotes && (
+                    <button
+                      onClick={() => {
+                        onClose()
+                        onAdvancedReleaseNotes()
+                      }}
+                      className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-semibold px-4 py-2.5 rounded-lg transition-all duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
+                    >
+                      <FileText size={16} />
+                      Open Release Notes
+                    </button>
+                  )}
+                </div>
+              </div>
+
+              {/* Sample Data */}
+              <div className="theme-filter rounded-lg p-4">
+                <h4 className="font-semibold theme-text-primary mb-3 flex items-center gap-2">
+                  <Sparkles size={16} />
+                  Sample Data
+                </h4>
+                
+                <div className="bg-gradient-to-r from-purple-50 to-purple-100 dark:from-purple-900/30 dark:to-purple-800/30 border border-purple-300 dark:border-purple-600 rounded-lg p-4 shadow-sm">
+                  <h5 className="font-semibold text-slate-900 dark:text-purple-100 mb-2">
+                    Load Demo Data
+                  </h5>
+                  <p className="text-sm text-slate-800 dark:text-purple-200 mb-3">
+                    Add sample discount codes to test the application features and UI.
+                  </p>
+                  <button
+                    onClick={() => {
+                      loadDemoData()
+                      window.location.reload()
+                    }}
+                    className="inline-flex items-center gap-2 bg-gradient-to-r from-purple-700 to-purple-800 hover:from-purple-800 hover:to-purple-900 text-white font-semibold px-4 py-2.5 rounded-lg transition-all duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
+                  >
+                    <Sparkles size={16} />
+                    Load Sample Data
+                  </button>
+                </div>
+              </div>
+
+              {/* Development Info */}
+              <div className="theme-filter rounded-lg p-4">
+                <h4 className="font-semibold theme-text-primary mb-3">
+                  Development Information
+                </h4>
+                <div className="space-y-2 text-sm theme-text-secondary">
+                  <div className="flex justify-between">
+                    <span>Storage Used:</span>
+                    <span>{(JSON.stringify(localStorage).length / 1024).toFixed(2)} KB</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span>Total Codes:</span>
+                    <span>{codes.length}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span>User Agent:</span>
+                    <span className="truncate ml-2 max-w-xs">{navigator.userAgent.split(' ')[0]}</span>
+                  </div>
                 </div>
               </div>
             </div>
