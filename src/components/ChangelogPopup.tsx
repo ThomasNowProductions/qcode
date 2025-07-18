@@ -39,10 +39,11 @@ export function ChangelogPopup({ onAdvancedReleaseNotes }: ChangelogPopupProps) 
     onAdvancedReleaseNotes()
   }
 
-  if (isLoading || !isVisible || !changelogData?.hasNewUpdates || !changelogData.aiSummary) {
+  const shouldHidePopup = isLoading || !isVisible || !changelogData?.hasNewUpdates || !changelogData.aiSummary;
+
+  if (shouldHidePopup) {
     return null
   }
-
   const { aiSummary, entries } = changelogData
 
   return (
