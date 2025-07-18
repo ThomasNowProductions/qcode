@@ -84,12 +84,15 @@ export function ReleaseNotesModal({ isOpen, onClose }: ReleaseNotesModalProps) {
                     {changelogData.aiSummary.summary}
                   </p>
                   <div className="space-y-2">
-                    {changelogData.aiSummary.highlights.map((highlight, index) => (
-                      <div key={index} className="flex items-center gap-2 text-sm text-blue-700 dark:text-blue-400">
-                        <span>{highlight.split(' ')[0]}</span>
-                        <span>{highlight.split(' ').slice(1).join(' ')}</span>
-                      </div>
-                    ))}
+                    {changelogData.aiSummary.highlights.map((highlight, index) => {
+                      const [firstWord, restOfString] = splitHighlight(highlight);
+                      return (
+                        <div key={index} className="flex items-center gap-2 text-sm text-blue-700 dark:text-blue-400">
+                          <span>{firstWord}</span>
+                          <span>{restOfString}</span>
+                        </div>
+                      );
+                    })}
                   </div>
                 </div>
               )}
