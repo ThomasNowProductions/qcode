@@ -105,7 +105,8 @@
     "expiryDays": " verloopt over {{days}} dagen",
     "andMore": "En {{count}} meer...",
     "noExpiring": "Geen kortingscodes die binnenkort verlopen",
-    "daysLeft": "{{count}} dagen resterend"
+    "daysLeft": "{{count}} dagen resterend",
+    "clickToJump": "Klik om naar deze code te springen"
   },
   "stats": {
     "title": "Overzicht",

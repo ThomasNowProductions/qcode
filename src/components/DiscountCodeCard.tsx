@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, forwardRef } from 'react'
 import { format } from 'date-fns'
 import { nl, enUS } from 'date-fns/locale'
 import { 
@@ -25,14 +25,14 @@ interface DiscountCodeCardProps {
   
 }
 
-export function DiscountCodeCard({
+export const DiscountCodeCard = forwardRef<HTMLDivElement, DiscountCodeCardProps>(function DiscountCodeCard({
   code,
   isExpired,
   onToggleFavorite,
   onToggleArchived,
   onIncrementUsage,
   onDelete,
-}: DiscountCodeCardProps) {
+}, ref) {
   const { t, i18n } = useTranslation()
   const [showMenu, setShowMenu] = useState(false)
   const [copied, setCopied] = useState(false)
@@ -83,7 +83,7 @@ export function DiscountCodeCard({
   }
 
   return (
-    <div className={`theme-card rounded-xl shadow-lg border p-6 transition-all duration-300 card-hover ${isExpired ? 'opacity-75' : ''}`}>
+    <div ref={ref} className={`theme-card rounded-xl shadow-lg border p-6 transition-all duration-300 card-hover ${isExpired ? 'opacity-75' : ''}`}>
       <div className="flex items-start justify-between mb-4">
         <div className="flex-1">
           <div className="flex items-center gap-3 mb-2">
@@ -215,4 +215,4 @@ export function DiscountCodeCard({
       </div>
     </div>
   )
-}
+})
