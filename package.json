@@ -11,7 +11,8 @@
     "test:translations": "jest translations.test.ts",
     "export": "next build && next export",
     "deploy:vercel": "vercel",
-    "deploy:vercel:prod": "vercel --prod"
+    "deploy:vercel:prod": "vercel --prod",
+    "clear-cache": "node cache-handler.js clear && rm -rf .next/cache"
   },
   "dependencies": {
     "@types/uuid": "^10.0.0",
