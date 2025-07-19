@@ -126,7 +126,8 @@
       "about": "Over QCode",
       "export": "Exporteren",
       "import": "Importeren",
-      "language": "Taal"
+      "language": "Taal",
+      "developer": "Ontwikkelaar"
     },
     "about": {
       "version": "Versie 1.0.0",
@@ -168,6 +169,34 @@
       "auto": "Automatisch (op basis van browser)",
       "dutch": "Nederlands",
       "english": "Engels"
+    },
+    "developer": {
+        "title": "Ontwikkelaarsopties",
+        "subtitle": "Geavanceerde instellingen en tools voor ontwikkelaars en powergebruikers.",
+        "releaseNotes": {
+            "title": "Release Notities",
+            "showAdvancedLabel": "Geavanceerde release notities tonen",
+            "showAdvancedDescription": "Gedetailleerde technische informatie over updates en wijzigingen weergeven.",
+            "showChangelogLabel": "Changelog-popup tonen bij update",
+            "showChangelogDescription": "Een melding weergeven wanneer een nieuwe versie beschikbaar is.",
+            "openReleaseNotes": "Open Release Notities"
+        },
+        "sampleData": {
+            "title": "Voorbeeldgegevens",
+            "loadSampleButton": "Voorbeeldgegevens laden",
+            "loadSampleDescription": "Voorbeeld kortingscodes toevoegen om de functies van de app uit te proberen.",
+            "clearAllButton": "Alle gegevens wissen",
+            "clearAllDescription": "⚠️ Verwijder permanent al uw kortingscodes. Dit kan niet ongedaan worden gemaakt!"
+        },
+        "development": {
+            "title": "Ontwikkelingsinfo",
+            "storageUsed": "Gebruikte opslag:",
+            "userAgent": "User-agent:",
+            "appVersion": "App-versie:",
+            "environment": "Omgeving:",
+            "development": "Ontwikkeling",
+            "production": "Productie"
+        }
     }
   },
   "cloudSync": {
@@ -223,6 +252,27 @@
     "activity": {
       "title": "Recente Activiteit",
       "clear": "Wissen"
+    }
+  },
+  "releaseNotes": {
+    "title": "Geavanceerde Release Notities",
+    "tabs": {
+      "summary": "Samenvatting",
+      "commits": "Commits"
+    },
+    "summary": {
+      "title": "Wat is er nieuw",
+      "recentChanges": "Recente wijzigingen"
+    },
+    "commits": {
+      "title": "Recente Commits",
+      "commit": "Commit",
+      "author": "Auteur",
+      "date": "Datum",
+      "message": "Bericht"
+    },
+    "buttons": {
+      "close": "Sluiten"
     }
   },
   "pwa": {
@@ -312,7 +362,7 @@
       "tip2Title": "Controleer Vervaldatums",
       "tip2": "Zorg ervoor dat je codes gebruikt voordat ze vervallen om besparingen te maximaliseren.",
       "tip3Title": "Volg Meer Codes",
-      "tip3": "Voeg meer kortingscodes toe om je potentiële besparingen te verhogen!"
+      "tip3": "Voeg meer kortingscodes toe om uw potentiële besparingen te vergroten!"
     },
     "lifecycle": {
       "summary": "Levenscyclus Samenvatting",

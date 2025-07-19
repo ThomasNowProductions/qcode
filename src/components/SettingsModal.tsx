@@ -289,10 +289,10 @@ export function SettingsModal({ isOpen, onClose, onAdvancedReleaseNotes }: Setti
               <div>
                 <h3 className="text-lg font-medium theme-text-primary mb-2 flex items-center gap-2">
                   <Settings size={20} />
-                  Developer Options
+                  {t('settings.developer.title')}
                 </h3>
                 <p className="text-sm theme-text-secondary mb-6">
-                  Advanced settings and tools for developers and power users.
+                  {t('settings.developer.subtitle')}
                 </p>
               </div>
 
@@ -300,7 +300,7 @@ export function SettingsModal({ isOpen, onClose, onAdvancedReleaseNotes }: Setti
               <div className="theme-filter rounded-lg p-4">
                 <h4 className="font-semibold theme-text-primary mb-3 flex items-center gap-2">
                   <FileText size={16} />
-                  Release Notes
+                  {t('settings.developer.releaseNotes.title')}
                 </h4>
                 
                 <div className="space-y-4">
@@ -313,10 +313,10 @@ export function SettingsModal({ isOpen, onClose, onAdvancedReleaseNotes }: Setti
                     />
                     <div>
                       <span className="text-sm font-medium theme-text-primary">
-                        Show Advanced Release Notes Persistently
+                        {t('settings.developer.releaseNotes.showAdvancedLabel')}
                       </span>
                       <p className="text-xs theme-text-muted">
-                        Keep the advanced release notes accessible from the main menu
+                        {t('settings.developer.releaseNotes.showAdvancedDescription')}
                       </p>
                     </div>
                   </label>
@@ -330,10 +330,10 @@ export function SettingsModal({ isOpen, onClose, onAdvancedReleaseNotes }: Setti
                     />
                     <div>
                       <span className="text-sm font-medium theme-text-primary">
-                        Enable Changelog Popup
+                        {t('settings.developer.releaseNotes.showChangelogLabel')}
                       </span>
                       <p className="text-xs theme-text-muted">
-                        Show the &ldquo;What&rsquo;s New&rdquo; popup when updates are detected
+                        {t('settings.developer.releaseNotes.showChangelogDescription')}
                       </p>
                     </div>
                   </label>
@@ -347,7 +347,7 @@ export function SettingsModal({ isOpen, onClose, onAdvancedReleaseNotes }: Setti
                       className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-semibold px-4 py-2.5 rounded-lg transition-all duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
                     >
                       <FileText size={16} />
-                      Open Release Notes
+                      {t('settings.developer.releaseNotes.openReleaseNotes')}
                     </button>
                   )}
                 </div>
@@ -357,15 +357,15 @@ export function SettingsModal({ isOpen, onClose, onAdvancedReleaseNotes }: Setti
               <div className="theme-filter rounded-lg p-4">
                 <h4 className="font-semibold theme-text-primary mb-3 flex items-center gap-2">
                   <Sparkles size={16} />
-                  Sample Data
+                  {t('settings.developer.sampleData.title')}
                 </h4>
                 
                 <div className="bg-gradient-to-r from-purple-50 to-purple-100 dark:from-purple-900/30 dark:to-purple-800/30 border border-purple-300 dark:border-purple-600 rounded-lg p-4 shadow-sm">
                   <h5 className="font-semibold text-slate-900 dark:text-purple-100 mb-2">
-                    Load Demo Data
+                    {t('settings.developer.sampleData.loadSampleButton')}
                   </h5>
                   <p className="text-sm text-slate-800 dark:text-purple-200 mb-3">
-                    Add sample discount codes to test the application features and UI.
+                    {t('settings.developer.sampleData.loadSampleDescription')}
                   </p>
                   <button
                     onClick={() => {
@@ -375,7 +375,7 @@ export function SettingsModal({ isOpen, onClose, onAdvancedReleaseNotes }: Setti
                     className="inline-flex items-center gap-2 bg-gradient-to-r from-purple-700 to-purple-800 hover:from-purple-800 hover:to-purple-900 text-white font-semibold px-4 py-2.5 rounded-lg transition-all duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
                   >
                     <Sparkles size={16} />
-                    Load Sample Data
+                    {t('settings.developer.sampleData.loadSampleButton')}
                   </button>
                 </div>
               </div>
@@ -383,11 +383,11 @@ export function SettingsModal({ isOpen, onClose, onAdvancedReleaseNotes }: Setti
               {/* Development Info */}
               <div className="theme-filter rounded-lg p-4">
                 <h4 className="font-semibold theme-text-primary mb-3">
-                  Development Information
+                  {t('settings.developer.development.title')}
                 </h4>
                 <div className="space-y-2 text-sm theme-text-secondary">
                   <div className="flex justify-between">
-                    <span>Storage Used:</span>
+                    <span>{t('settings.developer.development.storageUsed')}</span>
                     <span>{(JSON.stringify(localStorage).length / 1024).toFixed(2)} KB</span>
                   </div>
                   <div className="flex justify-between">
@@ -395,7 +395,7 @@ export function SettingsModal({ isOpen, onClose, onAdvancedReleaseNotes }: Setti
                     <span>{codes.length}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span>User Agent:</span>
+                    <span>{t('settings.developer.development.userAgent')}</span>
                     <span className="truncate ml-2 max-w-xs">{navigator.userAgent.split(' ')[0]}</span>
                   </div>
                 </div>

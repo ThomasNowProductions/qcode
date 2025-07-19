@@ -126,7 +126,8 @@
       "about": "About QCode",
       "export": "Export",
       "import": "Import",
-      "language": "Language"
+      "language": "Language",
+      "developer": "Developer"
     },
     "about": {
       "version": "Version 1.0.0",
@@ -168,6 +169,34 @@
       "auto": "Automatic (based on browser)",
       "dutch": "Dutch",
       "english": "English"
+    },
+    "developer": {
+      "title": "Developer Options",
+      "subtitle": "Advanced settings and tools for developers and power users.",
+      "releaseNotes": {
+        "title": "Release Notes",
+        "showAdvancedLabel": "Show advanced release notes",
+        "showAdvancedDescription": "Display detailed technical information about updates and changes.",
+        "showChangelogLabel": "Show changelog popup on update",
+        "showChangelogDescription": "Show a notification when a new version is available.",
+        "openReleaseNotes": "Open Release Notes"
+      },
+      "sampleData": {
+        "title": "Sample Data",
+        "loadSampleButton": "Load Sample Data",
+        "loadSampleDescription": "Add sample discount codes to try out the app's features.",
+        "clearAllButton": "Clear All Data",
+        "clearAllDescription": "⚠️ Permanently remove all your discount codes. This cannot be undone!"
+      },
+      "development": {
+        "title": "Development Info",
+        "storageUsed": "Storage used:",
+        "userAgent": "User Agent:",
+        "appVersion": "App Version:",
+        "environment": "Environment:",
+        "development": "Development",
+        "production": "Production"
+      }
     }
   },
   "cloudSync": {
@@ -223,6 +252,27 @@
     "activity": {
       "title": "Recent Activity",
       "clear": "Clear"
+    }
+  },
+  "releaseNotes": {
+    "title": "Advanced Release Notes",
+    "tabs": {
+      "summary": "Summary",
+      "commits": "Commits"
+    },
+    "summary": {
+      "title": "What's New",
+      "recentChanges": "Recent Changes"
+    },
+    "commits": {
+      "title": "Recent Commits",
+      "commit": "Commit",
+      "author": "Author",
+      "date": "Date",
+      "message": "Message"
+    },
+    "buttons": {
+      "close": "Close"
     }
   },
   "pwa": {
