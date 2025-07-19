@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 import { X, GitCommit, GitPullRequest, Calendar, User, Hash } from 'lucide-react'
 import { getCachedChangelog } from '@/utils/changelog'
 import { formatDistanceToNow } from 'date-fns'
@@ -10,6 +11,7 @@ interface ReleaseNotesModalProps {
 }
 
 export function ReleaseNotesModal({ isOpen, onClose }: ReleaseNotesModalProps) {
+  const { t } = useTranslation()
   const [changelogData, setChangelogData] = useState<ChangelogData | null>(null)
   const [selectedTab, setSelectedTab] = useState<'commits' | 'summary'>('summary')
 
@@ -31,9 +33,9 @@ export function ReleaseNotesModal({ isOpen, onClose }: ReleaseNotesModalProps) {
         {/* Header */}
         <div className="flex items-center justify-between p-6 border-b border-gray-200 dark:border-[var(--card-border)]">
           <div>
-            <h2 className="text-xl font-semibold theme-text-primary">Advanced Release Notes</h2>
+            <h2 className="text-xl font-semibold theme-text-primary">{t('releaseNotes.title')}</h2>
             <p className="text-sm theme-text-secondary mt-1">
-              Detailed technical information about recent updates
+              {t('releaseNotes.subtitle')}
             </p>
           </div>
           <button
@@ -55,7 +57,7 @@ export function ReleaseNotesModal({ isOpen, onClose }: ReleaseNotesModalProps) {
                   : 'border-transparent text-gray-600 hover:text-gray-800 dark:text-gray-400 dark:hover:text-gray-200 hover:border-gray-300 dark:hover:border-gray-600'
               }`}
             >
-              Summary ({allEntries.length})
+              {t('releaseNotes.tabs.summary')} ({allEntries.length})
             </button>
             <button
               onClick={() => setSelectedTab('commits')}
@@ -65,7 +67,7 @@ export function ReleaseNotesModal({ isOpen, onClose }: ReleaseNotesModalProps) {
                   : 'border-transparent text-gray-600 hover:text-gray-800 dark:text-gray-400 dark:hover:text-gray-200 hover:border-gray-300 dark:hover:border-gray-600'
               }`}
             >
-              Commits ({commits.length})
+              {t('releaseNotes.tabs.commits')} ({commits.length})
             </button>
           </nav>
         </div>
@@ -78,7 +80,7 @@ export function ReleaseNotesModal({ isOpen, onClose }: ReleaseNotesModalProps) {
               {changelogData?.aiSummary && (
                 <div className="bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-6">
                   <h3 className="text-lg font-semibold text-blue-900 dark:text-blue-200 mb-3">
-                    User-Friendly Summary
+                    {t('releaseNotes.summary.title')}
                   </h3>
                   <p className="text-blue-800 dark:text-blue-300 mb-4">
                     {changelogData.aiSummary.summary}
@@ -101,10 +103,10 @@ export function ReleaseNotesModal({ isOpen, onClose }: ReleaseNotesModalProps) {
 
               {/* Recent Changes Overview */}
               <div>
-                <h3 className="text-lg font-semibold theme-text-primary mb-4">Recent Changes</h3>
+                <h3 className="text-lg font-semibold theme-text-primary mb-4">{t('releaseNotes.summary.recentChanges')}</h3>
                 {allEntries.length === 0 ? (
                   <div className="text-center py-8 theme-text-secondary">
-                    <p>No recent changes to display.</p>
+                    <p>{t('releaseNotes.summary.noChanges')}</p>
                   </div>
                 ) : (
                   <div className="space-y-4">
@@ -126,7 +128,7 @@ export function ReleaseNotesModal({ isOpen, onClose }: ReleaseNotesModalProps) {
             <div className="space-y-4">
               <div className="flex items-center justify-between">
                 <h3 className="text-lg font-semibold theme-text-primary">
-                  All Commits ({commits.length})
+                  {t('releaseNotes.commits.title')} ({commits.length})
                 </h3>
                 {changelogData?.lastCheckDate && (
                   <p className="text-sm theme-text-muted">
@@ -138,7 +140,7 @@ export function ReleaseNotesModal({ isOpen, onClose }: ReleaseNotesModalProps) {
               {commits.length === 0 ? (
                 <div className="text-center py-8 theme-text-secondary">
                   <GitCommit size={48} className="mx-auto mb-4 opacity-50" />
-                  <p>No commits to display.</p>
+                  <p>{t('releaseNotes.commits.noCommits')}</p>
                 </div>
               ) : (
                 <div className="space-y-4">
@@ -157,7 +159,7 @@ export function ReleaseNotesModal({ isOpen, onClose }: ReleaseNotesModalProps) {
             onClick={onClose}
             className="w-full bg-gradient-to-r from-gray-600 to-gray-700 hover:from-gray-700 hover:to-gray-800 text-white font-semibold py-2.5 px-4 rounded-lg transition-all duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
           >
-            Close
+            {t('releaseNotes.buttons.close')}
           </button>
         </div>
       </div>

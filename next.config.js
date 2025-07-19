@@ -1,3 +1,4 @@
+const path = require('path');
 const withPWA = require('next-pwa')({
   dest: 'public',
   register: true,
@@ -20,10 +21,24 @@ const withPWA = require('next-pwa')({
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  turbopack: {
-    rules: {
-      // Add any specific turbopack rules if needed
+  // Turbopack configuration
+  // Note: Most Turbopack settings are now automatically configured
+  // and don't need explicit configuration
+  
+  // Webpack configuration for production builds
+  webpack: (config, { dev, isServer }) => {
+    if (!dev) {
+      // Enable persistent caching in production
+      config.cache = {
+        type: 'filesystem',
+        buildDependencies: {
+          config: [__filename],
+        },
+        cacheDirectory: path.join(process.cwd(), '.next', 'cache', 'webpack'),
+        name: 'webpack',
+      };
     }
+    return config;
   }
 }
 
