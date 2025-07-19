@@ -67,45 +67,69 @@ export const generateAISummary = (entries: ChangelogEntry[]): AIGeneratedSummary
   }
 }
 
+// GitHub API types
+interface GitHubCommit {
+  sha: string
+  commit: {
+    message: string
+    author: {
+      name: string
+      date: string
+    }
+  }
+  author?: {
+    login: string
+  }
+  html_url: string
+}
+
+interface GitHubPullRequest {
+  number: number
+  title: string
+  body?: string
+  user: {
+    login: string
+  }
+  merged_at: string | null
+  html_url: string
+  merge_commit_sha?: string
+}
+
 export const fetchCommitsSince = async (since: Date): Promise<ChangelogEntry[]> => {
   try {
-    // For demo purposes, simulate fetching commits
-    // In a real implementation, this would call the GitHub API
-    const mockCommits: ChangelogEntry[] = [
+    const owner = 'Githubguy132010'
+    const repo = 'qcode'
+    const sinceISO = since.toISOString()
+    
+    const response = await fetch(
+      `https://api.github.com/repos/${owner}/${repo}/commits?since=${sinceISO}&per_page=100`,
       {
-        id: 'commit-1',
-        type: 'commit',
-        title: 'Implement dynamic changelog popup with AI-generated summaries',
-        description: 'Added a new popup system that shows users what\'s new when they visit the site, with AI-generated summaries for better user experience.',
-        author: 'Developer',
-        date: new Date(Date.now() - 2 * 60 * 60 * 1000), // 2 hours ago
-        url: '#',
-        sha: 'abc123'
-      },
-      {
-        id: 'commit-2',
-        type: 'commit',
-        title: 'Add advanced release notes dashboard for technical users',
-        description: 'Created a detailed dashboard with commit information and PR details for users who want technical information.',
-        author: 'Developer',
-        date: new Date(Date.now() - 4 * 60 * 60 * 1000), // 4 hours ago
-        url: '#',
-        sha: 'def456'
-      },
-      {
-        id: 'commit-3',
-        type: 'commit',
-        title: 'Move sample data loading to developer options',
-        description: 'Cleaned up the UI by moving all demo data functionality to a dedicated developer options section.',
-        author: 'Developer',
-        date: new Date(Date.now() - 6 * 60 * 60 * 1000), // 6 hours ago
-        url: '#',
-        sha: 'ghi789'
+        headers: {
+          'Accept': 'application/vnd.github.v3+json',
+          'User-Agent': 'QCode-App'
+        }
       }
-    ]
+    )
 
-    // Only return commits newer than the last visit
-    return mockCommits.filter(commit => commit.date.getTime() > since.getTime())
+    if (!response.ok) {
+      throw new Error(`GitHub API error: ${response.status} ${response.statusText}`)
+    }
+
+    const commits: GitHubCommit[] = await response.json()
+
+    const changelogEntries: ChangelogEntry[] = commits.map((commit) => ({
+      id: `commit-${commit.sha}`,
+      type: 'commit' as const,
+      title: commit.commit.message.split('\n')[0], // First line of commit message
+      description: commit.commit.message.split('\n').slice(1).join('\n').trim() || commit.commit.message.split('\n')[0], // Rest of commit message or fallback to title
+      author: commit.commit.author.name || commit.author?.login || 'Unknown',
+      date: new Date(commit.commit.author.date),
+      url: commit.html_url,
+      sha: commit.sha
+    }))
+
+    // Filter by date (GitHub API 'since' parameter might not be precise enough)
+    return changelogEntries.filter(entry => entry.date.getTime() > since.getTime())
   } catch (error) {
     console.error('Failed to fetch commits:', error)
     return []
@@ -114,12 +138,41 @@ export const fetchCommitsSince = async (since: Date): Promise<ChangelogEntry[]> 
 
 export const fetchPullRequestsSince = async (since: Date): Promise<ChangelogEntry[]> => {
   try {
-    // For demo purposes, simulate fetching PRs
-    // In a real implementation, this would call the GitHub API
-    const mockPRs: ChangelogEntry[] = []
+    const owner = 'Githubguy132010'
+    const repo = 'qcode'
+    
+    // Fetch closed PRs merged since the given date
+    const response = await fetch(
+      `https://api.github.com/repos/${owner}/${repo}/pulls?state=closed&sort=updated&direction=desc&per_page=100`,
+      {
+        headers: {
+          'Accept': 'application/vnd.github.v3+json',
+          'User-Agent': 'QCode-App'
+        }
+      }
+    )
 
-    // Only return PRs newer than the last visit
-    return mockPRs.filter(pr => pr.date.getTime() > since.getTime())
+    if (!response.ok) {
+      throw new Error(`GitHub API error: ${response.status} ${response.statusText}`)
+    }
+
+    const pullRequests: GitHubPullRequest[] = await response.json()
+
+    const changelogEntries: ChangelogEntry[] = pullRequests
+      .filter((pr) => pr.merged_at && new Date(pr.merged_at).getTime() > since.getTime())
+      .map((pr) => ({
+        id: `pr-${pr.number}`,
+        type: 'pr' as const,
+        title: pr.title,
+        description: pr.body || pr.title,
+        author: pr.user.login || 'Unknown',
+        date: new Date(pr.merged_at!),
+        url: pr.html_url,
+        prNumber: pr.number,
+        sha: pr.merge_commit_sha
+      }))
+
+    return changelogEntries
   } catch (error) {
     console.error('Failed to fetch pull requests:', error)
     return []
