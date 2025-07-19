@@ -175,6 +175,7 @@
         "subtitle": "Geavanceerde instellingen en tools voor ontwikkelaars en powergebruikers.",
         "releaseNotes": {
             "title": "Release Notities",
+            "subtitle": "Gedetailleerde technische informatie over recente updates",
             "showAdvancedLabel": "Geavanceerde release notities tonen",
             "showAdvancedDescription": "Gedetailleerde technische informatie over updates en wijzigingen weergeven.",
             "showChangelogLabel": "Changelog-popup tonen bij update",
