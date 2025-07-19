@@ -183,6 +183,7 @@
         },
         "sampleData": {
             "title": "Voorbeeldgegevens",
+            "loadSampleTitle": "Voorbeeldgegevens laden",
             "loadSampleButton": "Voorbeeldgegevens laden",
             "loadSampleDescription": "Voorbeeld kortingscodes toevoegen om de functies van de app uit te proberen.",
             "clearAllButton": "Alle gegevens wissen",
@@ -191,6 +192,7 @@
         "development": {
             "title": "Ontwikkelingsinfo",
             "storageUsed": "Gebruikte opslag:",
+            "totalCodes": "Totaal aantal codes:",
             "userAgent": "User-agent:",
             "appVersion": "App-versie:",
             "environment": "Omgeving:",
@@ -255,17 +257,20 @@
     }
   },
   "releaseNotes": {
-    "title": "Geavanceerde Release Notities",
+    "title": "Release Notities",
+    "subtitle": "Gedetailleerde technische informatie over recente updates",
     "tabs": {
       "summary": "Samenvatting",
       "commits": "Commits"
     },
     "summary": {
       "title": "Wat is er nieuw",
-      "recentChanges": "Recente wijzigingen"
+      "recentChanges": "Recente wijzigingen",
+      "noChanges": "Geen nieuwe wijzigingen om samen te vatten."
     },
     "commits": {
-      "title": "Recente Commits",
+      "title": "Alle Commits",
+      "noCommits": "Geen commits om weer te geven.",
       "commit": "Commit",
       "author": "Auteur",
       "date": "Datum",
@@ -362,7 +367,7 @@
       "tip2Title": "Controleer Vervaldatums",
       "tip2": "Zorg ervoor dat je codes gebruikt voordat ze vervallen om besparingen te maximaliseren.",
       "tip3Title": "Volg Meer Codes",
-      "tip3": "Voeg meer kortingscodes toe om uw potentiële besparingen te vergroten!"
+      "tip3": "Voeg meer kortingscodes toe om je potentiële besparingen te vergroten!"
     },
     "lifecycle": {
       "summary": "Levenscyclus Samenvatting",

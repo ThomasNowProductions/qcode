@@ -175,14 +175,16 @@
       "subtitle": "Advanced settings and tools for developers and power users.",
       "releaseNotes": {
         "title": "Release Notes",
+        "subtitle": "Detailed technical information about recent updates",
         "showAdvancedLabel": "Show advanced release notes",
         "showAdvancedDescription": "Display detailed technical information about updates and changes.",
         "showChangelogLabel": "Show changelog popup on update",
-        "showChangelogDescription": "Show a notification when a new version is available.",
+        "showChangelogDescription": "Automatically show these release notes when the app is updated.",
         "openReleaseNotes": "Open Release Notes"
       },
       "sampleData": {
         "title": "Sample Data",
+        "loadSampleTitle": "Load Sample Data",
         "loadSampleButton": "Load Sample Data",
         "loadSampleDescription": "Add sample discount codes to try out the app's features.",
         "clearAllButton": "Clear All Data",
@@ -191,6 +193,7 @@
       "development": {
         "title": "Development Info",
         "storageUsed": "Storage used:",
+        "totalCodes": "Total Codes:",
         "userAgent": "User Agent:",
         "appVersion": "App Version:",
         "environment": "Environment:",
@@ -255,17 +258,20 @@
     }
   },
   "releaseNotes": {
-    "title": "Advanced Release Notes",
+    "title": "Release Notes",
+    "subtitle": "Detailed technical information about recent updates",
     "tabs": {
       "summary": "Summary",
       "commits": "Commits"
     },
     "summary": {
       "title": "What's New",
-      "recentChanges": "Recent Changes"
+      "recentChanges": "Recent Changes",
+      "noChanges": "No new changes to summarize."
     },
     "commits": {
-      "title": "Recent Commits",
+      "title": "All Commits",
+      "noCommits": "No commits to display.",
       "commit": "Commit",
       "author": "Author",
       "date": "Date",

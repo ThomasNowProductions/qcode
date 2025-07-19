@@ -362,7 +362,7 @@ export function SettingsModal({ isOpen, onClose, onAdvancedReleaseNotes }: Setti
                 
                 <div className="bg-gradient-to-r from-purple-50 to-purple-100 dark:from-purple-900/30 dark:to-purple-800/30 border border-purple-300 dark:border-purple-600 rounded-lg p-4 shadow-sm">
                   <h5 className="font-semibold text-slate-900 dark:text-purple-100 mb-2">
-                    {t('settings.developer.sampleData.loadSampleButton')}
+                    {t('settings.developer.sampleData.loadSampleTitle')}
                   </h5>
                   <p className="text-sm text-slate-800 dark:text-purple-200 mb-3">
                     {t('settings.developer.sampleData.loadSampleDescription')}
@@ -391,7 +391,7 @@ export function SettingsModal({ isOpen, onClose, onAdvancedReleaseNotes }: Setti
                     <span>{(JSON.stringify(localStorage).length / 1024).toFixed(2)} KB</span>
                   </div>
                   <div className="flex justify-between">
-                    <span>Total Codes:</span>
+                    <span>{t('settings.developer.development.totalCodes')}</span>
                     <span>{codes.length}</span>
                   </div>
                   <div className="flex justify-between">

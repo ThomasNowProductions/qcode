@@ -35,7 +35,7 @@ export function ReleaseNotesModal({ isOpen, onClose }: ReleaseNotesModalProps) {
           <div>
             <h2 className="text-xl font-semibold theme-text-primary">{t('releaseNotes.title')}</h2>
             <p className="text-sm theme-text-secondary mt-1">
-              Detailed technical information about recent updates
+              {t('releaseNotes.subtitle')}
             </p>
           </div>
           <button
@@ -106,7 +106,7 @@ export function ReleaseNotesModal({ isOpen, onClose }: ReleaseNotesModalProps) {
                 <h3 className="text-lg font-semibold theme-text-primary mb-4">{t('releaseNotes.summary.recentChanges')}</h3>
                 {allEntries.length === 0 ? (
                   <div className="text-center py-8 theme-text-secondary">
-                    <p>No recent changes to display.</p>
+                    <p>{t('releaseNotes.summary.noChanges')}</p>
                   </div>
                 ) : (
                   <div className="space-y-4">
@@ -140,7 +140,7 @@ export function ReleaseNotesModal({ isOpen, onClose }: ReleaseNotesModalProps) {
               {commits.length === 0 ? (
                 <div className="text-center py-8 theme-text-secondary">
                   <GitCommit size={48} className="mx-auto mb-4 opacity-50" />
-                  <p>No commits to display.</p>
+                  <p>{t('releaseNotes.commits.noCommits')}</p>
                 </div>
               ) : (
                 <div className="space-y-4">
