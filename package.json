@@ -12,7 +12,7 @@
     "export": "next build && next export",
     "deploy:vercel": "vercel",
     "deploy:vercel:prod": "vercel --prod",
-    "clear-cache": "node cache-handler.js clear && rm -rf .next/cache"
+    "clear-cache": "node cache-handler.js"
   },
   "dependencies": {
     "@types/uuid": "^10.0.0",

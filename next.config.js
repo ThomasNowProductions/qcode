@@ -20,18 +20,11 @@ const withPWA = require('next-pwa')({
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  experimental: {
-    // Enable build caching
-    turbo: {
-      // Enable filesystem cache for faster rebuilds
-      cache: true,
-      // Enable memory cache for faster rebuilds in development
-      memoryCache: true,
-    },
-    // Enable incremental compilation for faster rebuilds
-    incrementalCacheHandlerPath: require.resolve('./cache-handler.js'),
-  },
-  // Configure webpack cache
+  // Turbopack configuration
+  // Note: Most Turbopack settings are now automatically configured
+  // and don't need explicit configuration
+  
+  // Webpack configuration for production builds
   webpack: (config, { dev, isServer }) => {
     if (!dev) {
       // Enable persistent caching in production
@@ -45,14 +38,6 @@ const nextConfig = {
       };
     }
     return config;
-  },
-  // Configure Turbopack if you're using it
-  turbopack: {
-    rules: {
-      // Add any specific turbopack rules if needed
-    },
-    // Enable Turbopack's filesystem cache
-    cache: true,
   }
 }
 
