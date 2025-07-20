@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { X, Download, Upload, Trash2, Info, Heart, Shield, Settings, Sparkles, FileText } from 'lucide-react'
+import { X, Download, Upload, Trash2, Info, Heart, Shield, Settings, Sparkles, FileText, RotateCcw } from 'lucide-react'
 import { useDiscountCodes } from '@/hooks/useDiscountCodes'
 import { exportCodes, importCodes } from '@/utils/storage'
 import { loadDemoData } from '@/utils/demo-data'
@@ -11,9 +11,10 @@ interface SettingsModalProps {
   isOpen: boolean
   onClose: () => void
   onAdvancedReleaseNotes?: () => void
+  onRestartTutorial?: () => void
 }
 
-export function SettingsModal({ isOpen, onClose, onAdvancedReleaseNotes }: SettingsModalProps) {
+export function SettingsModal({ isOpen, onClose, onAdvancedReleaseNotes, onRestartTutorial }: SettingsModalProps) {
   const { t } = useTranslation()
   const { codes } = useDiscountCodes()
   const [activeTab, setActiveTab] = useState<'export' | 'import' | 'about' | 'language' | 'developer'>('about')
@@ -187,6 +188,26 @@ export function SettingsModal({ isOpen, onClose, onAdvancedReleaseNotes }: Setti
                   <li>• {t('settings.about.privacyPoints.3')}</li>
                 </ul>
               </div>
+
+              {/* Tutorial Section */}
+              {onRestartTutorial && (
+                <div className="theme-filter rounded-lg p-4">
+                  <h4 className="font-medium theme-text-primary mb-2 flex items-center gap-2">
+                    <RotateCcw size={16} />
+                    {t('settings.about.tutorial', 'Tutorial')}
+                  </h4>
+                  <p className="text-sm theme-text-secondary mb-3">
+                    {t('settings.about.tutorialDescription', 'Take the app tour again to learn about all features.')}
+                  </p>
+                  <button
+                    onClick={onRestartTutorial}
+                    className="flex items-center gap-2 px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors text-sm font-medium"
+                  >
+                    <RotateCcw size={16} />
+                    {t('onboarding.navigation.restart', 'Restart Tutorial')}
+                  </button>
+                </div>
+              )}
 
               <div className="text-center">
                 <p className="text-sm theme-text-muted">

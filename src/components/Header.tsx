@@ -9,9 +9,10 @@ interface HeaderProps {
   onNotificationClick: () => void
   onSettingsClick: () => void
   onSyncClick: () => void
+  'data-tutorial'?: string
 }
 
-export function Header({ onNotificationClick, onSettingsClick, onSyncClick }: HeaderProps) {
+export function Header({ onNotificationClick, onSettingsClick, onSyncClick, ...props }: HeaderProps) {
   const { t } = useTranslation()
   const { isDark, toggleDarkMode, isLoaded } = useDarkMode()
   const pathname = usePathname()
@@ -58,7 +59,7 @@ export function Header({ onNotificationClick, onSettingsClick, onSyncClick }: He
             </nav>
           </div>
           
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2" {...props}>
             {/* Mobile Navigation */}
             <div className="md:hidden flex items-center gap-1">
               <Link
