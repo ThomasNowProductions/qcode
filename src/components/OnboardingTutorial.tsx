@@ -45,14 +45,13 @@ export function OnboardingTutorial({ isOpen, onClose, onComplete, onSkip }: Onbo
     }
   }, [currentStep, isOpen, currentStepData.targetElement])
 
-  // Position tooltip relative to highlighted element
+  // Position tooltip relative to highlighted element or center it
   useEffect(() => {
-    if (!highlightedElement || !tooltipRef.current) return
+    if (!tooltipRef.current) return
 
     const updatePosition = () => {
-      if (!highlightedElement || !tooltipRef.current) return
+      if (!tooltipRef.current) return
 
-      const elementRect = highlightedElement.getBoundingClientRect()
       const tooltipRect = tooltipRef.current.getBoundingClientRect()
       const viewportHeight = window.innerHeight
       const viewportWidth = window.innerWidth
@@ -60,28 +59,32 @@ export function OnboardingTutorial({ isOpen, onClose, onComplete, onSkip }: Onbo
       let top = 0
       let left = 0
 
-      switch (currentStepData.position) {
-        case 'top':
-          top = elementRect.top - tooltipRect.height - 20
-          left = elementRect.left + (elementRect.width / 2) - (tooltipRect.width / 2)
-          break
-        case 'bottom':
-          top = elementRect.bottom + 20
-          left = elementRect.left + (elementRect.width / 2) - (tooltipRect.width / 2)
-          break
-        case 'left':
-          top = elementRect.top + (elementRect.height / 2) - (tooltipRect.height / 2)
-          left = elementRect.left - tooltipRect.width - 20
-          break
-        case 'right':
-          top = elementRect.top + (elementRect.height / 2) - (tooltipRect.height / 2)
-          left = elementRect.right + 20
-          break
-        default:
-          // Center
-          top = (viewportHeight / 2) - (tooltipRect.height / 2)
-          left = (viewportWidth / 2) - (tooltipRect.width / 2)
-          break
+      // Handle positioning based on whether we have a target element
+      if (highlightedElement && currentStepData.position !== 'center') {
+        const elementRect = highlightedElement.getBoundingClientRect()
+
+        switch (currentStepData.position) {
+          case 'top':
+            top = elementRect.top - tooltipRect.height - 20
+            left = elementRect.left + (elementRect.width / 2) - (tooltipRect.width / 2)
+            break
+          case 'bottom':
+            top = elementRect.bottom + 20
+            left = elementRect.left + (elementRect.width / 2) - (tooltipRect.width / 2)
+            break
+          case 'left':
+            top = elementRect.top + (elementRect.height / 2) - (tooltipRect.height / 2)
+            left = elementRect.left - tooltipRect.width - 20
+            break
+          case 'right':
+            top = elementRect.top + (elementRect.height / 2) - (tooltipRect.height / 2)
+            left = elementRect.right + 20
+            break
+        }
+      } else {
+        // Center position (for steps with no target element or explicitly center)
+        top = (viewportHeight / 2) - (tooltipRect.height / 2)
+        left = (viewportWidth / 2) - (tooltipRect.width / 2)
       }
 
       // Keep tooltip within viewport bounds
@@ -91,10 +94,11 @@ export function OnboardingTutorial({ isOpen, onClose, onComplete, onSkip }: Onbo
       tooltipRef.current.style.position = 'fixed'
       tooltipRef.current.style.top = `${top}px`
       tooltipRef.current.style.left = `${left}px`
-      tooltipRef.current.style.zIndex = '9999'
+      tooltipRef.current.style.zIndex = '10000'
     }
 
-    updatePosition()
+    // Small delay to ensure DOM is ready
+    const timeoutId = setTimeout(updatePosition, 10)
     
     const handleResize = () => updatePosition()
     const handleScroll = () => updatePosition()
@@ -103,10 +107,11 @@ export function OnboardingTutorial({ isOpen, onClose, onComplete, onSkip }: Onbo
     window.addEventListener('scroll', handleScroll, true)
 
     return () => {
+      clearTimeout(timeoutId)
       window.removeEventListener('resize', handleResize)
       window.removeEventListener('scroll', handleScroll, true)
     }
-  }, [highlightedElement, currentStepData.position])
+  }, [highlightedElement, currentStepData.position, isOpen])
 
   const handleNext = () => {
     if (isLastStep) {
@@ -132,17 +137,19 @@ export function OnboardingTutorial({ isOpen, onClose, onComplete, onSkip }: Onbo
     <>
       {/* Overlay */}
       <div 
-        className="fixed inset-0 bg-black/50 transition-opacity z-[9998]"
+        className="fixed inset-0 bg-black/60 transition-opacity z-[9998]"
       />
 
       {/* Tutorial Card */}
       <div
         ref={tooltipRef}
         className={`
-          bg-white dark:bg-gray-800 rounded-xl shadow-2xl border border-gray-200 dark:border-gray-700 
+          bg-white dark:bg-gray-800 rounded-xl shadow-2xl border border-gray-200 dark:border-gray-600
           w-full max-w-md mx-4 transition-all duration-300 transform
+          ring-4 ring-white/10 backdrop-blur-sm
           ${isOpen ? 'scale-100 opacity-100' : 'scale-95 opacity-0'}
         `}
+        style={{ zIndex: 10000 }}
       >
         {/* Header */}
         <div className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700">
@@ -242,7 +249,7 @@ export function OnboardingTutorial({ isOpen, onClose, onComplete, onSkip }: Onbo
           .onboarding-highlight {
             position: relative;
             z-index: 9999;
-            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.5), 0 0 0 9999px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.5), 0 0 0 9999px rgba(0, 0, 0, 0.6);
             border-radius: 8px;
             transition: all 0.3s ease;
           }
