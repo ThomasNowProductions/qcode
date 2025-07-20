@@ -46,7 +46,8 @@ export default function HomePage() {
     completeTutorial,
     closeTutorial,
     resetTutorial,
-    shouldShowTutorial
+    shouldShowTutorial,
+    isInitialized
   } = useOnboarding()
 
   // Handle restart tutorial from settings
@@ -106,16 +107,16 @@ export default function HomePage() {
   const stats = getStats()
   const expiringSoon = getExpiringSoon()
 
-  // Show tutorial for new users (after loading is complete)
+  // Show tutorial for new users (after loading is complete and onboarding hook is initialized)
   useEffect(() => {
-    if (!isLoading && codes.length === 0 && shouldShowTutorial) {
+    if (!isLoading && isInitialized && codes.length === 0 && shouldShowTutorial) {
       // Small delay to ensure page is fully rendered
       const timer = setTimeout(() => {
         startTutorial()
       }, 1000)
       return () => clearTimeout(timer)
     }
-  }, [isLoading, codes.length, shouldShowTutorial, startTutorial])
+  }, [isLoading, isInitialized, codes.length, shouldShowTutorial, startTutorial])
 
   if (isLoading) {
     return (

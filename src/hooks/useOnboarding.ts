@@ -10,9 +10,11 @@ export function useOnboarding() {
   const [state, setState] = useState<OnboardingState>({
     isActive: false,
     currentStep: 0,
-    isCompleted: false,
+    isCompleted: true, // Start as completed to prevent flashing
     canSkip: true
   })
+  
+  const [isInitialized, setIsInitialized] = useState(false)
 
   // Check tutorial completion status on mount
   useEffect(() => {
@@ -23,6 +25,7 @@ export function useOnboarding() {
       ...prev,
       isCompleted: isCompleted || isSkipped
     }))
+    setIsInitialized(true)
   }, [])
 
   const startTutorial = useCallback(() => {
@@ -86,8 +89,8 @@ export function useOnboarding() {
     })
   }, [])
 
-  // Show tutorial automatically for new users
-  const shouldShowTutorial = !state.isCompleted && !state.isActive
+  // Show tutorial automatically for new users - only after initialization
+  const shouldShowTutorial = isInitialized && !state.isCompleted && !state.isActive
 
   return {
     state,
@@ -98,6 +101,7 @@ export function useOnboarding() {
     completeTutorial,
     closeTutorial,
     resetTutorial,
-    shouldShowTutorial
+    shouldShowTutorial,
+    isInitialized
   }
 }

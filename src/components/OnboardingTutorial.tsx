@@ -132,7 +132,7 @@ export function OnboardingTutorial({ isOpen, onClose, onComplete, onSkip }: Onbo
     <>
       {/* Overlay */}
       <div 
-        className="fixed inset-0 bg-black bg-opacity-50 transition-opacity z-[9998]"
+        className="fixed inset-0 bg-black/50 transition-opacity z-[9998]"
         onClick={onClose}
       />
 
