@@ -34,14 +34,14 @@ export const ONBOARDING_STEPS: OnboardingStep[] = [
     title: 'onboarding.addCode.title', 
     description: 'onboarding.addCode.description',
     targetElement: '[data-tutorial="add-button"]',
-    position: 'top'
+    position: 'bottom'
   },
   {
     id: 'search-filter',
     title: 'onboarding.searchFilter.title',
     description: 'onboarding.searchFilter.description', 
     targetElement: '[data-tutorial="search-filter"]',
-    position: 'top'
+    position: 'bottom'
   },
   {
     id: 'categories-favorites',

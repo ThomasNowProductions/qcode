@@ -141,6 +141,8 @@
         "No data is shared with third parties",
         "Fully functional offline"
       ],
+      "tutorial": "Tutorial",
+      "tutorialDescription": "Take the app tour again to learn about all features.",
       "footer": "Built with ❤️ using Next.js, TypeScript & Tailwind CSS"
     },
     "export": {
@@ -449,7 +451,7 @@
     },
     "notifications": {
       "title": "Notifications & Management",
-      "description": "The app will notify you when codes are about to expire. You can also access settings, sync options, and analytics from the header."
+      "description": "Click the bell icon in the header to view notifications about expiring codes. Use the gear icon to access settings, export/import, and other options."
     },
     "completion": {
       "title": "You're All Set!",

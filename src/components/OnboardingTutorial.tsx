@@ -55,6 +55,8 @@ export function OnboardingTutorial({ isOpen, onClose, onComplete, onSkip }: Onbo
       const tooltipRect = tooltipRef.current.getBoundingClientRect()
       const viewportHeight = window.innerHeight
       const viewportWidth = window.innerWidth
+      const tooltipWidth = tooltipRect.width
+      const tooltipHeight = tooltipRect.height
 
       let top = 0
       let left = 0
@@ -62,34 +64,65 @@ export function OnboardingTutorial({ isOpen, onClose, onComplete, onSkip }: Onbo
       // Handle positioning based on whether we have a target element
       if (highlightedElement && currentStepData.position !== 'center') {
         const elementRect = highlightedElement.getBoundingClientRect()
+        const minGap = 40 // Increased gap to prevent overlap
 
         switch (currentStepData.position) {
           case 'top':
-            top = elementRect.top - tooltipRect.height - 20
-            left = elementRect.left + (elementRect.width / 2) - (tooltipRect.width / 2)
+            // Position above element, but check if there's enough space
+            const topPos = elementRect.top - tooltipHeight - minGap
+            if (topPos < 20) {
+              // Not enough space above, position below instead
+              top = elementRect.bottom + minGap
+            } else {
+              top = topPos
+            }
+            // Center horizontally on element, but keep within viewport
+            left = elementRect.left + (elementRect.width / 2) - (tooltipWidth / 2)
             break
           case 'bottom':
-            top = elementRect.bottom + 20
-            left = elementRect.left + (elementRect.width / 2) - (tooltipRect.width / 2)
+            // Position below element, but check if there's enough space
+            const bottomPos = elementRect.bottom + minGap
+            if (bottomPos + tooltipHeight > viewportHeight - 20) {
+              // Not enough space below, position above instead
+              top = elementRect.top - tooltipHeight - minGap
+            } else {
+              top = bottomPos
+            }
+            left = elementRect.left + (elementRect.width / 2) - (tooltipWidth / 2)
             break
           case 'left':
-            top = elementRect.top + (elementRect.height / 2) - (tooltipRect.height / 2)
-            left = elementRect.left - tooltipRect.width - 20
+            // Position to the left of element
+            const leftPos = elementRect.left - tooltipWidth - minGap
+            if (leftPos < 20) {
+              // Not enough space left, position right instead
+              left = elementRect.right + minGap
+            } else {
+              left = leftPos
+            }
+            top = elementRect.top + (elementRect.height / 2) - (tooltipHeight / 2)
             break
           case 'right':
-            top = elementRect.top + (elementRect.height / 2) - (tooltipRect.height / 2)
-            left = elementRect.right + 20
+            // Position to the right of element
+            const rightPos = elementRect.right + minGap
+            if (rightPos + tooltipWidth > viewportWidth - 20) {
+              // Not enough space right, position left instead
+              left = elementRect.left - tooltipWidth - minGap
+            } else {
+              left = rightPos
+            }
+            top = elementRect.top + (elementRect.height / 2) - (tooltipHeight / 2)
             break
         }
       } else {
         // Center position (for steps with no target element or explicitly center)
-        top = (viewportHeight / 2) - (tooltipRect.height / 2)
-        left = (viewportWidth / 2) - (tooltipRect.width / 2)
+        top = (viewportHeight / 2) - (tooltipHeight / 2)
+        left = (viewportWidth / 2) - (tooltipWidth / 2)
       }
 
-      // Keep tooltip within viewport bounds
-      top = Math.max(20, Math.min(top, viewportHeight - tooltipRect.height - 20))
-      left = Math.max(20, Math.min(left, viewportWidth - tooltipRect.width - 20))
+      // Keep tooltip within viewport bounds with more padding
+      const padding = 20
+      top = Math.max(padding, Math.min(top, viewportHeight - tooltipHeight - padding))
+      left = Math.max(padding, Math.min(left, viewportWidth - tooltipWidth - padding))
 
       tooltipRef.current.style.position = 'fixed'
       tooltipRef.current.style.top = `${top}px`

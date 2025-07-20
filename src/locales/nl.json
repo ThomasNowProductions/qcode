@@ -141,6 +141,8 @@
         "Geen data wordt gedeeld met derden",
         "Volledig offline te gebruiken"
       ],
+      "tutorial": "Tutorial",
+      "tutorialDescription": "Doorloop de app rondleiding opnieuw om meer te leren over alle functies.",
       "footer": "Gebouwd met ❤️ using Next.js, TypeScript & Tailwind CSS"
     },
     "export": {
@@ -449,7 +451,7 @@
     },
     "notifications": {
       "title": "Notificaties & Beheer",
-      "description": "De app laat je weten wanneer codes bijna verlopen. Je kunt ook instellingen, synchronisatie-opties en analytics bereiken via de header."
+      "description": "Klik op het belletje in de header om notificaties te bekijken over bijna verlopende codes. Via de tandwiel-icoon kun je toegang krijgen tot instellingen, export/import en andere opties."
     },
     "completion": {
       "title": "Je bent er klaar voor!",
