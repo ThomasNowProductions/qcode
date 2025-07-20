@@ -1,4 +1,4 @@
-import { renderHook, act, waitFor } from '@testing-library/react'
+import { renderHook, act } from '@testing-library/react'
 import { useOnboarding } from '@/hooks/useOnboarding'
 
 // Mock localStorage properly
