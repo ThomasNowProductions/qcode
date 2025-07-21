@@ -64,7 +64,7 @@ export function OnboardingTutorial({ isOpen, onClose, onComplete, onSkip }: Onbo
       // Handle positioning based on whether we have a target element
       if (highlightedElement && currentStepData.position !== 'center') {
         const elementRect = highlightedElement.getBoundingClientRect()
-        const minGap = 40 // Increased gap to prevent overlap
+        const minGap = 60 // Increased gap further to prevent overlap
 
         switch (currentStepData.position) {
           case 'top':
@@ -121,11 +121,63 @@ export function OnboardingTutorial({ isOpen, onClose, onComplete, onSkip }: Onbo
 
       // Keep tooltip within viewport bounds with more padding
       const padding = 20
-      const mobileViewport = viewportWidth <= 640 // sm breakpoint
-      const mobilePadding = mobileViewport ? 12 : padding
+      const mobileViewport = viewportWidth <= 640 // sm breakpoint  
+      const verySmallViewport = viewportWidth <= 375 // very small phones
+      const mobilePadding = verySmallViewport ? 8 : (mobileViewport ? 12 : padding)
       
       top = Math.max(mobilePadding, Math.min(top, viewportHeight - tooltipHeight - mobilePadding))
       left = Math.max(mobilePadding, Math.min(left, viewportWidth - tooltipWidth - mobilePadding))
+
+      // Additional collision detection - ensure tooltip doesn't overlap with highlighted element
+      if (highlightedElement && currentStepData.position !== 'center') {
+        const elementRect = highlightedElement.getBoundingClientRect()
+        const tooltipLeft = left
+        const tooltipRight = left + tooltipWidth
+        const tooltipTop = top
+        const tooltipBottom = top + tooltipHeight
+        
+        // Check if tooltip would overlap with the element
+        const wouldOverlapHorizontally = tooltipLeft < elementRect.right && tooltipRight > elementRect.left
+        const wouldOverlapVertically = tooltipTop < elementRect.bottom && tooltipBottom > elementRect.top
+        
+        if (wouldOverlapHorizontally && wouldOverlapVertically) {
+          // Try to reposition to avoid overlap - prefer bottom position for small elements
+          const spaceBelow = viewportHeight - elementRect.bottom
+          const spaceAbove = elementRect.top
+          const spaceLeft = elementRect.left  
+          const spaceRight = viewportWidth - elementRect.right
+          
+          if (spaceBelow >= tooltipHeight + mobilePadding) {
+            // Position below
+            top = elementRect.bottom + mobilePadding
+            left = Math.max(mobilePadding, Math.min(
+              elementRect.left + (elementRect.width / 2) - (tooltipWidth / 2),
+              viewportWidth - tooltipWidth - mobilePadding
+            ))
+          } else if (spaceAbove >= tooltipHeight + mobilePadding) {
+            // Position above
+            top = elementRect.top - tooltipHeight - mobilePadding
+            left = Math.max(mobilePadding, Math.min(
+              elementRect.left + (elementRect.width / 2) - (tooltipWidth / 2),
+              viewportWidth - tooltipWidth - mobilePadding
+            ))
+          } else if (spaceRight >= tooltipWidth + mobilePadding) {
+            // Position to the right with more gap
+            left = elementRect.right + mobilePadding + 20
+            top = Math.max(mobilePadding, Math.min(
+              elementRect.top + (elementRect.height / 2) - (tooltipHeight / 2),
+              viewportHeight - tooltipHeight - mobilePadding
+            ))
+          } else if (spaceLeft >= tooltipWidth + mobilePadding) {
+            // Position to the left with more gap
+            left = elementRect.left - tooltipWidth - mobilePadding - 20
+            top = Math.max(mobilePadding, Math.min(
+              elementRect.top + (elementRect.height / 2) - (tooltipHeight / 2),
+              viewportHeight - tooltipHeight - mobilePadding
+            ))
+          }
+        }
+      }
 
       tooltipRef.current.style.position = 'fixed'
       tooltipRef.current.style.top = `${top}px`
@@ -181,7 +233,7 @@ export function OnboardingTutorial({ isOpen, onClose, onComplete, onSkip }: Onbo
         ref={tooltipRef}
         className={`
           theme-card rounded-xl shadow-2xl border
-          w-full max-w-sm sm:max-w-md mx-3 sm:mx-4 transition-all duration-300 transform
+          w-full max-w-xs sm:max-w-sm md:max-w-md mx-2 xs:mx-3 sm:mx-4 transition-all duration-300 transform
           ring-4 ring-white/10 backdrop-blur-sm
           ${isOpen ? 'scale-100 opacity-100' : 'scale-95 opacity-0'}
         `}
@@ -212,14 +264,14 @@ export function OnboardingTutorial({ isOpen, onClose, onComplete, onSkip }: Onbo
         </div>
 
         {/* Content */}
-        <div className="p-4 sm:p-6">
-          <p className="theme-text-secondary leading-relaxed mb-4 sm:mb-6 text-sm sm:text-base">
+        <div className="p-3 xs:p-4 sm:p-6">
+          <p className="theme-text-secondary leading-relaxed mb-3 xs:mb-4 sm:mb-6 text-xs xs:text-sm sm:text-base">
             {t(currentStepData.description)}
           </p>
 
           {/* Progress bar */}
-          <div className="mb-4 sm:mb-6">
-            <div className="flex justify-between text-xs sm:text-sm theme-text-muted mb-2">
+          <div className="mb-3 xs:mb-4 sm:mb-6">
+            <div className="flex justify-between text-xs sm:text-sm theme-text-muted mb-1 xs:mb-2">
               <span>
                 {t('onboarding.navigation.stepOf', { 
                   current: currentStep + 1, 
@@ -228,23 +280,23 @@ export function OnboardingTutorial({ isOpen, onClose, onComplete, onSkip }: Onbo
               </span>
               <span>{Math.round((currentStep + 1) / totalSteps * 100)}%</span>
             </div>
-            <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+            <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-1.5 xs:h-2">
               <div 
-                className="bg-blue-500 h-2 rounded-full transition-all duration-300"
+                className="bg-blue-500 h-1.5 xs:h-2 rounded-full transition-all duration-300"
                 style={{ width: `${(currentStep + 1) / totalSteps * 100}%` }}
               />
             </div>
           </div>
 
           {/* Navigation buttons */}
-          <div className="flex items-center justify-between gap-2">
-            <div className="flex gap-1 sm:gap-2">
+          <div className="flex items-center justify-between gap-1 xs:gap-2">
+            <div className="flex gap-1 xs:gap-1 sm:gap-2">
               {!isFirstStep && (
                 <button
                   onClick={handlePrevious}
-                  className="flex items-center gap-1 sm:gap-2 px-3 sm:px-4 py-2 theme-text-secondary hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors text-sm"
+                  className="flex items-center gap-1 sm:gap-2 px-2 xs:px-3 sm:px-4 py-2 theme-text-secondary hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors text-xs xs:text-sm"
                 >
-                  <ArrowLeft size={14} className="sm:w-4 sm:h-4" />
+                  <ArrowLeft size={12} className="xs:w-3.5 xs:h-3.5 sm:w-4 sm:h-4" />
                   <span className="hidden sm:inline">{t('onboarding.navigation.previous')}</span>
                 </button>
               )}
@@ -252,7 +304,7 @@ export function OnboardingTutorial({ isOpen, onClose, onComplete, onSkip }: Onbo
               {currentStepData.allowSkip && !isLastStep && (
                 <button
                   onClick={handleSkip}
-                  className="px-3 sm:px-4 py-2 theme-text-muted hover:text-gray-700 dark:hover:text-gray-200 transition-colors text-sm"
+                  className="px-2 xs:px-3 sm:px-4 py-2 theme-text-muted hover:text-gray-700 dark:hover:text-gray-200 transition-colors text-xs xs:text-sm"
                 >
                   {t('onboarding.navigation.skip')}
                 </button>
@@ -261,11 +313,11 @@ export function OnboardingTutorial({ isOpen, onClose, onComplete, onSkip }: Onbo
 
             <button
               onClick={handleNext}
-              className="flex items-center gap-1 sm:gap-2 px-4 sm:px-6 py-2 bg-blue-500 hover:bg-blue-600 text-white font-medium rounded-lg transition-colors text-sm"
+              className="flex items-center gap-1 sm:gap-2 px-3 xs:px-4 sm:px-6 py-2 bg-blue-500 hover:bg-blue-600 text-white font-medium rounded-lg transition-colors text-xs xs:text-sm"
             >
               {isLastStep ? (
                 <>
-                  <CheckCircle size={14} className="sm:w-4 sm:h-4" />
+                  <CheckCircle size={12} className="xs:w-3.5 xs:h-3.5 sm:w-4 sm:h-4" />
                   <span className="hidden sm:inline">{t('onboarding.navigation.finish')}</span>
                   <span className="sm:hidden">✓</span>
                 </>
@@ -273,7 +325,7 @@ export function OnboardingTutorial({ isOpen, onClose, onComplete, onSkip }: Onbo
                 <>
                   <span className="hidden sm:inline">{t('onboarding.navigation.next')}</span>
                   <span className="sm:hidden">→</span>
-                  <ArrowRight size={14} className="sm:w-4 sm:h-4" />
+                  <ArrowRight size={12} className="xs:w-3.5 xs:h-3.5 sm:w-4 sm:h-4" />
                 </>
               )}
             </button>
