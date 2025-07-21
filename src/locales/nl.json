@@ -141,6 +141,8 @@
         "Geen data wordt gedeeld met derden",
         "Volledig offline te gebruiken"
       ],
+      "tutorial": "Tutorial",
+      "tutorialDescription": "Doorloop de app rondleiding opnieuw om meer te leren over alle functies.",
       "footer": "Gebouwd met ❤️ using Next.js, TypeScript & Tailwind CSS"
     },
     "export": {
@@ -429,5 +431,40 @@
     "Wonen & Tuin": "Wonen & Tuin",
     "Speelgoed": "Speelgoed",
     "Anders": "Anders"
+  },
+  "onboarding": {
+    "welcome": {
+      "title": "Welkom bij QCode!",
+      "description": "Laten we een korte rondleiding door de hoofdfuncties van de app maken. Deze tutorial helpt je om het meeste uit het beheren van je kortingscodes te halen."
+    },
+    "addCode": {
+      "title": "Kortingscodes toevoegen",
+      "description": "Begin door op deze knop te klikken om je eerste kortingscode toe te voegen. Je kunt de code, winkelnaam, kortingspercentage, vervaldatum en meer opslaan."
+    },
+    "searchFilter": {
+      "title": "Zoeken & Filteren",
+      "description": "Gebruik de zoekbalk en filters om snel specifieke codes te vinden. Je kunt zoeken op winkelnaam, filteren op categorie of sorteren op verschillende criteria."
+    },
+    "categories": {
+      "title": "Categorieën & Favorieten",
+      "description": "Organiseer je codes per categorie en markeer belangrijke codes als favoriet voor snelle toegang. Je kunt ook codes archiveren die je niet meer nodig hebt."
+    },
+    "notifications": {
+      "title": "Notificaties & Beheer",
+      "description": "Klik op het belletje in de header om notificaties te bekijken over bijna verlopende codes. Via de tandwiel-icoon kun je toegang krijgen tot instellingen, export/import en andere opties."
+    },
+    "completion": {
+      "title": "Je bent er klaar voor!",
+      "description": "Je hebt de tutorial voltooid! Je kunt deze altijd opnieuw starten vanuit het Instellingen-menu. Begin nu met het toevoegen van je kortingscodes en mis nooit meer een aanbieding!"
+    },
+    "navigation": {
+      "next": "Volgende",
+      "previous": "Vorige",
+      "skip": "Tutorial overslaan",
+      "restart": "Tutorial herstarten",
+      "finish": "Voltooien",
+      "close": "Sluiten",
+      "stepOf": "Stap {{current}} van {{total}}"
+    }
   }
 }

@@ -45,7 +45,7 @@ export function SearchAndFilter({ filters, onFiltersChange }: SearchAndFilterPro
       {/* Filters Row */}
       <div className="flex flex-wrap gap-4">
         {/* Category Filter */}
-        <div className="flex items-center gap-3 theme-filter rounded-lg px-4 py-2">
+        <div className="flex items-center gap-3 theme-filter rounded-lg px-4 py-2" data-tutorial="categories">
           <Filter size={16} className="text-gray-500 dark:text-gray-400" />
           <select
             value={filters.category}

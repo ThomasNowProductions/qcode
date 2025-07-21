@@ -141,6 +141,8 @@
         "No data is shared with third parties",
         "Fully functional offline"
       ],
+      "tutorial": "Tutorial",
+      "tutorialDescription": "Take the app tour again to learn about all features.",
       "footer": "Built with ❤️ using Next.js, TypeScript & Tailwind CSS"
     },
     "export": {
@@ -429,5 +431,40 @@
     "Wonen & Tuin": "Home & Garden",
     "Speelgoed": "Toys",
     "Anders": "Other"
+  },
+  "onboarding": {
+    "welcome": {
+      "title": "Welcome to QCode!",
+      "description": "Let's take a quick tour of the app's main features. This tutorial will help you get the most out of managing your discount codes."
+    },
+    "addCode": {
+      "title": "Adding Discount Codes",
+      "description": "Start by clicking this button to add your first discount code. You can store the code, store name, discount amount, expiry date, and more."
+    },
+    "searchFilter": {
+      "title": "Search & Filter",
+      "description": "Use the search bar and filters to quickly find specific codes. You can search by store name, filter by category, or sort by different criteria."
+    },
+    "categories": {
+      "title": "Categories & Favorites",
+      "description": "Organize your codes by categories and mark important ones as favorites for quick access. You can also archive codes you no longer need."
+    },
+    "notifications": {
+      "title": "Notifications & Management",
+      "description": "Click the bell icon in the header to view notifications about expiring codes. Use the gear icon to access settings, export/import, and other options."
+    },
+    "completion": {
+      "title": "You're All Set!",
+      "description": "You've completed the tutorial! You can restart it anytime from the Settings menu. Now start adding your discount codes and never miss a deal!"
+    },
+    "navigation": {
+      "next": "Next",
+      "previous": "Previous",
+      "skip": "Skip Tutorial",
+      "restart": "Restart Tutorial",
+      "finish": "Finish",
+      "close": "Close",
+      "stepOf": "Step {{current}} of {{total}}"
+    }
   }
 }

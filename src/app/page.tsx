@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useRef, createRef } from 'react'
+import { useState, useRef, createRef, useEffect } from 'react'
 import { Plus } from 'lucide-react'
 import { useDiscountCodes } from '@/hooks/useDiscountCodes'
 import { Header } from '@/components/Header'
@@ -16,6 +16,8 @@ import { OnlineStatusBanner } from '@/components/OfflineIndicator'
 import { CloudSync } from '@/components/CloudSync'
 import { ChangelogPopup } from '@/components/ChangelogPopup'
 import { ReleaseNotesModal } from '@/components/ReleaseNotesModal'
+import { OnboardingTutorial } from '@/components/OnboardingTutorial'
+import { useOnboarding } from '@/hooks/useOnboarding'
 import { useTranslation } from 'react-i18next'
 import type { SearchFilters } from '@/types/discount-code'
 
@@ -35,6 +37,28 @@ export default function HomePage() {
     getExpiringSoon,
     manualSync,
   } = useDiscountCodes()
+
+  // Onboarding tutorial state
+  const {
+    state: tutorialState,
+    startTutorial,
+    skipTutorial,
+    completeTutorial,
+    closeTutorial,
+    resetTutorial,
+    shouldShowTutorial,
+    isInitialized
+  } = useOnboarding()
+
+  // Handle restart tutorial from settings
+  const handleRestartTutorial = () => {
+    setIsSettingsModalOpen(false)
+    resetTutorial()
+    // Small delay to let modal close
+    setTimeout(() => {
+      startTutorial()
+    }, 300)
+  }
 
   const [searchFilters, setSearchFilters] = useState<SearchFilters>({
     searchTerm: '',
@@ -83,6 +107,17 @@ export default function HomePage() {
   const stats = getStats()
   const expiringSoon = getExpiringSoon()
 
+  // Show tutorial for new users (after loading is complete and onboarding hook is initialized)
+  useEffect(() => {
+    if (!isLoading && isInitialized && codes.length === 0 && shouldShowTutorial) {
+      // Small delay to ensure page is fully rendered
+      const timer = setTimeout(() => {
+        startTutorial()
+      }, 1000)
+      return () => clearTimeout(timer)
+    }
+  }, [isLoading, isInitialized, codes.length, shouldShowTutorial, startTutorial])
+
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center transition-colors">
@@ -105,6 +140,7 @@ export default function HomePage() {
         onNotificationClick={() => setShowNotificationBanner(!showNotificationBanner)}
         onSettingsClick={() => setIsSettingsModalOpen(true)}
         onSyncClick={() => setIsCloudSyncOpen(true)}
+        data-tutorial="notifications"
       />
       
       <main className="max-w-4xl mx-auto px-4 py-8">
@@ -123,7 +159,7 @@ export default function HomePage() {
         <StatsOverview stats={stats} />
 
         {/* Search and Filter */}
-        <div className="mb-8">
+        <div className="mb-8" data-tutorial="search-filter">
           <SearchAndFilter
             filters={searchFilters}
             onFiltersChange={setSearchFilters}
@@ -134,6 +170,7 @@ export default function HomePage() {
         <div className="mb-8">
           <button
             onClick={() => setIsAddModalOpen(true)}
+            data-tutorial="add-button"
             className="w-full flex items-center justify-center gap-3 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-semibold py-4 px-6 rounded-xl transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-[1.02] group"
           >
             <Plus size={24} className="group-hover:rotate-90 transition-transform duration-200" />
@@ -177,6 +214,7 @@ export default function HomePage() {
         isOpen={isSettingsModalOpen}
         onClose={() => setIsSettingsModalOpen(false)}
         onAdvancedReleaseNotes={() => setIsReleaseNotesOpen(true)}
+        onRestartTutorial={handleRestartTutorial}
       />
 
       {/* Cloud Sync Modal */}
@@ -195,6 +233,14 @@ export default function HomePage() {
       <ReleaseNotesModal
         isOpen={isReleaseNotesOpen}
         onClose={() => setIsReleaseNotesOpen(false)}
+      />
+
+      {/* Onboarding Tutorial */}
+      <OnboardingTutorial
+        isOpen={tutorialState.isActive}
+        onClose={closeTutorial}
+        onComplete={completeTutorial}
+        onSkip={skipTutorial}
       />
     </div>
   )
