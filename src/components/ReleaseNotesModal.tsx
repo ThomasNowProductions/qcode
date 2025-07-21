@@ -18,13 +18,13 @@ export function ReleaseNotesModal({ isOpen, onClose }: ReleaseNotesModalProps) {
 
   // Prevent background scroll when modal is open
   useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = '';
-    }
+    if (!isOpen) return;
+
+    const originalOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+
     return () => {
-      document.body.style.overflow = '';
+      document.body.style.overflow = originalOverflow;
     };
   }, [isOpen]);
 
@@ -44,7 +44,7 @@ export function ReleaseNotesModal({ isOpen, onClose }: ReleaseNotesModalProps) {
     <div className="fixed inset-0 bg-black/60 flex items-center justify-center p-4 z-50">
       <div className="theme-card rounded-2xl shadow-2xl max-w-4xl w-full max-h-[90vh] flex flex-col border border-white/20">
         {/* Header */}
-        <div className="flex items-center justify-between p-6 border-b border-gray-200 dark:border-[var(--card-border)]">
+        <div className="flex items-center justify-between p-6 border-b border-gray-200 dark:border-[var(--card-border)] flex-shrink-0">
           <div>
             <h2 className="text-xl font-semibold theme-text-primary">{t('releaseNotes.title')}</h2>
             <p className="text-sm theme-text-secondary mt-1">
@@ -60,7 +60,7 @@ export function ReleaseNotesModal({ isOpen, onClose }: ReleaseNotesModalProps) {
         </div>
 
         {/* Tabs */}
-        <div className="border-b border-gray-200 dark:border-[var(--card-border)]">
+        <div className="border-b border-gray-200 dark:border-[var(--card-border)] flex-shrink-0">
           <nav className="flex space-x-8 px-6">
             <button
               onClick={() => setSelectedTab('summary')}
@@ -86,7 +86,7 @@ export function ReleaseNotesModal({ isOpen, onClose }: ReleaseNotesModalProps) {
         </div>
 
         {/* Content */}
-        <div className="flex-1 min-h-0 overflow-y-auto p-6">
+        <div className="flex-grow overflow-y-auto p-6">
           {selectedTab === 'summary' && (
             <div className="space-y-6">
               {/* AI Summary */}
@@ -167,7 +167,7 @@ export function ReleaseNotesModal({ isOpen, onClose }: ReleaseNotesModalProps) {
         </div>
 
         {/* Footer */}
-        <div className="px-6 py-4 border-t border-gray-200 dark:border-[var(--card-border)] bg-gray-50 dark:bg-[var(--card-bg)]">
+        <div className="px-6 py-4 border-t border-gray-200 dark:border-[var(--card-border)] bg-gray-50 dark:bg-[var(--card-bg)] flex-shrink-0">
           <button
             onClick={onClose}
             className="w-full bg-gradient-to-r from-gray-600 to-gray-700 hover:from-gray-700 hover:to-gray-800 text-white font-semibold py-2.5 px-4 rounded-lg transition-all duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
