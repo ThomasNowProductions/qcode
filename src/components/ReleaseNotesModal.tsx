@@ -5,6 +5,7 @@ import { getCachedChangelog } from '@/utils/changelog'
 import { formatDistanceToNow } from 'date-fns'
 import type { ChangelogData, ChangelogEntry } from '@/types/changelog'
 
+
 interface ReleaseNotesModalProps {
   isOpen: boolean
   onClose: () => void
@@ -14,6 +15,18 @@ export function ReleaseNotesModal({ isOpen, onClose }: ReleaseNotesModalProps) {
   const { t } = useTranslation()
   const [changelogData, setChangelogData] = useState<ChangelogData | null>(null)
   const [selectedTab, setSelectedTab] = useState<'commits' | 'summary'>('summary')
+
+  // Prevent background scroll when modal is open
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isOpen]);
 
   useEffect(() => {
     if (isOpen) {
@@ -29,7 +42,7 @@ export function ReleaseNotesModal({ isOpen, onClose }: ReleaseNotesModalProps) {
 
   return (
     <div className="fixed inset-0 bg-black/60 flex items-center justify-center p-4 z-50">
-      <div className="theme-card rounded-2xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden border border-white/20">
+      <div className="theme-card rounded-2xl shadow-2xl max-w-4xl w-full max-h-[90vh] flex flex-col border border-white/20">
         {/* Header */}
         <div className="flex items-center justify-between p-6 border-b border-gray-200 dark:border-[var(--card-border)]">
           <div>
@@ -73,7 +86,7 @@ export function ReleaseNotesModal({ isOpen, onClose }: ReleaseNotesModalProps) {
         </div>
 
         {/* Content */}
-        <div className="flex-1 overflow-y-auto p-6">
+        <div className="flex-1 min-h-0 overflow-y-auto p-6">
           {selectedTab === 'summary' && (
             <div className="space-y-6">
               {/* AI Summary */}
