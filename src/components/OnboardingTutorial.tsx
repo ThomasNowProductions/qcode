@@ -121,8 +121,11 @@ export function OnboardingTutorial({ isOpen, onClose, onComplete, onSkip }: Onbo
 
       // Keep tooltip within viewport bounds with more padding
       const padding = 20
-      top = Math.max(padding, Math.min(top, viewportHeight - tooltipHeight - padding))
-      left = Math.max(padding, Math.min(left, viewportWidth - tooltipWidth - padding))
+      const mobileViewport = viewportWidth <= 640 // sm breakpoint
+      const mobilePadding = mobileViewport ? 12 : padding
+      
+      top = Math.max(mobilePadding, Math.min(top, viewportHeight - tooltipHeight - mobilePadding))
+      left = Math.max(mobilePadding, Math.min(left, viewportWidth - tooltipWidth - mobilePadding))
 
       tooltipRef.current.style.position = 'fixed'
       tooltipRef.current.style.top = `${top}px`
@@ -170,22 +173,22 @@ export function OnboardingTutorial({ isOpen, onClose, onComplete, onSkip }: Onbo
     <>
       {/* Overlay */}
       <div 
-        className="fixed inset-0 bg-black/60 transition-opacity z-[9998]"
+        className="fixed inset-0 bg-black/60 dark:bg-black/80 transition-opacity z-[9998]"
       />
 
       {/* Tutorial Card */}
       <div
         ref={tooltipRef}
         className={`
-          bg-white dark:bg-gray-800 rounded-xl shadow-2xl border border-gray-200 dark:border-gray-600
-          w-full max-w-md mx-4 transition-all duration-300 transform
+          theme-card rounded-xl shadow-2xl border
+          w-full max-w-sm sm:max-w-md mx-3 sm:mx-4 transition-all duration-300 transform
           ring-4 ring-white/10 backdrop-blur-sm
           ${isOpen ? 'scale-100 opacity-100' : 'scale-95 opacity-0'}
         `}
         style={{ zIndex: 10000 }}
       >
         {/* Header */}
-        <div className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700">
+        <div className="flex items-center justify-between p-4 border-b theme-text-primary">
           <div className="flex items-center gap-3">
             <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center">
               {isLastStep ? (
@@ -194,7 +197,7 @@ export function OnboardingTutorial({ isOpen, onClose, onComplete, onSkip }: Onbo
                 <span className="text-white text-sm font-semibold">{currentStep + 1}</span>
               )}
             </div>
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
+            <h2 className="text-lg font-semibold theme-text-primary">
               {t(currentStepData.title)}
             </h2>
           </div>
@@ -204,19 +207,19 @@ export function OnboardingTutorial({ isOpen, onClose, onComplete, onSkip }: Onbo
             className="p-1 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
             aria-label={t('common.close', 'Close')}
           >
-            <X size={20} className="text-gray-500 dark:text-gray-400" />
+            <X size={20} className="theme-text-secondary" />
           </button>
         </div>
 
         {/* Content */}
-        <div className="p-6">
-          <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-6">
+        <div className="p-4 sm:p-6">
+          <p className="theme-text-secondary leading-relaxed mb-4 sm:mb-6 text-sm sm:text-base">
             {t(currentStepData.description)}
           </p>
 
           {/* Progress bar */}
-          <div className="mb-6">
-            <div className="flex justify-between text-sm text-gray-500 dark:text-gray-400 mb-2">
+          <div className="mb-4 sm:mb-6">
+            <div className="flex justify-between text-xs sm:text-sm theme-text-muted mb-2">
               <span>
                 {t('onboarding.navigation.stepOf', { 
                   current: currentStep + 1, 
@@ -234,22 +237,22 @@ export function OnboardingTutorial({ isOpen, onClose, onComplete, onSkip }: Onbo
           </div>
 
           {/* Navigation buttons */}
-          <div className="flex items-center justify-between">
-            <div className="flex gap-2">
+          <div className="flex items-center justify-between gap-2">
+            <div className="flex gap-1 sm:gap-2">
               {!isFirstStep && (
                 <button
                   onClick={handlePrevious}
-                  className="flex items-center gap-2 px-4 py-2 text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
+                  className="flex items-center gap-1 sm:gap-2 px-3 sm:px-4 py-2 theme-text-secondary hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors text-sm"
                 >
-                  <ArrowLeft size={16} />
-                  {t('onboarding.navigation.previous')}
+                  <ArrowLeft size={14} className="sm:w-4 sm:h-4" />
+                  <span className="hidden sm:inline">{t('onboarding.navigation.previous')}</span>
                 </button>
               )}
               
               {currentStepData.allowSkip && !isLastStep && (
                 <button
                   onClick={handleSkip}
-                  className="px-4 py-2 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition-colors"
+                  className="px-3 sm:px-4 py-2 theme-text-muted hover:text-gray-700 dark:hover:text-gray-200 transition-colors text-sm"
                 >
                   {t('onboarding.navigation.skip')}
                 </button>
@@ -258,17 +261,19 @@ export function OnboardingTutorial({ isOpen, onClose, onComplete, onSkip }: Onbo
 
             <button
               onClick={handleNext}
-              className="flex items-center gap-2 px-6 py-2 bg-blue-500 hover:bg-blue-600 text-white font-medium rounded-lg transition-colors"
+              className="flex items-center gap-1 sm:gap-2 px-4 sm:px-6 py-2 bg-blue-500 hover:bg-blue-600 text-white font-medium rounded-lg transition-colors text-sm"
             >
               {isLastStep ? (
                 <>
-                  <CheckCircle size={16} />
-                  {t('onboarding.navigation.finish')}
+                  <CheckCircle size={14} className="sm:w-4 sm:h-4" />
+                  <span className="hidden sm:inline">{t('onboarding.navigation.finish')}</span>
+                  <span className="sm:hidden">✓</span>
                 </>
               ) : (
                 <>
-                  {t('onboarding.navigation.next')}
-                  <ArrowRight size={16} />
+                  <span className="hidden sm:inline">{t('onboarding.navigation.next')}</span>
+                  <span className="sm:hidden">→</span>
+                  <ArrowRight size={14} className="sm:w-4 sm:h-4" />
                 </>
               )}
             </button>
