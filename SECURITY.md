@@ -10,9 +10,9 @@ We take the security of QCode seriously. If you discover a security vulnerabilit
 
 Instead, please report security vulnerabilities by:
 
-1. **Email**: Send details to the repository maintainer through GitHub's private communication channels
-2. **GitHub Security Advisories**: Use GitHub's private vulnerability reporting feature by clicking "Report a vulnerability" in the Security tab of this repository
-3. **Direct Contact**: Contact the repository owner [@Githubguy132010](https://github.com/Githubguy132010) through GitHub messages
+1. **GitHub Security Advisories** (Recommended): Use GitHub's private vulnerability reporting feature by clicking "Report a vulnerability" in the Security tab of this repository
+2. **Email**: If the repository owner has made their email address public on their GitHub profile, you may reach out via email
+3. **GitHub Issues**: As a last resort, you may create a private draft security advisory to initiate contact
 
 ### What to Include
 
