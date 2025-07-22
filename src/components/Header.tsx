@@ -9,10 +9,9 @@ interface HeaderProps {
   onNotificationClick: () => void
   onSettingsClick: () => void
   onSyncClick: () => void
-  'data-tutorial'?: string
 }
 
-export function Header({ onNotificationClick, onSettingsClick, onSyncClick, ...props }: HeaderProps) {
+export function Header({ onNotificationClick, onSettingsClick, onSyncClick }: HeaderProps) {
   const { t } = useTranslation()
   const { isDark, toggleDarkMode, isLoaded } = useDarkMode()
   const pathname = usePathname()
@@ -59,7 +58,7 @@ export function Header({ onNotificationClick, onSettingsClick, onSyncClick, ...p
             </nav>
           </div>
           
-          <div className="flex items-center gap-2" {...props}>
+          <div className="flex items-center gap-2">
             {/* Mobile Navigation */}
             <div className="md:hidden flex items-center gap-1">
               <Link
@@ -99,6 +98,7 @@ export function Header({ onNotificationClick, onSettingsClick, onSyncClick, ...p
               onClick={onNotificationClick}
               className="p-2.5 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-all duration-200"
               aria-label={t('header.notifications')}
+              data-tutorial="notifications"
             >
               <Bell size={20} />
             </button>
