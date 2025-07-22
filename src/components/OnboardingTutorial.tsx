@@ -340,26 +340,54 @@ export function OnboardingTutorial({ isOpen, onClose, onComplete, onSkip }: Onbo
             position: relative;
             z-index: 9999;
             box-shadow: 
-              0 0 0 4px rgba(59, 130, 246, 1),
-              0 0 0 8px rgba(59, 130, 246, 0.7),
-              0 0 0 12px rgba(59, 130, 246, 0.4),
-              0 0 40px rgba(59, 130, 246, 0.8),
-              0 0 80px rgba(59, 130, 246, 0.5),
-              0 0 0 9999px rgba(0, 0, 0, 0.7);
+              ${currentStep === 4 ? `
+                0 0 0 8px rgba(59, 130, 246, 1),
+                0 0 0 16px rgba(59, 130, 246, 1),
+                0 0 0 24px rgba(59, 130, 246, 1),
+                0 0 0 32px rgba(59, 130, 246, 1),
+                0 0 0 40px rgba(59, 130, 246, 1),
+                0 0 100px rgba(59, 130, 246, 1),
+                0 0 200px rgba(59, 130, 246, 1),
+                0 0 300px rgba(59, 130, 246, 0.9),
+                0 0 400px rgba(59, 130, 246, 0.8),
+                0 0 500px rgba(59, 130, 246, 0.7),
+                0 0 0 9999px rgba(0, 0, 0, 0.7);
+              ` : `
+                0 0 0 4px rgba(59, 130, 246, 1),
+                0 0 0 8px rgba(59, 130, 246, 0.7),
+                0 0 0 12px rgba(59, 130, 246, 0.4),
+                0 0 40px rgba(59, 130, 246, 0.8),
+                0 0 80px rgba(59, 130, 246, 0.5),
+                0 0 0 9999px rgba(0, 0, 0, 0.7);
+              `}
             border-radius: 12px;
             transition: all 0.3s ease;
-            animation: onboarding-pulse 2s ease-in-out infinite;
+            animation: ${currentStep === 4 ? 'onboarding-pulse-nuclear' : 'onboarding-pulse'} ${currentStep === 4 ? '2s' : '2s'} ease-in-out infinite;
           }
           
           .dark .onboarding-highlight {
             box-shadow: 
-              0 0 0 4px rgba(96, 165, 250, 1),
-              0 0 0 8px rgba(96, 165, 250, 0.8),
-              0 0 0 12px rgba(96, 165, 250, 0.5),
-              0 0 50px rgba(96, 165, 250, 0.9),
-              0 0 100px rgba(96, 165, 250, 0.6),
-              0 0 0 9999px rgba(0, 0, 0, 0.8);
-            animation: onboarding-pulse-dark 2s ease-in-out infinite;
+              ${currentStep === 4 ? `
+                0 0 0 8px rgba(96, 165, 250, 1),
+                0 0 0 16px rgba(96, 165, 250, 1),
+                0 0 0 24px rgba(96, 165, 250, 1),
+                0 0 0 32px rgba(96, 165, 250, 1),
+                0 0 0 40px rgba(96, 165, 250, 1),
+                0 0 120px rgba(96, 165, 250, 1),
+                0 0 250px rgba(96, 165, 250, 1),
+                0 0 350px rgba(96, 165, 250, 0.95),
+                0 0 450px rgba(96, 165, 250, 0.9),
+                0 0 600px rgba(96, 165, 250, 0.8),
+                0 0 0 9999px rgba(0, 0, 0, 0.8);
+              ` : `
+                0 0 0 4px rgba(96, 165, 250, 1),
+                0 0 0 8px rgba(96, 165, 250, 0.8),
+                0 0 0 12px rgba(96, 165, 250, 0.5),
+                0 0 50px rgba(96, 165, 250, 0.9),
+                0 0 100px rgba(96, 165, 250, 0.6),
+                0 0 0 9999px rgba(0, 0, 0, 0.8);
+              `}
+            animation: ${currentStep === 4 ? 'onboarding-pulse-nuclear-dark' : 'onboarding-pulse-dark'} ${currentStep === 4 ? '2s' : '2s'} ease-in-out infinite;
           }
           
           @keyframes onboarding-pulse {
@@ -383,6 +411,37 @@ export function OnboardingTutorial({ isOpen, onClose, onComplete, onSkip }: Onbo
             }
           }
           
+          @keyframes onboarding-pulse-nuclear {
+            0%, 100% {
+              box-shadow: 
+                0 0 0 10px rgba(59, 130, 246, 1),
+                0 0 0 20px rgba(59, 130, 246, 1),
+                0 0 0 30px rgba(59, 130, 246, 1),
+                0 0 0 40px rgba(59, 130, 246, 1),
+                0 0 0 50px rgba(59, 130, 246, 1),
+                0 0 150px rgba(59, 130, 246, 1),
+                0 0 250px rgba(59, 130, 246, 1),
+                0 0 350px rgba(59, 130, 246, 1),
+                0 0 450px rgba(59, 130, 246, 1),
+                0 0 600px rgba(59, 130, 246, 0.9),
+                0 0 0 9999px rgba(0, 0, 0, 0.7);
+            }
+            50% {
+              box-shadow: 
+                0 0 0 15px rgba(59, 130, 246, 1),
+                0 0 0 30px rgba(59, 130, 246, 1),
+                0 0 0 45px rgba(59, 130, 246, 1),
+                0 0 0 60px rgba(59, 130, 246, 1),
+                0 0 0 75px rgba(59, 130, 246, 1),
+                0 0 200px rgba(59, 130, 246, 1),
+                0 0 350px rgba(59, 130, 246, 1),
+                0 0 500px rgba(59, 130, 246, 1),
+                0 0 650px rgba(59, 130, 246, 1),
+                0 0 800px rgba(59, 130, 246, 1),
+                0 0 0 9999px rgba(0, 0, 0, 0.7);
+            }
+          }
+          
           @keyframes onboarding-pulse-dark {
             0%, 100% {
               box-shadow: 
@@ -400,6 +459,37 @@ export function OnboardingTutorial({ isOpen, onClose, onComplete, onSkip }: Onbo
                 0 0 0 18px rgba(96, 165, 250, 0.6),
                 0 0 70px rgba(96, 165, 250, 1),
                 0 0 140px rgba(96, 165, 250, 0.8),
+                0 0 0 9999px rgba(0, 0, 0, 0.8);
+            }
+          }
+          
+          @keyframes onboarding-pulse-nuclear-dark {
+            0%, 100% {
+              box-shadow: 
+                0 0 0 10px rgba(96, 165, 250, 1),
+                0 0 0 20px rgba(96, 165, 250, 1),
+                0 0 0 30px rgba(96, 165, 250, 1),
+                0 0 0 40px rgba(96, 165, 250, 1),
+                0 0 0 50px rgba(96, 165, 250, 1),
+                0 0 180px rgba(96, 165, 250, 1),
+                0 0 300px rgba(96, 165, 250, 1),
+                0 0 420px rgba(96, 165, 250, 1),
+                0 0 540px rgba(96, 165, 250, 1),
+                0 0 700px rgba(96, 165, 250, 0.95),
+                0 0 0 9999px rgba(0, 0, 0, 0.8);
+            }
+            50% {
+              box-shadow: 
+                0 0 0 15px rgba(96, 165, 250, 1),
+                0 0 0 30px rgba(96, 165, 250, 1),
+                0 0 0 45px rgba(96, 165, 250, 1),
+                0 0 0 60px rgba(96, 165, 250, 1),
+                0 0 0 75px rgba(96, 165, 250, 1),
+                0 0 250px rgba(96, 165, 250, 1),
+                0 0 400px rgba(96, 165, 250, 1),
+                0 0 600px rgba(96, 165, 250, 1),
+                0 0 750px rgba(96, 165, 250, 1),
+                0 0 900px rgba(96, 165, 250, 1),
                 0 0 0 9999px rgba(0, 0, 0, 0.8);
             }
           }
