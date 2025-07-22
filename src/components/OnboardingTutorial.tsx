@@ -339,9 +339,60 @@ export function OnboardingTutorial({ isOpen, onClose, onComplete, onSkip }: Onbo
           .onboarding-highlight {
             position: relative;
             z-index: 9999;
-            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.5), 0 0 0 9999px rgba(0, 0, 0, 0.6);
-            border-radius: 8px;
+            box-shadow: 
+              0 0 0 3px rgba(59, 130, 246, 0.8),
+              0 0 0 6px rgba(59, 130, 246, 0.4),
+              0 0 20px rgba(59, 130, 246, 0.6),
+              0 0 0 9999px rgba(0, 0, 0, 0.7);
+            border-radius: 12px;
             transition: all 0.3s ease;
+            animation: onboarding-pulse 2s ease-in-out infinite;
+          }
+          
+          .dark .onboarding-highlight {
+            box-shadow: 
+              0 0 0 3px rgba(96, 165, 250, 0.9),
+              0 0 0 6px rgba(96, 165, 250, 0.5),
+              0 0 30px rgba(96, 165, 250, 0.8),
+              0 0 0 9999px rgba(0, 0, 0, 0.8);
+          }
+          
+          @keyframes onboarding-pulse {
+            0%, 100% {
+              box-shadow: 
+                0 0 0 3px rgba(59, 130, 246, 0.8),
+                0 0 0 6px rgba(59, 130, 246, 0.4),
+                0 0 20px rgba(59, 130, 246, 0.6),
+                0 0 0 9999px rgba(0, 0, 0, 0.7);
+            }
+            50% {
+              box-shadow: 
+                0 0 0 5px rgba(59, 130, 246, 1),
+                0 0 0 10px rgba(59, 130, 246, 0.6),
+                0 0 40px rgba(59, 130, 246, 0.8),
+                0 0 0 9999px rgba(0, 0, 0, 0.7);
+            }
+          }
+          
+          .dark .onboarding-highlight {
+            animation: onboarding-pulse-dark 2s ease-in-out infinite;
+          }
+          
+          @keyframes onboarding-pulse-dark {
+            0%, 100% {
+              box-shadow: 
+                0 0 0 3px rgba(96, 165, 250, 0.9),
+                0 0 0 6px rgba(96, 165, 250, 0.5),
+                0 0 30px rgba(96, 165, 250, 0.8),
+                0 0 0 9999px rgba(0, 0, 0, 0.8);
+            }
+            50% {
+              box-shadow: 
+                0 0 0 5px rgba(96, 165, 250, 1),
+                0 0 0 10px rgba(96, 165, 250, 0.7),
+                0 0 50px rgba(96, 165, 250, 1),
+                0 0 0 9999px rgba(0, 0, 0, 0.8);
+            }
           }
         `}</style>
       )}
