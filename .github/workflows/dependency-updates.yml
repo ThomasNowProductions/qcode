@@ -76,7 +76,7 @@ jobs:
             if [ -n "$BEFORE_DEV" ] && [ -n "$AFTER_DEV" ]; then
               echo "### Development Dependencies" >> $GITHUB_ENV
               echo '```diff' >> $GITHUB_ENV
-              diff <(echo "$BEFORE_DEV") <(echo "$AFTER_DEV") || true >> $GITHUB_ENV
+              diff <(echo "$BEFORE_DEV") <(echo "$AFTER_DEV") >> $GITHUB_ENV || true
               echo '```' >> $GITHUB_ENV
             fi
           else
