@@ -1,6 +1,6 @@
 {
   "name": "qcode",
-  "version": "0.1.0",
+  "version": "1.0",
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
@@ -12,7 +12,8 @@
     "export": "next build && next export",
     "deploy:vercel": "vercel",
     "deploy:vercel:prod": "vercel --prod",
-    "clear-cache": "node cache-handler.js"
+    "clear-cache": "node cache-handler.js",
+    "test:all": "jest && next lint && next build"
   },
   "dependencies": {
     "@types/uuid": "^10.0.0",

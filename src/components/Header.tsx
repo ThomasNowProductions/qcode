@@ -9,9 +9,10 @@ interface HeaderProps {
   onNotificationClick: () => void
   onSettingsClick: () => void
   onSyncClick: () => void
+  'data-tutorial'?: string
 }
 
-export function Header({ onNotificationClick, onSettingsClick, onSyncClick }: HeaderProps) {
+export function Header({ onNotificationClick, onSettingsClick, onSyncClick, ...props }: HeaderProps) {
   const { t } = useTranslation()
   const { isDark, toggleDarkMode, isLoaded } = useDarkMode()
   const pathname = usePathname()
@@ -58,56 +59,56 @@ export function Header({ onNotificationClick, onSettingsClick, onSyncClick }: He
             </nav>
           </div>
           
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1 sm:gap-2" {...props}>
             {/* Mobile Navigation */}
-            <div className="md:hidden flex items-center gap-1">
+            <div className="md:hidden flex items-center gap-0.5 sm:gap-1">
               <Link
                 href="/"
-                className={`p-2.5 rounded-lg transition-all duration-200 ${
+                className={`p-1.5 sm:p-2.5 rounded-lg transition-all duration-200 ${
                   pathname === '/' 
                     ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400'
                     : 'text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800'
                 }`}
                 aria-label={t('navigation.home', 'Home')}
               >
-                <Home size={20} />
+                <Home size={16} className="sm:w-5 sm:h-5" />
               </Link>
               <Link
                 href="/analytics"
-                className={`p-2.5 rounded-lg transition-all duration-200 ${
+                className={`p-1.5 sm:p-2.5 rounded-lg transition-all duration-200 ${
                   pathname === '/analytics'
                     ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400'
                     : 'text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800'
                 }`}
                 aria-label={t('navigation.analytics', 'Analytics')}
               >
-                <BarChart3 size={20} />
+                <BarChart3 size={16} className="sm:w-5 sm:h-5" />
               </Link>
             </div>
             
             <SyncStatusIndicator onClick={onSyncClick} />
             <button 
               onClick={toggleDarkMode}
-              className="p-2.5 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-all duration-200"
+              className="p-1.5 sm:p-2.5 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-all duration-200"
               aria-label={isDark ? t('header.lightMode') : t('header.darkMode')}
               disabled={!isLoaded}
             >
-              {isLoaded && (isDark ? <Sun size={20} /> : <Moon size={20} />)}
+              {isLoaded && (isDark ? <Sun size={16} className="sm:w-5 sm:h-5" /> : <Moon size={16} className="sm:w-5 sm:h-5" />)}
             </button>
             <button 
               onClick={onNotificationClick}
-              className="p-2.5 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-all duration-200"
+              className="p-1.5 sm:p-2.5 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-all duration-200"
               aria-label={t('header.notifications')}
               data-tutorial="notifications"
             >
-              <Bell size={20} />
+              <Bell size={16} className="sm:w-5 sm:h-5" />
             </button>
             <button 
               onClick={onSettingsClick}
-              className="p-2.5 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-all duration-200"
+              className="p-1.5 sm:p-2.5 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-all duration-200"
               aria-label={t('header.settings')}
             >
-              <Settings size={20} />
+              <Settings size={16} className="sm:w-5 sm:h-5" />
             </button>
           </div>
         </div>
