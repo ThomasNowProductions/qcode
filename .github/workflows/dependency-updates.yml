@@ -33,17 +33,12 @@ jobs:
       - name: Get current dependency versions
         id: current-deps
         run: |
-          echo "CURRENT_DEPS<<EOF" >> $GITHUB_ENV
-          npm list --depth=0 --json >> $GITHUB_ENV
-          echo "EOF" >> $GITHUB_ENV
+          npm list --depth=0 --json > current-deps.json || echo '{}' > current-deps.json
           
       - name: Update all dependencies to latest versions
         run: |
-          # Update dependencies
+          # Update all dependencies (both production and development)
           npx npm-check-updates -u
-          
-          # Update devDependencies
-          npx npm-check-updates -u --dev
           
           # Install updated dependencies
           npm install
@@ -51,9 +46,7 @@ jobs:
       - name: Get updated dependency versions
         id: updated-deps
         run: |
-          echo "UPDATED_DEPS<<EOF" >> $GITHUB_ENV
-          npm list --depth=0 --json >> $GITHUB_ENV
-          echo "EOF" >> $GITHUB_ENV
+          npm list --depth=0 --json > updated-deps.json || echo '{}' > updated-deps.json
           
       - name: Generate dependency diff
         id: dep-diff
@@ -62,26 +55,33 @@ jobs:
           echo "## Dependency Updates" >> $GITHUB_ENV
           echo "" >> $GITHUB_ENV
           
-          # Get package.json before and after
-          BEFORE=$(echo '${{ env.CURRENT_DEPS }}' | jq -r '.dependencies // {} | to_entries | .[] | "\(.key): \(.value)"' | sort)
-          AFTER=$(echo '${{ env.UPDATED_DEPS }}' | jq -r '.dependencies // {} | to_entries | .[] | "\(.key): \(.value)"' | sort)
-          
-          if [ -n "$BEFORE" ] && [ -n "$AFTER" ]; then
-            echo "### Production Dependencies" >> $GITHUB_ENV
-            echo '```diff' >> $GITHUB_ENV
-            diff <(echo "$BEFORE") <(echo "$AFTER") || true >> $GITHUB_ENV
-            echo '```' >> $GITHUB_ENV
-            echo "" >> $GITHUB_ENV
-          fi
-          
-          BEFORE_DEV=$(echo '${{ env.CURRENT_DEPS }}' | jq -r '.devDependencies // {} | to_entries | .[] | "\(.key): \(.value)"' | sort)
-          AFTER_DEV=$(echo '${{ env.UPDATED_DEPS }}' | jq -r '.devDependencies // {} | to_entries | .[] | "\(.key): \(.value)"' | sort)
-          
-          if [ -n "$BEFORE_DEV" ] && [ -n "$AFTER_DEV" ]; then
-            echo "### Development Dependencies" >> $GITHUB_ENV
-            echo '```diff' >> $GITHUB_ENV
-            diff <(echo "$BEFORE_DEV") <(echo "$AFTER_DEV") || true >> $GITHUB_ENV
-            echo '```' >> $GITHUB_ENV
+          # Check if dependency files exist
+          if [ -f current-deps.json ] && [ -f updated-deps.json ]; then
+            # Get package.json before and after for production dependencies
+            BEFORE=$(jq -r '.dependencies // {} | to_entries | .[] | "\(.key): \(.value)"' current-deps.json | sort)
+            AFTER=$(jq -r '.dependencies // {} | to_entries | .[] | "\(.key): \(.value)"' updated-deps.json | sort)
+            
+            if [ -n "$BEFORE" ] && [ -n "$AFTER" ]; then
+              echo "### Production Dependencies" >> $GITHUB_ENV
+              echo '```diff' >> $GITHUB_ENV
+              diff <(echo "$BEFORE") <(echo "$AFTER") || true >> $GITHUB_ENV
+              echo '```' >> $GITHUB_ENV
+              echo "" >> $GITHUB_ENV
+            fi
+            
+            # Get package.json before and after for development dependencies
+            BEFORE_DEV=$(jq -r '.devDependencies // {} | to_entries | .[] | "\(.key): \(.value)"' current-deps.json | sort)
+            AFTER_DEV=$(jq -r '.devDependencies // {} | to_entries | .[] | "\(.key): \(.value)"' updated-deps.json | sort)
+            
+            if [ -n "$BEFORE_DEV" ] && [ -n "$AFTER_DEV" ]; then
+              echo "### Development Dependencies" >> $GITHUB_ENV
+              echo '```diff' >> $GITHUB_ENV
+              diff <(echo "$BEFORE_DEV") <(echo "$AFTER_DEV") >> $GITHUB_ENV || true
+              echo '```' >> $GITHUB_ENV
+            fi
+          else
+            echo "### Unable to generate dependency diff" >> $GITHUB_ENV
+            echo "Dependency comparison files not found." >> $GITHUB_ENV
           fi
           
           echo "EOF" >> $GITHUB_ENV
