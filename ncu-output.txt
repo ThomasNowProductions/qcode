@@ -1,0 +1,14 @@
+Upgrading /home/runner/work/qcode/qcode/package.json
+
+ @types/node             ^20.19.9  →  ^24.1.0
+ eslint-config-next        15.4.1  →   15.4.3
+ i18next                  ^25.3.1  →  ^25.3.2
+ jest                     ^30.0.4  →  ^30.0.5
+ jest-environment-jsdom   ^30.0.4  →  ^30.0.5
+ next                      15.4.1  →   15.4.3
+ react                    ^19.0.0  →  ^19.1.0
+ react-dom                ^19.0.0  →  ^19.1.0
+ react-i18next            ^15.6.0  →  ^15.6.1
+ typescript                ^5.7.2  →   ^5.8.3
+
+Run npm install to install new versions.
