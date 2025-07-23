@@ -30,23 +30,18 @@ jobs:
       - name: Install dependencies
         run: npm ci
         
-      - name: Get current dependency versions
-        id: current-deps
+      - name: Backup current package.json
         run: |
-          npm list --depth=0 --json > current-deps.json || echo '{}' > current-deps.json
+          cp package.json package.json.backup
           
       - name: Update all dependencies to latest versions
         run: |
           # Update all dependencies (both production and development)
-          npx npm-check-updates -u
+          # Capture the output for the diff
+          npx npm-check-updates -u | tee ncu-output.txt
           
           # Install updated dependencies
           npm install
-          
-      - name: Get updated dependency versions
-        id: updated-deps
-        run: |
-          npm list --depth=0 --json > updated-deps.json || echo '{}' > updated-deps.json
           
       - name: Generate dependency diff
         id: dep-diff
@@ -55,33 +50,50 @@ jobs:
           echo "## Dependency Updates" >> $GITHUB_ENV
           echo "" >> $GITHUB_ENV
           
-          # Check if dependency files exist
-          if [ -f current-deps.json ] && [ -f updated-deps.json ]; then
-            # Get package.json before and after for production dependencies
-            BEFORE=$(jq -r '.dependencies // {} | to_entries | .[] | "\(.key): \(.value)"' current-deps.json | sort)
-            AFTER=$(jq -r '.dependencies // {} | to_entries | .[] | "\(.key): \(.value)"' updated-deps.json | sort)
+          # Check if backup exists
+          if [ -f package.json.backup ]; then
+            # Compare production dependencies
+            BEFORE=$(jq -r '.dependencies // {} | to_entries | .[] | "\(.key): \(.value)"' package.json.backup | sort)
+            AFTER=$(jq -r '.dependencies // {} | to_entries | .[] | "\(.key): \(.value)"' package.json | sort)
             
-            if [ -n "$BEFORE" ] && [ -n "$AFTER" ]; then
+            if [ -n "$BEFORE" ] || [ -n "$AFTER" ]; then
               echo "### Production Dependencies" >> $GITHUB_ENV
               echo '```diff' >> $GITHUB_ENV
-              diff <(echo "$BEFORE") <(echo "$AFTER") || true >> $GITHUB_ENV
+              if [ -n "$BEFORE" ] && [ -n "$AFTER" ]; then
+                diff -u <(echo "$BEFORE") <(echo "$AFTER") | tail -n +3 || true >> $GITHUB_ENV
+              elif [ -n "$AFTER" ]; then
+                echo "$AFTER" | sed 's/^/+ /' >> $GITHUB_ENV
+              fi
               echo '```' >> $GITHUB_ENV
               echo "" >> $GITHUB_ENV
             fi
             
-            # Get package.json before and after for development dependencies
-            BEFORE_DEV=$(jq -r '.devDependencies // {} | to_entries | .[] | "\(.key): \(.value)"' current-deps.json | sort)
-            AFTER_DEV=$(jq -r '.devDependencies // {} | to_entries | .[] | "\(.key): \(.value)"' updated-deps.json | sort)
+            # Compare development dependencies
+            BEFORE_DEV=$(jq -r '.devDependencies // {} | to_entries | .[] | "\(.key): \(.value)"' package.json.backup | sort)
+            AFTER_DEV=$(jq -r '.devDependencies // {} | to_entries | .[] | "\(.key): \(.value)"' package.json | sort)
             
-            if [ -n "$BEFORE_DEV" ] && [ -n "$AFTER_DEV" ]; then
+            if [ -n "$BEFORE_DEV" ] || [ -n "$AFTER_DEV" ]; then
               echo "### Development Dependencies" >> $GITHUB_ENV
               echo '```diff' >> $GITHUB_ENV
-              diff <(echo "$BEFORE_DEV") <(echo "$AFTER_DEV") >> $GITHUB_ENV || true
+              if [ -n "$BEFORE_DEV" ] && [ -n "$AFTER_DEV" ]; then
+                diff -u <(echo "$BEFORE_DEV") <(echo "$AFTER_DEV") | tail -n +3 || true >> $GITHUB_ENV
+              elif [ -n "$AFTER_DEV" ]; then
+                echo "$AFTER_DEV" | sed 's/^/+ /' >> $GITHUB_ENV
+              fi
+              echo '```' >> $GITHUB_ENV
+              echo "" >> $GITHUB_ENV
+            fi
+            
+            # Show npm-check-updates summary if available
+            if [ -f ncu-output.txt ]; then
+              echo "### Update Summary" >> $GITHUB_ENV
+              echo '```' >> $GITHUB_ENV
+              cat ncu-output.txt >> $GITHUB_ENV
               echo '```' >> $GITHUB_ENV
             fi
           else
             echo "### Unable to generate dependency diff" >> $GITHUB_ENV
-            echo "Dependency comparison files not found." >> $GITHUB_ENV
+            echo "Package.json backup not found." >> $GITHUB_ENV
           fi
           
           echo "EOF" >> $GITHUB_ENV
@@ -110,19 +122,32 @@ jobs:
       - name: Check for changes
         id: check-changes
         run: |
-          if git diff --quiet package.json package-lock.json; then
-            echo "No changes detected"
+          # Add files that might have changed
+          git add package.json package-lock.json
+          
+          if git diff --cached --quiet; then
+            echo "No changes detected in package files"
             echo "has_changes=false" >> $GITHUB_OUTPUT
           else
-            echo "Changes detected"
+            echo "Changes detected in package files"
             echo "has_changes=true" >> $GITHUB_OUTPUT
+            
+            # Show what changed for debugging
+            echo "Changes detected:"
+            git diff --cached --name-only
           fi
           
       - name: Commit changes
         if: steps.check-changes.outputs.has_changes == 'true'
         run: |
-          git add package.json package-lock.json
-          git commit -m "chore: update dependencies to latest versions"
+          # Files are already staged from the check-changes step
+          git commit -m "chore: update dependencies to latest versions
+
+          Updates include:
+          - Production and development dependencies updated to latest versions
+          - Package-lock.json regenerated
+          
+          Generated by GitHub Actions workflow"
           
       - name: Push branch
         if: steps.check-changes.outputs.has_changes == 'true'
