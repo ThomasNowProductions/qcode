@@ -64,7 +64,7 @@ export function OnboardingTutorial({ isOpen, onClose, onComplete, onSkip }: Onbo
       // Handle positioning based on whether we have a target element
       if (highlightedElement && currentStepData.position !== 'center') {
         const elementRect = highlightedElement.getBoundingClientRect()
-        const minGap = 40 // Increased gap to prevent overlap
+        const minGap = 60 // Increased gap further to prevent overlap
 
         switch (currentStepData.position) {
           case 'top':
@@ -121,8 +121,63 @@ export function OnboardingTutorial({ isOpen, onClose, onComplete, onSkip }: Onbo
 
       // Keep tooltip within viewport bounds with more padding
       const padding = 20
-      top = Math.max(padding, Math.min(top, viewportHeight - tooltipHeight - padding))
-      left = Math.max(padding, Math.min(left, viewportWidth - tooltipWidth - padding))
+      const mobileViewport = viewportWidth <= 640 // sm breakpoint  
+      const verySmallViewport = viewportWidth <= 375 // very small phones
+      const mobilePadding = verySmallViewport ? 8 : (mobileViewport ? 12 : padding)
+      
+      top = Math.max(mobilePadding, Math.min(top, viewportHeight - tooltipHeight - mobilePadding))
+      left = Math.max(mobilePadding, Math.min(left, viewportWidth - tooltipWidth - mobilePadding))
+
+      // Additional collision detection - ensure tooltip doesn't overlap with highlighted element
+      if (highlightedElement && currentStepData.position !== 'center') {
+        const elementRect = highlightedElement.getBoundingClientRect()
+        const tooltipLeft = left
+        const tooltipRight = left + tooltipWidth
+        const tooltipTop = top
+        const tooltipBottom = top + tooltipHeight
+        
+        // Check if tooltip would overlap with the element
+        const wouldOverlapHorizontally = tooltipLeft < elementRect.right && tooltipRight > elementRect.left
+        const wouldOverlapVertically = tooltipTop < elementRect.bottom && tooltipBottom > elementRect.top
+        
+        if (wouldOverlapHorizontally && wouldOverlapVertically) {
+          // Try to reposition to avoid overlap - prefer bottom position for small elements
+          const spaceBelow = viewportHeight - elementRect.bottom
+          const spaceAbove = elementRect.top
+          const spaceLeft = elementRect.left  
+          const spaceRight = viewportWidth - elementRect.right
+          
+          if (spaceBelow >= tooltipHeight + mobilePadding) {
+            // Position below
+            top = elementRect.bottom + mobilePadding
+            left = Math.max(mobilePadding, Math.min(
+              elementRect.left + (elementRect.width / 2) - (tooltipWidth / 2),
+              viewportWidth - tooltipWidth - mobilePadding
+            ))
+          } else if (spaceAbove >= tooltipHeight + mobilePadding) {
+            // Position above
+            top = elementRect.top - tooltipHeight - mobilePadding
+            left = Math.max(mobilePadding, Math.min(
+              elementRect.left + (elementRect.width / 2) - (tooltipWidth / 2),
+              viewportWidth - tooltipWidth - mobilePadding
+            ))
+          } else if (spaceRight >= tooltipWidth + mobilePadding) {
+            // Position to the right with more gap
+            left = elementRect.right + mobilePadding + 20
+            top = Math.max(mobilePadding, Math.min(
+              elementRect.top + (elementRect.height / 2) - (tooltipHeight / 2),
+              viewportHeight - tooltipHeight - mobilePadding
+            ))
+          } else if (spaceLeft >= tooltipWidth + mobilePadding) {
+            // Position to the left with more gap
+            left = elementRect.left - tooltipWidth - mobilePadding - 20
+            top = Math.max(mobilePadding, Math.min(
+              elementRect.top + (elementRect.height / 2) - (tooltipHeight / 2),
+              viewportHeight - tooltipHeight - mobilePadding
+            ))
+          }
+        }
+      }
 
       tooltipRef.current.style.position = 'fixed'
       tooltipRef.current.style.top = `${top}px`
@@ -170,22 +225,22 @@ export function OnboardingTutorial({ isOpen, onClose, onComplete, onSkip }: Onbo
     <>
       {/* Overlay */}
       <div 
-        className="fixed inset-0 bg-black/60 transition-opacity z-[9998]"
+        className="fixed inset-0 bg-black/60 dark:bg-black/80 transition-opacity z-[9998]"
       />
 
       {/* Tutorial Card */}
       <div
         ref={tooltipRef}
         className={`
-          bg-white dark:bg-gray-800 rounded-xl shadow-2xl border border-gray-200 dark:border-gray-600
-          w-full max-w-md mx-4 transition-all duration-300 transform
+          theme-card rounded-xl shadow-2xl border
+          w-full max-w-xs sm:max-w-sm md:max-w-md mx-2 sm:mx-3 md:mx-4 transition-all duration-300 transform
           ring-4 ring-white/10 backdrop-blur-sm
           ${isOpen ? 'scale-100 opacity-100' : 'scale-95 opacity-0'}
         `}
         style={{ zIndex: 10000 }}
       >
         {/* Header */}
-        <div className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700">
+        <div className="flex items-center justify-between p-4 border-b theme-text-primary">
           <div className="flex items-center gap-3">
             <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center">
               {isLastStep ? (
@@ -194,7 +249,7 @@ export function OnboardingTutorial({ isOpen, onClose, onComplete, onSkip }: Onbo
                 <span className="text-white text-sm font-semibold">{currentStep + 1}</span>
               )}
             </div>
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
+            <h2 className="text-lg font-semibold theme-text-primary">
               {t(currentStepData.title)}
             </h2>
           </div>
@@ -204,19 +259,19 @@ export function OnboardingTutorial({ isOpen, onClose, onComplete, onSkip }: Onbo
             className="p-1 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
             aria-label={t('common.close', 'Close')}
           >
-            <X size={20} className="text-gray-500 dark:text-gray-400" />
+            <X size={20} className="theme-text-secondary" />
           </button>
         </div>
 
         {/* Content */}
-        <div className="p-6">
-          <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-6">
+        <div className="p-3 sm:p-4 md:p-6">
+          <p className="theme-text-secondary leading-relaxed mb-3 sm:mb-4 md:mb-6 text-xs sm:text-sm md:text-base">
             {t(currentStepData.description)}
           </p>
 
           {/* Progress bar */}
-          <div className="mb-6">
-            <div className="flex justify-between text-sm text-gray-500 dark:text-gray-400 mb-2">
+          <div className="mb-3 sm:mb-4 md:mb-6">
+            <div className="flex justify-between text-xs sm:text-sm theme-text-muted mb-1 sm:mb-2">
               <span>
                 {t('onboarding.navigation.stepOf', { 
                   current: currentStep + 1, 
@@ -225,31 +280,31 @@ export function OnboardingTutorial({ isOpen, onClose, onComplete, onSkip }: Onbo
               </span>
               <span>{Math.round((currentStep + 1) / totalSteps * 100)}%</span>
             </div>
-            <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+            <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-1.5 sm:h-2">
               <div 
-                className="bg-blue-500 h-2 rounded-full transition-all duration-300"
+                className="bg-blue-500 h-1.5 sm:h-2 rounded-full transition-all duration-300"
                 style={{ width: `${(currentStep + 1) / totalSteps * 100}%` }}
               />
             </div>
           </div>
 
           {/* Navigation buttons */}
-          <div className="flex items-center justify-between">
-            <div className="flex gap-2">
+          <div className="flex items-center justify-between gap-1 sm:gap-2">
+            <div className="flex gap-1 sm:gap-2">
               {!isFirstStep && (
                 <button
                   onClick={handlePrevious}
-                  className="flex items-center gap-2 px-4 py-2 text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
+                  className="flex items-center gap-1 sm:gap-2 px-2 sm:px-3 md:px-4 py-2 theme-text-secondary hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors text-xs sm:text-sm"
                 >
-                  <ArrowLeft size={16} />
-                  {t('onboarding.navigation.previous')}
+                  <ArrowLeft size={12} className="sm:w-3.5 sm:h-3.5 md:w-4 md:h-4" />
+                  <span className="hidden sm:inline">{t('onboarding.navigation.previous')}</span>
                 </button>
               )}
               
               {currentStepData.allowSkip && !isLastStep && (
                 <button
                   onClick={handleSkip}
-                  className="px-4 py-2 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition-colors"
+                  className="px-2 sm:px-3 md:px-4 py-2 theme-text-muted hover:text-gray-700 dark:hover:text-gray-200 transition-colors text-xs sm:text-sm"
                 >
                   {t('onboarding.navigation.skip')}
                 </button>
@@ -258,17 +313,19 @@ export function OnboardingTutorial({ isOpen, onClose, onComplete, onSkip }: Onbo
 
             <button
               onClick={handleNext}
-              className="flex items-center gap-2 px-6 py-2 bg-blue-500 hover:bg-blue-600 text-white font-medium rounded-lg transition-colors"
+              className="flex items-center gap-1 sm:gap-2 px-3 sm:px-4 md:px-6 py-2 bg-blue-500 hover:bg-blue-600 text-white font-medium rounded-lg transition-colors text-xs sm:text-sm"
             >
               {isLastStep ? (
                 <>
-                  <CheckCircle size={16} />
-                  {t('onboarding.navigation.finish')}
+                  <CheckCircle size={12} className="sm:w-3.5 sm:h-3.5 md:w-4 md:h-4" />
+                  <span className="hidden sm:inline">{t('onboarding.navigation.finish')}</span>
+                  <span className="sm:hidden">✓</span>
                 </>
               ) : (
                 <>
-                  {t('onboarding.navigation.next')}
-                  <ArrowRight size={16} />
+                  <span className="hidden sm:inline">{t('onboarding.navigation.next')}</span>
+                  <span className="sm:hidden">→</span>
+                  <ArrowRight size={12} className="sm:w-3.5 sm:h-3.5 md:w-4 md:h-4" />
                 </>
               )}
             </button>
@@ -282,9 +339,159 @@ export function OnboardingTutorial({ isOpen, onClose, onComplete, onSkip }: Onbo
           .onboarding-highlight {
             position: relative;
             z-index: 9999;
-            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.5), 0 0 0 9999px rgba(0, 0, 0, 0.6);
-            border-radius: 8px;
+            box-shadow: 
+              ${currentStep === 4 ? `
+                0 0 0 8px rgba(59, 130, 246, 1),
+                0 0 0 16px rgba(59, 130, 246, 1),
+                0 0 0 24px rgba(59, 130, 246, 1),
+                0 0 0 32px rgba(59, 130, 246, 1),
+                0 0 0 40px rgba(59, 130, 246, 1),
+                0 0 100px rgba(59, 130, 246, 1),
+                0 0 200px rgba(59, 130, 246, 1),
+                0 0 300px rgba(59, 130, 246, 0.9),
+                0 0 400px rgba(59, 130, 246, 0.8),
+                0 0 500px rgba(59, 130, 246, 0.7),
+                0 0 0 9999px rgba(0, 0, 0, 0.7);
+              ` : `
+                0 0 0 4px rgba(59, 130, 246, 1),
+                0 0 0 8px rgba(59, 130, 246, 0.7),
+                0 0 0 12px rgba(59, 130, 246, 0.4),
+                0 0 40px rgba(59, 130, 246, 0.8),
+                0 0 80px rgba(59, 130, 246, 0.5),
+                0 0 0 9999px rgba(0, 0, 0, 0.7);
+              `}
+            border-radius: 12px;
             transition: all 0.3s ease;
+            animation: ${currentStep === 4 ? 'onboarding-pulse-nuclear' : 'onboarding-pulse'} ${currentStep === 4 ? '2s' : '2s'} ease-in-out infinite;
+          }
+          
+          .dark .onboarding-highlight {
+            box-shadow: 
+              ${currentStep === 4 ? `
+                0 0 0 8px rgba(96, 165, 250, 1),
+                0 0 0 16px rgba(96, 165, 250, 1),
+                0 0 0 24px rgba(96, 165, 250, 1),
+                0 0 0 32px rgba(96, 165, 250, 1),
+                0 0 0 40px rgba(96, 165, 250, 1),
+                0 0 120px rgba(96, 165, 250, 1),
+                0 0 250px rgba(96, 165, 250, 1),
+                0 0 350px rgba(96, 165, 250, 0.95),
+                0 0 450px rgba(96, 165, 250, 0.9),
+                0 0 600px rgba(96, 165, 250, 0.8),
+                0 0 0 9999px rgba(0, 0, 0, 0.8);
+              ` : `
+                0 0 0 4px rgba(96, 165, 250, 1),
+                0 0 0 8px rgba(96, 165, 250, 0.8),
+                0 0 0 12px rgba(96, 165, 250, 0.5),
+                0 0 50px rgba(96, 165, 250, 0.9),
+                0 0 100px rgba(96, 165, 250, 0.6),
+                0 0 0 9999px rgba(0, 0, 0, 0.8);
+              `}
+            animation: ${currentStep === 4 ? 'onboarding-pulse-nuclear-dark' : 'onboarding-pulse-dark'} ${currentStep === 4 ? '2s' : '2s'} ease-in-out infinite;
+          }
+          
+          @keyframes onboarding-pulse {
+            0%, 100% {
+              box-shadow: 
+                0 0 0 4px rgba(59, 130, 246, 1),
+                0 0 0 8px rgba(59, 130, 246, 0.7),
+                0 0 0 12px rgba(59, 130, 246, 0.4),
+                0 0 40px rgba(59, 130, 246, 0.8),
+                0 0 80px rgba(59, 130, 246, 0.5),
+                0 0 0 9999px rgba(0, 0, 0, 0.7);
+            }
+            50% {
+              box-shadow: 
+                0 0 0 6px rgba(59, 130, 246, 1),
+                0 0 0 12px rgba(59, 130, 246, 0.8),
+                0 0 0 18px rgba(59, 130, 246, 0.5),
+                0 0 60px rgba(59, 130, 246, 1),
+                0 0 120px rgba(59, 130, 246, 0.7),
+                0 0 0 9999px rgba(0, 0, 0, 0.7);
+            }
+          }
+          
+          @keyframes onboarding-pulse-nuclear {
+            0%, 100% {
+              box-shadow: 
+                0 0 0 10px rgba(59, 130, 246, 1),
+                0 0 0 20px rgba(59, 130, 246, 1),
+                0 0 0 30px rgba(59, 130, 246, 1),
+                0 0 0 40px rgba(59, 130, 246, 1),
+                0 0 0 50px rgba(59, 130, 246, 1),
+                0 0 150px rgba(59, 130, 246, 1),
+                0 0 250px rgba(59, 130, 246, 1),
+                0 0 350px rgba(59, 130, 246, 1),
+                0 0 450px rgba(59, 130, 246, 1),
+                0 0 600px rgba(59, 130, 246, 0.9),
+                0 0 0 9999px rgba(0, 0, 0, 0.7);
+            }
+            50% {
+              box-shadow: 
+                0 0 0 15px rgba(59, 130, 246, 1),
+                0 0 0 30px rgba(59, 130, 246, 1),
+                0 0 0 45px rgba(59, 130, 246, 1),
+                0 0 0 60px rgba(59, 130, 246, 1),
+                0 0 0 75px rgba(59, 130, 246, 1),
+                0 0 200px rgba(59, 130, 246, 1),
+                0 0 350px rgba(59, 130, 246, 1),
+                0 0 500px rgba(59, 130, 246, 1),
+                0 0 650px rgba(59, 130, 246, 1),
+                0 0 800px rgba(59, 130, 246, 1),
+                0 0 0 9999px rgba(0, 0, 0, 0.7);
+            }
+          }
+          
+          @keyframes onboarding-pulse-dark {
+            0%, 100% {
+              box-shadow: 
+                0 0 0 4px rgba(96, 165, 250, 1),
+                0 0 0 8px rgba(96, 165, 250, 0.8),
+                0 0 0 12px rgba(96, 165, 250, 0.5),
+                0 0 50px rgba(96, 165, 250, 0.9),
+                0 0 100px rgba(96, 165, 250, 0.6),
+                0 0 0 9999px rgba(0, 0, 0, 0.8);
+            }
+            50% {
+              box-shadow: 
+                0 0 0 6px rgba(96, 165, 250, 1),
+                0 0 0 12px rgba(96, 165, 250, 0.9),
+                0 0 0 18px rgba(96, 165, 250, 0.6),
+                0 0 70px rgba(96, 165, 250, 1),
+                0 0 140px rgba(96, 165, 250, 0.8),
+                0 0 0 9999px rgba(0, 0, 0, 0.8);
+            }
+          }
+          
+          @keyframes onboarding-pulse-nuclear-dark {
+            0%, 100% {
+              box-shadow: 
+                0 0 0 10px rgba(96, 165, 250, 1),
+                0 0 0 20px rgba(96, 165, 250, 1),
+                0 0 0 30px rgba(96, 165, 250, 1),
+                0 0 0 40px rgba(96, 165, 250, 1),
+                0 0 0 50px rgba(96, 165, 250, 1),
+                0 0 180px rgba(96, 165, 250, 1),
+                0 0 300px rgba(96, 165, 250, 1),
+                0 0 420px rgba(96, 165, 250, 1),
+                0 0 540px rgba(96, 165, 250, 1),
+                0 0 700px rgba(96, 165, 250, 0.95),
+                0 0 0 9999px rgba(0, 0, 0, 0.8);
+            }
+            50% {
+              box-shadow: 
+                0 0 0 15px rgba(96, 165, 250, 1),
+                0 0 0 30px rgba(96, 165, 250, 1),
+                0 0 0 45px rgba(96, 165, 250, 1),
+                0 0 0 60px rgba(96, 165, 250, 1),
+                0 0 0 75px rgba(96, 165, 250, 1),
+                0 0 250px rgba(96, 165, 250, 1),
+                0 0 400px rgba(96, 165, 250, 1),
+                0 0 600px rgba(96, 165, 250, 1),
+                0 0 750px rgba(96, 165, 250, 1),
+                0 0 900px rgba(96, 165, 250, 1),
+                0 0 0 9999px rgba(0, 0, 0, 0.8);
+            }
           }
         `}</style>
       )}
