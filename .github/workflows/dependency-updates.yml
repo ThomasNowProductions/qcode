@@ -36,10 +36,6 @@ jobs:
       - name: Install dependencies
         run: npm ci
         
-      - name: Backup current package.json
-        run: |
-          cp package.json package.json.backup
-          
       - name: Update all dependencies to latest versions
         run: |
           # Update all dependencies (both production and development)
@@ -52,82 +48,18 @@ jobs:
       - name: Generate dependency diff
         id: dep-diff
         run: |
-          # Create a temporary file for the diff output
-          cat > /tmp/dep-diff.md << 'DIFF_EOF'
-          ## Dependency Updates
-          
-          DIFF_EOF
-          
-          # Check if backup exists
-          if [ -f package.json.backup ]; then
-            # Compare production dependencies
-            BEFORE=$(jq -r '.dependencies // {} | to_entries | .[] | "\(.key): \(.value)"' package.json.backup | sort)
-            AFTER=$(jq -r '.dependencies // {} | to_entries | .[] | "\(.key): \(.value)"' package.json | sort)
-            
-            echo "Debug: Production deps comparison"
-            echo "BEFORE: $BEFORE"
-            echo "AFTER: $AFTER"
-            
-            if [ -n "$BEFORE" ] || [ -n "$AFTER" ]; then
-              echo "### Production Dependencies" >> /tmp/dep-diff.md
-              echo '```diff' >> /tmp/dep-diff.md
-              if [ -n "$BEFORE" ] && [ -n "$AFTER" ]; then
-                # Create temporary files for diff
-                echo "$BEFORE" > /tmp/before-prod.txt
-                echo "$AFTER" > /tmp/after-prod.txt
-                echo "Debug: Running diff for production dependencies"
-                diff -u /tmp/before-prod.txt /tmp/after-prod.txt | tail -n +3 >> /tmp/dep-diff.md || echo "No production dependency changes" >> /tmp/dep-diff.md
-              elif [ -n "$AFTER" ]; then
-                echo "$AFTER" | sed 's/^/+ /' >> /tmp/dep-diff.md
-              fi
-              echo '```' >> /tmp/dep-diff.md
-              echo "" >> /tmp/dep-diff.md
-            fi
-            
-            # Compare development dependencies  
-            BEFORE_DEV=$(jq -r '.devDependencies // {} | to_entries | .[] | "\(.key): \(.value)"' package.json.backup | sort)
-            AFTER_DEV=$(jq -r '.devDependencies // {} | to_entries | .[] | "\(.key): \(.value)"' package.json | sort)
-            
-            echo "Debug: Development deps comparison"
-            echo "BEFORE_DEV: $BEFORE_DEV"
-            echo "AFTER_DEV: $AFTER_DEV"
-            
-            if [ -n "$BEFORE_DEV" ] || [ -n "$AFTER_DEV" ]; then
-              echo "### Development Dependencies" >> /tmp/dep-diff.md
-              echo '```diff' >> /tmp/dep-diff.md
-              if [ -n "$BEFORE_DEV" ] && [ -n "$AFTER_DEV" ]; then
-                # Create temporary files for diff
-                echo "$BEFORE_DEV" > /tmp/before-dev.txt
-                echo "$AFTER_DEV" > /tmp/after-dev.txt
-                echo "Debug: Running diff for development dependencies"
-                diff -u /tmp/before-dev.txt /tmp/after-dev.txt | tail -n +3 >> /tmp/dep-diff.md || echo "No development dependency changes" >> /tmp/dep-diff.md
-              elif [ -n "$AFTER_DEV" ]; then
-                echo "$AFTER_DEV" | sed 's/^/+ /' >> /tmp/dep-diff.md
-              fi
-              echo '```' >> /tmp/dep-diff.md
-              echo "" >> /tmp/dep-diff.md
-            fi
-            
-            # Show npm-check-updates summary if available
-            if [ -f ncu-output.txt ]; then
-              echo "### Update Summary" >> /tmp/dep-diff.md
-              echo '```' >> /tmp/dep-diff.md
-              cat ncu-output.txt >> /tmp/dep-diff.md
-              echo '```' >> /tmp/dep-diff.md
-            fi
-          else
-            echo "### Unable to generate dependency diff" >> /tmp/dep-diff.md
-            echo "Package.json backup not found." >> /tmp/dep-diff.md
-          fi
-          
-          # Debug: Show what we generated
-          echo "Debug: Generated diff content:"
-          cat /tmp/dep-diff.md
-          
-          # Set the environment variable using the temporary file
+          # Set the environment variable directly with npm-check-updates output
           echo "DEPENDENCY_DIFF<<EOF" >> $GITHUB_ENV
-          cat /tmp/dep-diff.md >> $GITHUB_ENV
+          echo "## Dependency Updates" >> $GITHUB_ENV
+          echo "" >> $GITHUB_ENV
+          echo "### Update Summary" >> $GITHUB_ENV
+          echo '```' >> $GITHUB_ENV
+          cat ncu-output.txt >> $GITHUB_ENV
+          echo '```' >> $GITHUB_ENV
           echo "EOF" >> $GITHUB_ENV
+          
+          # Clean up output file
+          rm -f ncu-output.txt
           
       - name: Run linting
         run: npm run lint
