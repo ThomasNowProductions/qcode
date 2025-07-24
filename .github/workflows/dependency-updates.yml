@@ -148,10 +148,7 @@ jobs:
             
             ---
             *Created by [GitHub Actions workflow](.github/workflows/dependency-updates.yml)*
-          labels: |
-            dependencies
-            automated
-            chore
+          
           draft: false
           delete-branch: true
           
