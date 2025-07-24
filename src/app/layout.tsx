@@ -3,23 +3,13 @@ import "./globals.css";
 import { I18nProvider } from "@/components/I18nProvider";
 import { HtmlLanguageAttribute } from "@/components/HtmlLanguageAttribute";
 
-const arialSans = {
-  variable: "--font-sans",
-  style: "sans-serif",
-};
-
-const arialMono = {
-  variable: "--font-mono",
-  style: "monospace",
-};
-
 export const metadata: Metadata = {
   title: "QCode - Kortingscodes Beheren",
   description: "Bewaar en beheer al je kortingscodes op één plek. Nooit meer een korting missen!",
   manifest: "/manifest.json",
   icons: {
     icon: "/favicon.ico",
-    apple: "/favicon.ico",
+    apple: "/icon-192x192.png",
   },
   appleWebApp: {
     capable: true,
@@ -43,7 +33,6 @@ export default function RootLayout({
     <html>
       <body
         className={`font-sans antialiased min-h-screen transition-colors`}
-        style={{ fontFamily: 'Arial, sans-serif' }}
       >
         <I18nProvider>
           <HtmlLanguageAttribute>
