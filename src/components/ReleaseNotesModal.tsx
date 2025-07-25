@@ -128,7 +128,7 @@ export function ReleaseNotesModal({ isOpen, onClose }: ReleaseNotesModalProps) {
                     ))}
                     {allEntries.length > 5 && (
                       <p className="text-sm theme-text-muted text-center">
-                        And {allEntries.length - 5} more... Switch to Commits tab for full details.
+                        {t('releaseNotes.summary.andMore', { count: allEntries.length - 5 })}
                       </p>
                     )}
                   </div>
@@ -145,7 +145,7 @@ export function ReleaseNotesModal({ isOpen, onClose }: ReleaseNotesModalProps) {
                 </h3>
                 {changelogData?.lastCheckDate && (
                   <p className="text-sm theme-text-muted">
-                    Last checked: {formatDistanceToNow(changelogData.lastCheckDate, { addSuffix: true })}
+                    {t('releaseNotes.commits.lastChecked')}: {formatDistanceToNow(changelogData.lastCheckDate, { addSuffix: true })}
                   </p>
                 )}
               </div>
