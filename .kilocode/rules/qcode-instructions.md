@@ -1,4 +1,4 @@
-# qcode-instructions.md
+# KiloCode AI Project Guidelines
 
 This project is a Progressive Web App (PWA) for managing discount codes, built with Next.js 15, TypeScript, and Tailwind CSS.
 
