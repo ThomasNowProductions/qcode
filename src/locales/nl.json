@@ -269,11 +269,13 @@
     "summary": {
       "title": "Wat is er nieuw",
       "recentChanges": "Recente wijzigingen",
-      "noChanges": "Geen nieuwe wijzigingen om samen te vatten."
+      "noChanges": "Geen nieuwe wijzigingen om samen te vatten.",
+      "andMore": "En {{count}} meer... Ga naar het Commits-tabblad voor alle details."
     },
     "commits": {
       "title": "Alle Commits",
       "noCommits": "Geen commits om weer te geven.",
+      "lastChecked": "Laatst gecontroleerd: {{date}}",
       "commit": "Commit",
       "author": "Auteur",
       "date": "Datum",

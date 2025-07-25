@@ -2,7 +2,9 @@ import { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { X, GitCommit, GitPullRequest, Calendar, User, Hash } from 'lucide-react'
 import { getCachedChangelog } from '@/utils/changelog'
-import { formatDistanceToNow } from 'date-fns'
+import { formatDistanceToNow, type Locale } from 'date-fns'
+import { nl } from 'date-fns/locale/nl'
+import { enUS } from 'date-fns/locale/en-US'
 import type { ChangelogData, ChangelogEntry } from '@/types/changelog'
 
 
@@ -12,7 +14,7 @@ interface ReleaseNotesModalProps {
 }
 
 export function ReleaseNotesModal({ isOpen, onClose }: ReleaseNotesModalProps) {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
   const [changelogData, setChangelogData] = useState<ChangelogData | null>(null)
   const [selectedTab, setSelectedTab] = useState<'commits' | 'summary'>('summary')
 
@@ -124,11 +126,11 @@ export function ReleaseNotesModal({ isOpen, onClose }: ReleaseNotesModalProps) {
                 ) : (
                   <div className="space-y-4">
                     {allEntries.slice(0, 5).map((entry) => (
-                      <EntryCard key={entry.id} entry={entry} />
+                      <EntryCard key={entry.id} entry={entry} locale={i18n.language === 'nl' ? nl : enUS} />
                     ))}
                     {allEntries.length > 5 && (
                       <p className="text-sm theme-text-muted text-center">
-                        And {allEntries.length - 5} more... Switch to Commits tab for full details.
+                        {t('releaseNotes.summary.andMore', { count: allEntries.length - 5 })}
                       </p>
                     )}
                   </div>
@@ -145,7 +147,12 @@ export function ReleaseNotesModal({ isOpen, onClose }: ReleaseNotesModalProps) {
                 </h3>
                 {changelogData?.lastCheckDate && (
                   <p className="text-sm theme-text-muted">
-                    Last checked: {formatDistanceToNow(changelogData.lastCheckDate, { addSuffix: true })}
+                    {t('releaseNotes.commits.lastChecked', { 
+                      date: formatDistanceToNow(changelogData.lastCheckDate, { 
+                        addSuffix: true, 
+                        locale: i18n.language === 'nl' ? nl : enUS 
+                      }) 
+                    })}
                   </p>
                 )}
               </div>
@@ -158,7 +165,7 @@ export function ReleaseNotesModal({ isOpen, onClose }: ReleaseNotesModalProps) {
               ) : (
                 <div className="space-y-4">
                   {commits.map((entry) => (
-                    <EntryCard key={entry.id} entry={entry} detailed />
+                    <EntryCard key={entry.id} entry={entry} detailed locale={i18n.language === 'nl' ? nl : enUS} />
                   ))}
                 </div>
               )}
@@ -180,7 +187,7 @@ export function ReleaseNotesModal({ isOpen, onClose }: ReleaseNotesModalProps) {
   )
 }
 
-function EntryCard({ entry, detailed = false }: { entry: ChangelogEntry; detailed?: boolean }) {
+function EntryCard({ entry, detailed = false, locale }: { entry: ChangelogEntry; detailed?: boolean; locale: Locale }) {
   const Icon = entry.type === 'commit' ? GitCommit : GitPullRequest
   
   return (
@@ -200,7 +207,7 @@ function EntryCard({ entry, detailed = false }: { entry: ChangelogEntry; detaile
               {entry.title}
             </h4>
             <time className="text-xs theme-text-muted whitespace-nowrap">
-              {formatDistanceToNow(entry.date, { addSuffix: true })}
+              {formatDistanceToNow(entry.date, { addSuffix: true, locale })}
             </time>
           </div>
           

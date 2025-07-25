@@ -269,11 +269,13 @@
     "summary": {
       "title": "What's New",
       "recentChanges": "Recent Changes",
-      "noChanges": "No new changes to summarize."
+      "noChanges": "No new changes to summarize.",
+      "andMore": "And {{count}} more... Switch to Commits tab for full details."
     },
     "commits": {
       "title": "All Commits",
       "noCommits": "No commits to display.",
+      "lastChecked": "Last checked: {{date}}",
       "commit": "Commit",
       "author": "Author",
       "date": "Date",
