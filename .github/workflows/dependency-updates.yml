@@ -2,8 +2,8 @@ name: Weekly Dependency Updates
 
 on:
   schedule:
-    # Run every Monday at 9:00 AM UTC
-    - cron: '0 9 * * 1'
+    # Run daily at 00:00 UTC
+    - cron: '0 0 * * *'
   workflow_dispatch:
     # Allow manual trigger
 
@@ -61,16 +61,8 @@ jobs:
           # Clean up output file
           rm -f ncu-output.txt
           
-      - name: Run linting
-        run: npm run lint
-        continue-on-error: true
-        
-      - name: Run tests
-        run: npm test
-        continue-on-error: true
-        
-      - name: Build project
-        run: npm run build
+      - name: Run checks
+        run: npm run test:all
         continue-on-error: true
         
       - name: Create branch for updates
@@ -122,10 +114,10 @@ jobs:
           base: main
           title: 'chore: weekly dependency updates'
           body: |
-            ## 📦 Weekly Dependency Updates
-            
-            This PR contains automated dependency updates for the week.
-            
+            ## 📦 Daily Dependency Updates
+
+            This PR contains automated dependency updates for the day.
+
             ### 🔄 Changes Made
             ${{ env.DEPENDENCY_DIFF }}
             
@@ -169,6 +161,6 @@ jobs:
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 issue_number: pulls[0].number,
-                body: '✅ Dependencies are already up to date. No changes needed this week.'
+                body: '✅ Dependencies are already up to date. No changes needed today.'
               });
             }
