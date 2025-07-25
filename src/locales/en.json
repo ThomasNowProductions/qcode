@@ -275,7 +275,7 @@
     "commits": {
       "title": "All Commits",
       "noCommits": "No commits to display.",
-      "lastChecked": "Last checked",
+      "lastChecked": "Last checked: {{date}}",
       "commit": "Commit",
       "author": "Author",
       "date": "Date",
