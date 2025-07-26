@@ -35,6 +35,7 @@
   "filters": {
     "title": "Search & Filter",
     "searchPlaceholder": "Search by code or store...",
+    "reset": "Reset filters",
     "category": {
       "label": "Category",
       "all": "All categories",

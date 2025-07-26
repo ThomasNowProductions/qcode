@@ -166,6 +166,20 @@ export default function HomePage() {
   }
 
   /**
+   * Reset function to clear all search filters back to default values
+   * Also resets the "expiring soon" filter state
+   */
+  const resetFilters = () => {
+    setSearchFilters({
+      searchTerm: '',
+      category: 'all',
+      sortBy: 'dateAdded',
+      filterBy: 'all',
+    })
+    setShowOnlyExpiringSoon(false)
+  }
+
+  /**
    * Custom filter function that handles special cases for stat card filtering
    * Specifically handles the "expiring soon" case which requires additional filtering
    * beyond the standard filterCodes function
@@ -252,6 +266,7 @@ export default function HomePage() {
               setSearchFilters(newFilters)
               setShowOnlyExpiringSoon(false)
             }}
+            onReset={resetFilters}
           />
         </div>
 
@@ -272,6 +287,7 @@ export default function HomePage() {
           <EmptyState
             hasAnyCodes={codes.length > 0}
             onAddCode={() => setIsAddModalOpen(true)}
+            onResetFilters={resetFilters}
           />
         ) : (
           <div className="space-y-6" data-codes-list>
