@@ -224,8 +224,8 @@ export function OnboardingTutorial({ isOpen, onClose, onComplete, onSkip }: Onbo
   return (
     <>
       {/* Overlay */}
-      <div 
-        className="fixed inset-0 bg-black/60 dark:bg-black/80 transition-opacity z-[9998]"
+      <div
+        className="fixed inset-0 bg-black/40 dark:bg-black/60 transition-opacity z-[9998]"
       />
 
       {/* Tutorial Card */}
@@ -339,158 +339,104 @@ export function OnboardingTutorial({ isOpen, onClose, onComplete, onSkip }: Onbo
           .onboarding-highlight {
             position: relative;
             z-index: 9999;
-            box-shadow: 
+            box-shadow:
               ${currentStep === 4 ? `
-                0 0 0 8px rgba(59, 130, 246, 1),
-                0 0 0 16px rgba(59, 130, 246, 1),
-                0 0 0 24px rgba(59, 130, 246, 1),
-                0 0 0 32px rgba(59, 130, 246, 1),
-                0 0 0 40px rgba(59, 130, 246, 1),
-                0 0 100px rgba(59, 130, 246, 1),
-                0 0 200px rgba(59, 130, 246, 1),
-                0 0 300px rgba(59, 130, 246, 0.9),
-                0 0 400px rgba(59, 130, 246, 0.8),
-                0 0 500px rgba(59, 130, 246, 0.7),
-                0 0 0 9999px rgba(0, 0, 0, 0.7);
+                0 0 0 6px var(--accent-blue),
+                0 0 0 12px var(--accent-blue),
+                0 0 0 18px var(--accent-blue),
+                0 0 0 9999px rgba(0, 0, 0, 0.5);
               ` : `
-                0 0 0 4px rgba(59, 130, 246, 1),
-                0 0 0 8px rgba(59, 130, 246, 0.7),
-                0 0 0 12px rgba(59, 130, 246, 0.4),
-                0 0 40px rgba(59, 130, 246, 0.8),
-                0 0 80px rgba(59, 130, 246, 0.5),
-                0 0 0 9999px rgba(0, 0, 0, 0.7);
+                0 0 0 4px var(--accent-blue),
+                0 0 0 8px var(--accent-blue),
+                0 0 0 12px var(--accent-blue),
+                0 0 0 9999px rgba(0, 0, 0, 0.5);
               `}
             border-radius: 12px;
             transition: all 0.3s ease;
-            animation: ${currentStep === 4 ? 'onboarding-pulse-nuclear' : 'onboarding-pulse'} ${currentStep === 4 ? '2s' : '2s'} ease-in-out infinite;
+            animation: ${currentStep === 4 ? 'onboarding-pulse-notifications' : 'onboarding-pulse'} 3s ease-in-out infinite;
           }
           
           .dark .onboarding-highlight {
-            box-shadow: 
+            box-shadow:
               ${currentStep === 4 ? `
-                0 0 0 8px rgba(96, 165, 250, 1),
-                0 0 0 16px rgba(96, 165, 250, 1),
-                0 0 0 24px rgba(96, 165, 250, 1),
-                0 0 0 32px rgba(96, 165, 250, 1),
-                0 0 0 40px rgba(96, 165, 250, 1),
-                0 0 120px rgba(96, 165, 250, 1),
-                0 0 250px rgba(96, 165, 250, 1),
-                0 0 350px rgba(96, 165, 250, 0.95),
-                0 0 450px rgba(96, 165, 250, 0.9),
-                0 0 600px rgba(96, 165, 250, 0.8),
-                0 0 0 9999px rgba(0, 0, 0, 0.8);
+                0 0 0 6px var(--accent-blue),
+                0 0 0 12px var(--accent-blue),
+                0 0 0 18px var(--accent-blue),
+                0 0 0 9999px rgba(0, 0, 0, 0.6);
               ` : `
-                0 0 0 4px rgba(96, 165, 250, 1),
-                0 0 0 8px rgba(96, 165, 250, 0.8),
-                0 0 0 12px rgba(96, 165, 250, 0.5),
-                0 0 50px rgba(96, 165, 250, 0.9),
-                0 0 100px rgba(96, 165, 250, 0.6),
-                0 0 0 9999px rgba(0, 0, 0, 0.8);
+                0 0 0 4px var(--accent-blue),
+                0 0 0 8px var(--accent-blue),
+                0 0 0 12px var(--accent-blue),
+                0 0 0 9999px rgba(0, 0, 0, 0.6);
               `}
-            animation: ${currentStep === 4 ? 'onboarding-pulse-nuclear-dark' : 'onboarding-pulse-dark'} ${currentStep === 4 ? '2s' : '2s'} ease-in-out infinite;
+            animation: ${currentStep === 4 ? 'onboarding-pulse-notifications-dark' : 'onboarding-pulse-dark'} 3s ease-in-out infinite;
           }
           
           @keyframes onboarding-pulse {
             0%, 100% {
-              box-shadow: 
-                0 0 0 4px rgba(59, 130, 246, 1),
-                0 0 0 8px rgba(59, 130, 246, 0.7),
-                0 0 0 12px rgba(59, 130, 246, 0.4),
-                0 0 40px rgba(59, 130, 246, 0.8),
-                0 0 80px rgba(59, 130, 246, 0.5),
-                0 0 0 9999px rgba(0, 0, 0, 0.7);
+              box-shadow:
+                0 0 0 4px var(--accent-blue),
+                0 0 0 8px var(--accent-blue),
+                0 0 0 12px var(--accent-blue),
+                0 0 0 9999px rgba(0, 0, 0, 0.5);
             }
             50% {
-              box-shadow: 
-                0 0 0 6px rgba(59, 130, 246, 1),
-                0 0 0 12px rgba(59, 130, 246, 0.8),
-                0 0 0 18px rgba(59, 130, 246, 0.5),
-                0 0 60px rgba(59, 130, 246, 1),
-                0 0 120px rgba(59, 130, 246, 0.7),
-                0 0 0 9999px rgba(0, 0, 0, 0.7);
+              box-shadow:
+                0 0 0 5px var(--accent-blue),
+                0 0 0 10px var(--accent-blue),
+                0 0 0 15px var(--accent-blue),
+                0 0 0 9999px rgba(0, 0, 0, 0.5);
             }
           }
           
-          @keyframes onboarding-pulse-nuclear {
+          @keyframes onboarding-pulse-notifications {
             0%, 100% {
-              box-shadow: 
-                0 0 0 10px rgba(59, 130, 246, 1),
-                0 0 0 20px rgba(59, 130, 246, 1),
-                0 0 0 30px rgba(59, 130, 246, 1),
-                0 0 0 40px rgba(59, 130, 246, 1),
-                0 0 0 50px rgba(59, 130, 246, 1),
-                0 0 150px rgba(59, 130, 246, 1),
-                0 0 250px rgba(59, 130, 246, 1),
-                0 0 350px rgba(59, 130, 246, 1),
-                0 0 450px rgba(59, 130, 246, 1),
-                0 0 600px rgba(59, 130, 246, 0.9),
-                0 0 0 9999px rgba(0, 0, 0, 0.7);
+              box-shadow:
+                0 0 0 6px var(--accent-blue),
+                0 0 0 12px var(--accent-blue),
+                0 0 0 18px var(--accent-blue),
+                0 0 0 9999px rgba(0, 0, 0, 0.5);
             }
             50% {
-              box-shadow: 
-                0 0 0 15px rgba(59, 130, 246, 1),
-                0 0 0 30px rgba(59, 130, 246, 1),
-                0 0 0 45px rgba(59, 130, 246, 1),
-                0 0 0 60px rgba(59, 130, 246, 1),
-                0 0 0 75px rgba(59, 130, 246, 1),
-                0 0 200px rgba(59, 130, 246, 1),
-                0 0 350px rgba(59, 130, 246, 1),
-                0 0 500px rgba(59, 130, 246, 1),
-                0 0 650px rgba(59, 130, 246, 1),
-                0 0 800px rgba(59, 130, 246, 1),
-                0 0 0 9999px rgba(0, 0, 0, 0.7);
+              box-shadow:
+                0 0 0 8px var(--accent-blue),
+                0 0 0 16px var(--accent-blue),
+                0 0 0 24px var(--accent-blue),
+                0 0 0 9999px rgba(0, 0, 0, 0.5);
             }
           }
           
           @keyframes onboarding-pulse-dark {
             0%, 100% {
-              box-shadow: 
-                0 0 0 4px rgba(96, 165, 250, 1),
-                0 0 0 8px rgba(96, 165, 250, 0.8),
-                0 0 0 12px rgba(96, 165, 250, 0.5),
-                0 0 50px rgba(96, 165, 250, 0.9),
-                0 0 100px rgba(96, 165, 250, 0.6),
-                0 0 0 9999px rgba(0, 0, 0, 0.8);
+              box-shadow:
+                0 0 0 4px var(--accent-blue),
+                0 0 0 8px var(--accent-blue),
+                0 0 0 12px var(--accent-blue),
+                0 0 0 9999px rgba(0, 0, 0, 0.6);
             }
             50% {
-              box-shadow: 
-                0 0 0 6px rgba(96, 165, 250, 1),
-                0 0 0 12px rgba(96, 165, 250, 0.9),
-                0 0 0 18px rgba(96, 165, 250, 0.6),
-                0 0 70px rgba(96, 165, 250, 1),
-                0 0 140px rgba(96, 165, 250, 0.8),
-                0 0 0 9999px rgba(0, 0, 0, 0.8);
+              box-shadow:
+                0 0 0 5px var(--accent-blue),
+                0 0 0 10px var(--accent-blue),
+                0 0 0 15px var(--accent-blue),
+                0 0 0 9999px rgba(0, 0, 0, 0.6);
             }
           }
           
-          @keyframes onboarding-pulse-nuclear-dark {
+          @keyframes onboarding-pulse-notifications-dark {
             0%, 100% {
-              box-shadow: 
-                0 0 0 10px rgba(96, 165, 250, 1),
-                0 0 0 20px rgba(96, 165, 250, 1),
-                0 0 0 30px rgba(96, 165, 250, 1),
-                0 0 0 40px rgba(96, 165, 250, 1),
-                0 0 0 50px rgba(96, 165, 250, 1),
-                0 0 180px rgba(96, 165, 250, 1),
-                0 0 300px rgba(96, 165, 250, 1),
-                0 0 420px rgba(96, 165, 250, 1),
-                0 0 540px rgba(96, 165, 250, 1),
-                0 0 700px rgba(96, 165, 250, 0.95),
-                0 0 0 9999px rgba(0, 0, 0, 0.8);
+              box-shadow:
+                0 0 0 6px var(--accent-blue),
+                0 0 0 12px var(--accent-blue),
+                0 0 0 18px var(--accent-blue),
+                0 0 0 9999px rgba(0, 0, 0, 0.6);
             }
             50% {
-              box-shadow: 
-                0 0 0 15px rgba(96, 165, 250, 1),
-                0 0 0 30px rgba(96, 165, 250, 1),
-                0 0 0 45px rgba(96, 165, 250, 1),
-                0 0 0 60px rgba(96, 165, 250, 1),
-                0 0 0 75px rgba(96, 165, 250, 1),
-                0 0 250px rgba(96, 165, 250, 1),
-                0 0 400px rgba(96, 165, 250, 1),
-                0 0 600px rgba(96, 165, 250, 1),
-                0 0 750px rgba(96, 165, 250, 1),
-                0 0 900px rgba(96, 165, 250, 1),
-                0 0 0 9999px rgba(0, 0, 0, 0.8);
+              box-shadow:
+                0 0 0 8px var(--accent-blue),
+                0 0 0 16px var(--accent-blue),
+                0 0 0 24px var(--accent-blue),
+                0 0 0 9999px rgba(0, 0, 0, 0.6);
             }
           }
         `}</style>

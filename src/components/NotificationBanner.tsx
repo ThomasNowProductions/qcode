@@ -45,7 +45,10 @@ export function NotificationBanner({ expiringSoon, onCodeClick }: NotificationBa
   }
 
   return (
-    <div className="theme-card rounded-xl shadow-lg border p-6 mb-6 transition-all duration-300 ring-2 ring-orange-400 dark:ring-amber-500">
+    <div
+      data-tutorial="notifications"
+      className="theme-card rounded-xl shadow-lg border p-6 mb-6 transition-all duration-300 ring-2 ring-orange-400 dark:ring-amber-500"
+    >
       <div className="flex">
         <div className="flex-shrink-0">
           <div className="bg-orange-500 dark:from-orange-500 dark:to-amber-500 p-2 rounded-lg shadow-md">
