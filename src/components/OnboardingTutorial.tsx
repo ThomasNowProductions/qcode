@@ -336,107 +336,92 @@ export function OnboardingTutorial({ isOpen, onClose, onComplete, onSkip }: Onbo
       {/* Spotlight effect for highlighted elements */}
       {highlightedElement && currentStepData.position !== 'center' && (
         <style jsx global>{`
+          :root {
+            --onboarding-shadow-normal-start: 0 0 0 4px var(--accent-blue), 0 0 0 8px var(--accent-blue), 0 0 0 12px var(--accent-blue);
+            --onboarding-shadow-normal-mid: 0 0 0 5px var(--accent-blue), 0 0 0 10px var(--accent-blue), 0 0 0 15px var(--accent-blue);
+            --onboarding-shadow-notifications-start: 0 0 0 6px var(--accent-blue), 0 0 0 12px var(--accent-blue), 0 0 0 18px var(--accent-blue);
+            --onboarding-shadow-notifications-mid: 0 0 0 8px var(--accent-blue), 0 0 0 16px var(--accent-blue), 0 0 0 24px var(--accent-blue);
+            --onboarding-overlay-light: 0 0 0 9999px rgba(0, 0, 0, 0.5);
+            --onboarding-overlay-dark: 0 0 0 9999px rgba(0, 0, 0, 0.6);
+          }
+
           .onboarding-highlight {
             position: relative;
             z-index: 9999;
             box-shadow:
-              ${currentStep === 4 ? `
-                0 0 0 6px var(--accent-blue),
-                0 0 0 12px var(--accent-blue),
-                0 0 0 18px var(--accent-blue),
-                0 0 0 9999px rgba(0, 0, 0, 0.5);
+              ${currentStepData.id === 'notifications-archiving' ? `
+                var(--onboarding-shadow-notifications-start),
+                var(--onboarding-overlay-light);
               ` : `
-                0 0 0 4px var(--accent-blue),
-                0 0 0 8px var(--accent-blue),
-                0 0 0 12px var(--accent-blue),
-                0 0 0 9999px rgba(0, 0, 0, 0.5);
+                var(--onboarding-shadow-normal-start),
+                var(--onboarding-overlay-light);
               `}
             border-radius: 12px;
             transition: all 0.3s ease;
-            animation: ${currentStep === 4 ? 'onboarding-pulse-notifications' : 'onboarding-pulse'} 3s ease-in-out infinite;
+            animation: ${currentStepData.id === 'notifications-archiving' ? 'onboarding-pulse-notifications' : 'onboarding-pulse'} 3s ease-in-out infinite;
           }
           
           .dark .onboarding-highlight {
             box-shadow:
-              ${currentStep === 4 ? `
-                0 0 0 6px var(--accent-blue),
-                0 0 0 12px var(--accent-blue),
-                0 0 0 18px var(--accent-blue),
-                0 0 0 9999px rgba(0, 0, 0, 0.6);
+              ${currentStepData.id === 'notifications-archiving' ? `
+                var(--onboarding-shadow-notifications-start),
+                var(--onboarding-overlay-dark);
               ` : `
-                0 0 0 4px var(--accent-blue),
-                0 0 0 8px var(--accent-blue),
-                0 0 0 12px var(--accent-blue),
-                0 0 0 9999px rgba(0, 0, 0, 0.6);
+                var(--onboarding-shadow-normal-start),
+                var(--onboarding-overlay-dark);
               `}
-            animation: ${currentStep === 4 ? 'onboarding-pulse-notifications-dark' : 'onboarding-pulse-dark'} 3s ease-in-out infinite;
+            animation: ${currentStepData.id === 'notifications-archiving' ? 'onboarding-pulse-notifications-dark' : 'onboarding-pulse-dark'} 3s ease-in-out infinite;
           }
           
           @keyframes onboarding-pulse {
             0%, 100% {
               box-shadow:
-                0 0 0 4px var(--accent-blue),
-                0 0 0 8px var(--accent-blue),
-                0 0 0 12px var(--accent-blue),
-                0 0 0 9999px rgba(0, 0, 0, 0.5);
+                var(--onboarding-shadow-normal-start),
+                var(--onboarding-overlay-light);
             }
             50% {
               box-shadow:
-                0 0 0 5px var(--accent-blue),
-                0 0 0 10px var(--accent-blue),
-                0 0 0 15px var(--accent-blue),
-                0 0 0 9999px rgba(0, 0, 0, 0.5);
+                var(--onboarding-shadow-normal-mid),
+                var(--onboarding-overlay-light);
             }
           }
           
           @keyframes onboarding-pulse-notifications {
             0%, 100% {
               box-shadow:
-                0 0 0 6px var(--accent-blue),
-                0 0 0 12px var(--accent-blue),
-                0 0 0 18px var(--accent-blue),
-                0 0 0 9999px rgba(0, 0, 0, 0.5);
+                var(--onboarding-shadow-notifications-start),
+                var(--onboarding-overlay-light);
             }
             50% {
               box-shadow:
-                0 0 0 8px var(--accent-blue),
-                0 0 0 16px var(--accent-blue),
-                0 0 0 24px var(--accent-blue),
-                0 0 0 9999px rgba(0, 0, 0, 0.5);
+                var(--onboarding-shadow-notifications-mid),
+                var(--onboarding-overlay-light);
             }
           }
           
           @keyframes onboarding-pulse-dark {
             0%, 100% {
               box-shadow:
-                0 0 0 4px var(--accent-blue),
-                0 0 0 8px var(--accent-blue),
-                0 0 0 12px var(--accent-blue),
-                0 0 0 9999px rgba(0, 0, 0, 0.6);
+                var(--onboarding-shadow-normal-start),
+                var(--onboarding-overlay-dark);
             }
             50% {
               box-shadow:
-                0 0 0 5px var(--accent-blue),
-                0 0 0 10px var(--accent-blue),
-                0 0 0 15px var(--accent-blue),
-                0 0 0 9999px rgba(0, 0, 0, 0.6);
+                var(--onboarding-shadow-normal-mid),
+                var(--onboarding-overlay-dark);
             }
           }
           
           @keyframes onboarding-pulse-notifications-dark {
             0%, 100% {
               box-shadow:
-                0 0 0 6px var(--accent-blue),
-                0 0 0 12px var(--accent-blue),
-                0 0 0 18px var(--accent-blue),
-                0 0 0 9999px rgba(0, 0, 0, 0.6);
+                var(--onboarding-shadow-notifications-start),
+                var(--onboarding-overlay-dark);
             }
             50% {
               box-shadow:
-                0 0 0 8px var(--accent-blue),
-                0 0 0 16px var(--accent-blue),
-                0 0 0 24px var(--accent-blue),
-                0 0 0 9999px rgba(0, 0, 0, 0.6);
+                var(--onboarding-shadow-notifications-mid),
+                var(--onboarding-overlay-dark);
             }
           }
         `}</style>
