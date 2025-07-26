@@ -118,7 +118,11 @@
     "expiredCodes": "Expired",
     "favoriteCodes": "Favorites",
     "expiringSoon": "Expiring soon",
-    "archivedCodes": "Archived codes"
+    "archivedCodes": "Archived codes",
+    "clickToView": "Click to view {{type}} codes",
+    "viewExpired": "expired codes",
+    "viewFavorites": "favorite codes",
+    "viewExpiringSoon": "codes expiring soon"
   },
   "settings": {
     "title": "Settings",

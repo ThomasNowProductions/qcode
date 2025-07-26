@@ -88,8 +88,8 @@ export default function HomePage() {
   const scrollToCode = (codeId: string) => {
     const ref = codeRefs.current[codeId]
     if (ref?.current) {
-      ref.current.scrollIntoView({ 
-        behavior: 'smooth', 
+      ref.current.scrollIntoView({
+        behavior: 'smooth',
         block: 'center',
         inline: 'nearest'
       })
@@ -103,7 +103,87 @@ export default function HomePage() {
     }
   }
 
-  const filteredCodes = filterCodes(searchFilters)
+  // Function to scroll to the codes list
+  const scrollToCodesList = () => {
+    const codesList = document.querySelector('[data-codes-list]')
+    if (codesList) {
+      codesList.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start',
+        inline: 'nearest'
+      })
+    }
+  }
+
+  /**
+   * Handles click events from StatsOverview component
+   * Applies appropriate filters based on the clicked stat card
+   * @param filterType - The type of filter to apply based on which stat card was clicked
+   */
+  const handleStatClick = (filterType: 'expired' | 'favorites' | 'expiringSoon') => {
+    let newFilters: SearchFilters
+    
+    switch (filterType) {
+      case 'expired':
+        newFilters = {
+          searchTerm: '',
+          category: 'all',
+          sortBy: 'expiryDate',
+          filterBy: 'expired',
+        }
+        break
+      case 'favorites':
+        newFilters = {
+          searchTerm: '',
+          category: 'all',
+          sortBy: 'dateAdded',
+          filterBy: 'favorites',
+        }
+        break
+      case 'expiringSoon':
+        newFilters = {
+          searchTerm: '',
+          category: 'all',
+          sortBy: 'expiryDate',
+          filterBy: 'active', // We'll use active and then filter for expiring soon
+        }
+        break
+    }
+    
+    setSearchFilters(newFilters)
+    
+    // Scroll to the codes list after a short delay to allow filters to apply
+    setTimeout(() => {
+      scrollToCodesList()
+    }, 100)
+  }
+
+  /**
+   * Custom filter function that handles special cases for stat card filtering
+   * Specifically handles the "expiring soon" case which requires additional filtering
+   * beyond the standard filterCodes function
+   * @returns Filtered array of discount codes based on current filters
+   */
+  const getFilteredCodes = () => {
+    let filtered = filterCodes(searchFilters)
+    
+    // Special handling for expiring soon when coming from stats
+    // This detects when the user clicked the "expiring soon" stat card
+    if (searchFilters.filterBy === 'active' &&
+        searchFilters.searchTerm === '' &&
+        searchFilters.category === 'all') {
+      const expiringSoonCodes = getExpiringSoon()
+      if (expiringSoonCodes.length > 0) {
+        // Filter to show only codes that are expiring soon
+        const expiringSoonIds = new Set(expiringSoonCodes.map(code => code.id))
+        filtered = filtered.filter(code => expiringSoonIds.has(code.id))
+      }
+    }
+    
+    return filtered
+  }
+
+  const filteredCodes = getFilteredCodes()
   const stats = getStats()
   const expiringSoon = getExpiringSoon()
 
@@ -155,7 +235,7 @@ export default function HomePage() {
         )}
 
         {/* Statistics Overview */}
-        <StatsOverview stats={stats} />
+        <StatsOverview stats={stats} onStatClick={handleStatClick} />
 
         {/* Search and Filter */}
         <div className="mb-8" data-tutorial="search-filter">
@@ -179,12 +259,12 @@ export default function HomePage() {
 
         {/* Codes List */}
         {filteredCodes.length === 0 ? (
-          <EmptyState 
+          <EmptyState
             hasAnyCodes={codes.length > 0}
             onAddCode={() => setIsAddModalOpen(true)}
           />
         ) : (
-          <div className="space-y-6">
+          <div className="space-y-6" data-codes-list>
             {filteredCodes.map((code) => (
               <DiscountCodeCard
                 key={code.id}

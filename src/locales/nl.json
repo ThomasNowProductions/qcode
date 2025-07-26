@@ -118,7 +118,11 @@
     "expiredCodes": "Verlopen",
     "favoriteCodes": "Favorieten",
     "expiringSoon": "Binnenkort verlopen",
-    "archivedCodes": "Gearchiveerde codes"
+    "archivedCodes": "Gearchiveerde codes",
+    "clickToView": "Klik om {{type}} codes te bekijken",
+    "viewExpired": "verlopen codes te bekijken",
+    "viewFavorites": "favoriete codes te bekijken",
+    "viewExpiringSoon": "codes die binnenkort verlopen te bekijken"
   },
   "settings": {
     "title": "Instellingen",
