@@ -1,4 +1,4 @@
-name: Weekly Dependency Updates
+name: Dependency Updates
 
 on:
   schedule:
