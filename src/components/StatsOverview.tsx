@@ -21,6 +21,16 @@ export function StatsOverview({ stats, onStatClick }: StatsOverviewProps) {
   const { t } = useTranslation()
   
   /**
+   * Mapping object for filter types to their translation keys
+   * Used for cleaner aria-label construction
+   */
+  const filterTypeToTranslationKey = {
+    expired: 'stats.viewExpired',
+    favorites: 'stats.viewFavorites',
+    expiringSoon: 'stats.viewExpiringSoon'
+  } as const
+  
+  /**
    * Configuration array for all stat cards
    * Defines which cards are clickable and their associated filter types
    */
@@ -83,7 +93,7 @@ export function StatsOverview({ stats, onStatClick }: StatsOverviewProps) {
               } ${item.value === 0 ? 'opacity-60' : ''}`}
               onClick={() => item.clickable && onStatClick?.(item.filterType!)}
               disabled={!item.clickable || item.value === 0}
-              aria-label={`${item.label}: ${item.value} ${item.clickable ? t('stats.clickToView', { type: item.filterType === 'expired' ? t('stats.viewExpired') : item.filterType === 'favorites' ? t('stats.viewFavorites') : t('stats.viewExpiringSoon') }) : ''}`}
+              aria-label={`${item.label}: ${item.value} ${item.clickable && item.filterType ? t('stats.clickToView', { type: t(filterTypeToTranslationKey[item.filterType]) }) : ''}`}
             >
               {/* Hover overlay effect - provides subtle visual feedback */}
               {item.clickable && (

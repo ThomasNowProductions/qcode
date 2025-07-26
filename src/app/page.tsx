@@ -67,6 +67,12 @@ export default function HomePage() {
     filterBy: 'all',
   })
 
+  // State to track when user specifically clicked on "expiring soon" stat card
+  const [showOnlyExpiringSoon, setShowOnlyExpiringSoon] = useState(false)
+
+  // State to trigger scrolling to codes list after filter changes
+  const [shouldScrollToList, setShouldScrollToList] = useState(false)
+
   const [isAddModalOpen, setIsAddModalOpen] = useState(false)
   const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false)
   const [isCloudSyncOpen, setIsCloudSyncOpen] = useState(false)
@@ -131,6 +137,7 @@ export default function HomePage() {
           sortBy: 'expiryDate',
           filterBy: 'expired',
         }
+        setShowOnlyExpiringSoon(false)
         break
       case 'favorites':
         newFilters = {
@@ -139,23 +146,23 @@ export default function HomePage() {
           sortBy: 'dateAdded',
           filterBy: 'favorites',
         }
+        setShowOnlyExpiringSoon(false)
         break
       case 'expiringSoon':
         newFilters = {
           searchTerm: '',
           category: 'all',
           sortBy: 'expiryDate',
-          filterBy: 'active', // We'll use active and then filter for expiring soon
+          filterBy: 'active',
         }
+        setShowOnlyExpiringSoon(true)
         break
     }
     
     setSearchFilters(newFilters)
     
-    // Scroll to the codes list after a short delay to allow filters to apply
-    setTimeout(() => {
-      scrollToCodesList()
-    }, 100)
+    // Trigger scrolling to codes list through useEffect
+    setShouldScrollToList(true)
   }
 
   /**
@@ -165,27 +172,27 @@ export default function HomePage() {
    * @returns Filtered array of discount codes based on current filters
    */
   const getFilteredCodes = () => {
-    let filtered = filterCodes(searchFilters)
-    
-    // Special handling for expiring soon when coming from stats
-    // This detects when the user clicked the "expiring soon" stat card
-    if (searchFilters.filterBy === 'active' &&
-        searchFilters.searchTerm === '' &&
-        searchFilters.category === 'all') {
+    // Check if we should show only expiring soon codes
+    if (showOnlyExpiringSoon) {
       const expiringSoonCodes = getExpiringSoon()
-      if (expiringSoonCodes.length > 0) {
-        // Filter to show only codes that are expiring soon
-        const expiringSoonIds = new Set(expiringSoonCodes.map(code => code.id))
-        filtered = filtered.filter(code => expiringSoonIds.has(code.id))
-      }
+      return expiringSoonCodes
     }
     
-    return filtered
+    // Otherwise, use normal filtering
+    return filterCodes(searchFilters)
   }
 
   const filteredCodes = getFilteredCodes()
   const stats = getStats()
   const expiringSoon = getExpiringSoon()
+
+  // useEffect to handle scrolling to codes list after state changes
+  useEffect(() => {
+    if (shouldScrollToList) {
+      scrollToCodesList()
+      setShouldScrollToList(false)
+    }
+  }, [shouldScrollToList])
 
   // Show tutorial for new users (after loading is complete and onboarding hook is initialized)
   useEffect(() => {
@@ -241,7 +248,10 @@ export default function HomePage() {
         <div className="mb-8" data-tutorial="search-filter">
           <SearchAndFilter
             filters={searchFilters}
-            onFiltersChange={setSearchFilters}
+            onFiltersChange={(newFilters) => {
+              setSearchFilters(newFilters)
+              setShowOnlyExpiringSoon(false)
+            }}
           />
         </div>
 
