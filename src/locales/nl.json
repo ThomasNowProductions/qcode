@@ -128,11 +128,21 @@
   "settings": {
     "title": "Instellingen",
     "tabs": {
-      "about": "Over QCode",
-      "export": "Exporteren",
-      "import": "Importeren",
-      "language": "Taal",
-      "developer": "Ontwikkelaar"
+      "general": "Algemeen",
+      "data": "Gegevensbeheer",
+      "cloud": "Cloud Sync",
+      "appearance": "Weergave",
+      "advanced": "Geavanceerd"
+    },
+    "appearance": {
+      "title": "Weergave",
+      "subtitle": "Kies hoe de app eruitziet",
+      "theme": {
+        "label": "Thema",
+        "light": "Licht",
+        "dark": "Donker",
+        "auto": "Automatisch"
+      }
     },
     "about": {
       "version": "Versie 1.0.0",
