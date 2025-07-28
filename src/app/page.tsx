@@ -11,9 +11,8 @@ import { StatsOverview } from '@/components/StatsOverview'
 import { EmptyState } from '@/components/EmptyState'
 import { NotificationBanner } from '@/components/NotificationBanner'
 import { InstallPrompt } from '@/components/InstallPrompt'
-import { SettingsModal } from '@/components/SettingsModal'
+import { UnifiedSettingsModal } from '@/components/UnifiedSettingsModal'
 import { OnlineStatusBanner } from '@/components/OfflineIndicator'
-import { CloudSync } from '@/components/CloudSync'
 import { ChangelogPopup } from '@/components/ChangelogPopup'
 import { ReleaseNotesModal } from '@/components/ReleaseNotesModal'
 import { OnboardingTutorial } from '@/components/OnboardingTutorial'
@@ -52,7 +51,7 @@ export default function HomePage() {
 
   // Handle restart tutorial from settings
   const handleRestartTutorial = () => {
-    setIsSettingsModalOpen(false)
+    setIsUnifiedModalOpen(false)
     resetTutorial()
     // Small delay to let modal close
     setTimeout(() => {
@@ -74,10 +73,10 @@ export default function HomePage() {
   const [shouldScrollToList, setShouldScrollToList] = useState(false)
 
   const [isAddModalOpen, setIsAddModalOpen] = useState(false)
-  const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false)
-  const [isCloudSyncOpen, setIsCloudSyncOpen] = useState(false)
+  const [isUnifiedModalOpen, setIsUnifiedModalOpen] = useState(false)
   const [isReleaseNotesOpen, setIsReleaseNotesOpen] = useState(false)
   const [showNotificationBanner, setShowNotificationBanner] = useState(true)
+  const [initialTab, setInitialTab] = useState<'general' | 'data' | 'cloud' | 'appearance' | 'advanced'>('general')
 
   // Create refs for each discount code for scrolling
   const codeRefs = useRef<{ [key: string]: React.RefObject<HTMLDivElement | null> }>({})
@@ -237,10 +236,16 @@ export default function HomePage() {
       {/* Offline Status Banner */}
       <OnlineStatusBanner />
       
-      <Header 
+      <Header
         onNotificationClick={() => setShowNotificationBanner(!showNotificationBanner)}
-        onSettingsClick={() => setIsSettingsModalOpen(true)}
-        onSyncClick={() => setIsCloudSyncOpen(true)}
+        onSettingsClick={() => {
+          setInitialTab('general')
+          setIsUnifiedModalOpen(true)
+        }}
+        onSyncClick={() => {
+          setInitialTab('cloud')
+          setIsUnifiedModalOpen(true)
+        }}
       />
       
       <main className="max-w-4xl mx-auto px-4 py-8">
@@ -314,19 +319,13 @@ export default function HomePage() {
         onAdd={addCode}
       />
 
-      {/* Settings Modal */}
-      <SettingsModal
-        isOpen={isSettingsModalOpen}
-        onClose={() => setIsSettingsModalOpen(false)}
-        onAdvancedReleaseNotes={() => setIsReleaseNotesOpen(true)}
-        onRestartTutorial={handleRestartTutorial}
-      />
-
-      {/* Cloud Sync Modal */}
-      <CloudSync
-        isOpen={isCloudSyncOpen}
-        onClose={() => setIsCloudSyncOpen(false)}
+      {/* Unified Settings Modal */}
+      <UnifiedSettingsModal
+        isOpen={isUnifiedModalOpen}
+        onClose={() => setIsUnifiedModalOpen(false)}
         onManualSync={manualSync}
+        onRestartTutorial={handleRestartTutorial}
+        initialTab={initialTab}
       />
 
       {/* Changelog Popup */}

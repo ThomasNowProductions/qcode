@@ -128,11 +128,21 @@
   "settings": {
     "title": "Settings",
     "tabs": {
-      "about": "About QCode",
-      "export": "Export",
-      "import": "Import",
-      "language": "Language",
-      "developer": "Developer"
+      "general": "General",
+      "data": "Data Management",
+      "cloud": "Cloud Sync",
+      "appearance": "Appearance",
+      "advanced": "Advanced"
+    },
+    "appearance": {
+      "title": "Appearance",
+      "subtitle": "Choose how the app looks",
+      "theme": {
+        "label": "Theme",
+        "light": "Light",
+        "dark": "Dark",
+        "auto": "Auto"
+      }
     },
     "about": {
       "version": "Version 1.0.0",

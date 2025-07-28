@@ -1,107 +1,145 @@
 @import "tailwindcss";
 
 :root {
-  /* Base colors */
+  /* Base colors - Enhanced with warmer tones */
   --background: #fafbfc;
-  --background-light: #f8fafc;
-  --foreground: #1a1a1a;
+  --background-light: #f1f5f9;
+  --foreground: #0f172a;
   
-  /* Card system */
+  /* Card system - Enhanced with better contrast */
   --card-bg: #ffffff;
-  --card-border: #e5e7eb;
-  --card-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
-  --card-shadow-hover: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --card-border: #e2e8f0;
+  --card-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.12), 0 1px 2px -1px rgb(0 0 0 / 0.12);
+  --card-shadow-hover: 0 8px 25px -5px rgb(0 0 0 / 0.1), 0 4px 6px -2px rgb(0 0 0 / 0.05);
   
   /* Input system */
   --input-bg: #ffffff;
-  --input-border: #d1d5db;
+  --input-border: #cbd5e1;
   --input-focus: #3b82f6;
   
-  /* Text system */
-  --text-primary: #111827;
-  --text-secondary: #6b7280;
-  --text-muted: #9ca3af;
+  /* Text system - Enhanced contrast */
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --text-muted: #64748b;
   
-  /* Accent colors */
-  --accent-blue: #3b82f6;
-  --accent-blue-hover: #2563eb;
-  --accent-green: #10b981;
-  --accent-red: #ef4444;
-  --accent-orange: #f59e0b;
-  --accent-yellow: #eab308;
+  /* Enhanced accent colors with more vibrancy */
+  --accent-blue: #2563eb;
+  --accent-blue-hover: #1d4ed8;
+  --accent-blue-50: #eff6ff;
+  --accent-blue-100: #dbeafe;
+  --accent-blue-200: #bfdbfe;
+  --accent-blue-300: #93c5fd;
+  --accent-blue-400: #60a5fa;
+  --accent-blue-500: #3b82f6;
+  --accent-blue-600: #2563eb;
+  --accent-blue-700: #1d4ed8;
+  --accent-blue-800: #1e40af;
+  --accent-blue-900: #1e3a8a;
+  --accent-green: #059669;
+  --accent-red: #dc2626;
+  --accent-orange: #ea580c;
+  --accent-yellow: #d97706;
+  --accent-purple: #7c3aed;
+  --accent-indigo: #4f46e5;
   
-  /* Status colors */
-  --success-bg: #f0fdf4;
-  --success-border: #bbf7d0;
+  /* Enhanced status colors */
+  --success-bg: #ecfdf5;
+  --success-border: #a7f3d0;
   --warning-bg: #fffbeb;
-  --warning-border: #fde68a;
+  --warning-border: #fed7aa;
   --error-bg: #fef2f2;
-  --error-border: #fecaca;
+  --error-border: #fca5a5;
   
-  /* Component-specific colors */
-  --filter-bg: #f9fafb;
-  --filter-border: #e5e7eb;
-  --code-display-bg: #f9fafb;
-  --code-display-bg-light: #f3f4f6;
-  --code-display-border: #d1d5db;
-  --stat-card-bg: #f9fafb;
-  --stat-card-bg-light: #f3f4f6;
-  --stat-card-border: #e5e7eb;
+  /* Component-specific colors - Enhanced */
+  --filter-bg: #f8fafc;
+  --filter-border: #e2e8f0;
+  --code-display-bg: #f8fafc;
+  --code-display-bg-light: #f1f5f9;
+  --code-display-border: #cbd5e1;
+  --stat-card-bg: #f8fafc;
+  --stat-card-bg-light: #f1f5f9;
+  --stat-card-border: #e2e8f0;
   --menu-bg: #ffffff;
-  --menu-border: #e5e7eb;
-  --menu-hover: #f9fafb;
+  --menu-border: #e2e8f0;
+  --menu-hover: #f8fafc;
+  
+  /* Settings modal specific colors */
+  --settings-sidebar-bg: #f8fafc;
+  --settings-sidebar-border: #e2e8f0;
+  --settings-active-bg: #dbeafe;
+  --settings-active-text: #1e40af;
+  --settings-active-border: #3b82f6;
 }
 
 .dark {
-  /* Base colors */
-  --background: #111827;
-  --background-light: #0f172a;
-  --foreground: #ededed;
+  /* Base colors - Enhanced dark theme */
+  --background: #0f172a;
+  --background-light: #020617;
+  --foreground: #f8fafc;
   
-  /* Card system */
-  --card-bg: #1f2937;
-  --card-border: #374151;
-  --card-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.3), 0 1px 2px -1px rgb(0 0 0 / 0.3);
-  --card-shadow-hover: 0 4px 6px -1px rgb(0 0 0 / 0.3), 0 2px 4px -2px rgb(0 0 0 / 0.3);
+  /* Card system - Enhanced with better contrast */
+  --card-bg: #1e293b;
+  --card-border: #334155;
+  --card-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.4), 0 1px 2px -1px rgb(0 0 0 / 0.4);
+  --card-shadow-hover: 0 8px 25px -5px rgb(0 0 0 / 0.25), 0 4px 6px -2px rgb(0 0 0 / 0.1);
   
   /* Input system */
-  --input-bg: #374151;
-  --input-border: #4b5563;
+  --input-bg: #334155;
+  --input-border: #475569;
   --input-focus: #60a5fa;
   
-  /* Text system */
-  --text-primary: #f9fafb;
-  --text-secondary: #d1d5db;
-  --text-muted: #9ca3af;
+  /* Text system - Enhanced contrast */
+  --text-primary: #f8fafc;
+  --text-secondary: #cbd5e1;
+  --text-muted: #94a3b8;
   
-  /* Accent colors */
+  /* Enhanced accent colors for dark mode */
   --accent-blue: #60a5fa;
   --accent-blue-hover: #93c5fd;
-  --accent-green: #34d399;
+  --accent-blue-50: #1e3a8a;
+  --accent-blue-100: #1e40af;
+  --accent-blue-200: #1d4ed8;
+  --accent-blue-300: #2563eb;
+  --accent-blue-400: #3b82f6;
+  --accent-blue-500: #60a5fa;
+  --accent-blue-600: #93c5fd;
+  --accent-blue-700: #bfdbfe;
+  --accent-blue-800: #dbeafe;
+  --accent-blue-900: #eff6ff;
+  --accent-green: #22d3ee;
   --accent-red: #f87171;
-  --accent-orange: #fbbf24;
-  --accent-yellow: #fde047;
+  --accent-orange: #fb923c;
+  --accent-yellow: #fbbf24;
+  --accent-purple: #a78bfa;
+  --accent-indigo: #818cf8;
   
-  /* Status colors */
+  /* Enhanced status colors */
   --success-bg: #064e3b;
-  --success-border: #065f46;
+  --success-border: #059669;
   --warning-bg: #451a03;
-  --warning-border: #92400e;
+  --warning-border: #d97706;
   --error-bg: #450a0a;
-  --error-border: #7f1d1d;
+  --error-border: #dc2626;
   
-  /* Component-specific colors */
-  --filter-bg: #374151;
-  --filter-border: #4b5563;
-  --code-display-bg: #374151;
-  --code-display-bg-light: #4b5563;
-  --code-display-border: #4b5563;
-  --stat-card-bg: #374151;
-  --stat-card-bg-light: #4b5563;
-  --stat-card-border: #4b5563;
-  --menu-bg: #1f2937;
-  --menu-border: #374151;
-  --menu-hover: #374151;
+  /* Component-specific colors - Enhanced */
+  --filter-bg: #334155;
+  --filter-border: #475569;
+  --code-display-bg: #334155;
+  --code-display-bg-light: #475569;
+  --code-display-border: #475569;
+  --stat-card-bg: #334155;
+  --stat-card-bg-light: #475569;
+  --stat-card-border: #475569;
+  --menu-bg: #1e293b;
+  --menu-border: #334155;
+  --menu-hover: #334155;
+  
+  /* Settings modal specific colors for dark mode */
+  --settings-sidebar-bg: #1e293b;
+  --settings-sidebar-border: #334155;
+  --settings-active-bg: #1e40af;
+  --settings-active-text: #dbeafe;
+  --settings-active-border: #60a5fa;
 }
 
 @theme inline {
@@ -123,8 +161,9 @@ body {
   min-height: 100vh;
 }
 
+/* FIXED: Use consistent gradient approach for both themes */
 .dark body {
-  background: var(--background);
+  background: linear-gradient(135deg, var(--background) 0%, var(--background-light) 100%);
 }
 
 /* Custom scrollbar for light mode */
@@ -266,3 +305,39 @@ button, input, select, textarea {
 .dark .stat-gradient-orange {
   background: linear-gradient(135deg, var(--accent-orange) 0%, #f59e0b 100%);
 }
+
+/* Theme-aware blue color utilities */
+.theme-blue-50 { color: var(--accent-blue-50); }
+.theme-blue-100 { color: var(--accent-blue-100); }
+.theme-blue-200 { color: var(--accent-blue-200); }
+.theme-blue-300 { color: var(--accent-blue-300); }
+.theme-blue-400 { color: var(--accent-blue-400); }
+.theme-blue-500 { color: var(--accent-blue-500); }
+.theme-blue-600 { color: var(--accent-blue-600); }
+.theme-blue-700 { color: var(--accent-blue-700); }
+.theme-blue-800 { color: var(--accent-blue-800); }
+.theme-blue-900 { color: var(--accent-blue-900); }
+
+.theme-bg-blue-50 { background-color: var(--accent-blue-50); }
+.theme-bg-blue-100 { background-color: var(--accent-blue-100); }
+.theme-bg-blue-200 { background-color: var(--accent-blue-200); }
+.theme-bg-blue-300 { background-color: var(--accent-blue-300); }
+.theme-bg-blue-400 { background-color: var(--accent-blue-400); }
+.theme-bg-blue-500 { background-color: var(--accent-blue-500); }
+.theme-bg-blue-600 { background-color: var(--accent-blue-600); }
+.theme-bg-blue-700 { background-color: var(--accent-blue-700); }
+.theme-bg-blue-800 { background-color: var(--accent-blue-800); }
+.theme-bg-blue-900 { background-color: var(--accent-blue-900); }
+
+.theme-border-blue-200 { border-color: var(--accent-blue-200); }
+.theme-border-blue-300 { border-color: var(--accent-blue-300); }
+.theme-border-blue-500 { border-color: var(--accent-blue-500); }
+.theme-border-blue-600 { border-color: var(--accent-blue-600); }
+.theme-border-blue-700 { border-color: var(--accent-blue-700); }
+.theme-border-blue-800 { border-color: var(--accent-blue-800); }
+
+/* Hover states */
+.theme-hover-blue-600:hover { color: var(--accent-blue-600); }
+.theme-hover-blue-700:hover { color: var(--accent-blue-700); }
+.theme-hover-bg-blue-600:hover { background-color: var(--accent-blue-600); }
+.theme-hover-bg-blue-700:hover { background-color: var(--accent-blue-700); }
