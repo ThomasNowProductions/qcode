@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { X, Download, Upload, Trash2, Heart, Shield, Settings, Sparkles, FileText, RotateCcw, Cloud, CloudOff, RefreshCw, AlertTriangle, CheckCircle, Github, HardDrive, Smartphone, Palette, Globe, Database, Sliders } from 'lucide-react'
+import { X, Download, Upload, Trash2, Heart, Shield, Settings, Sparkles, FileText, RotateCcw, Cloud, RefreshCw, Github, HardDrive, Smartphone, Palette, Globe, Database, Sliders } from 'lucide-react'
 import { useDiscountCodes } from '@/hooks/useDiscountCodes'
 import { useCloudSync } from '@/hooks/useCloudSync'
 import { useDarkMode } from '@/hooks/useDarkMode'
@@ -35,7 +35,7 @@ export function UnifiedSettingsModal({
   const { t } = useTranslation()
   const { codes } = useDiscountCodes()
   const cloudSync = useCloudSync()
-  const { theme, setThemeMode, isDark } = useDarkMode()
+  const { } = useDarkMode()
   
   const [activeTab, setActiveTab] = useState<SettingsTab>(initialTab)
   
@@ -173,21 +173,7 @@ export function UnifiedSettingsModal({
     }
   }
 
-  const getStatusIcon = () => {
-    if (cloudSync.syncStatus.isSyncing) {
-      return <RefreshCw className="w-5 h-5 animate-spin text-blue-500" />
-    }
-    if (!cloudSync.syncStatus.isOnline) {
-      return <CloudOff className="w-5 h-5 text-gray-400" />
-    }
-    if (cloudSync.syncStatus.error) {
-      return <AlertTriangle className="w-5 h-5 text-red-500" />
-    }
-    if (cloudSync.syncStatus.lastSync) {
-      return <CheckCircle className="w-5 h-5 text-green-500" />
-    }
-    return <Cloud className="w-5 h-5 text-gray-500" />
-  }
+
 
   if (!isOpen) return null
 
