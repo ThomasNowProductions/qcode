@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { X, Download, Upload, Trash2, Heart, Shield, Settings, Sparkles, FileText, RotateCcw, Cloud, CloudOff, RefreshCw, AlertTriangle, CheckCircle, Github, HardDrive, Smartphone, Palette, Globe, Database, Sliders } from 'lucide-react'
+import { X, Download, Upload, Trash2, Heart, Shield, Settings, Sparkles, FileText, RotateCcw, Cloud, RefreshCw, Github, HardDrive, Smartphone, Palette, Globe, Database, Sliders } from 'lucide-react'
 import { useDiscountCodes } from '@/hooks/useDiscountCodes'
 import { useCloudSync } from '@/hooks/useCloudSync'
 import { useDarkMode } from '@/hooks/useDarkMode'
@@ -35,7 +35,7 @@ export function UnifiedSettingsModal({
   const { t } = useTranslation()
   const { codes } = useDiscountCodes()
   const cloudSync = useCloudSync()
-  const { theme, setThemeMode, isDark } = useDarkMode()
+  const { } = useDarkMode()
   
   const [activeTab, setActiveTab] = useState<SettingsTab>(initialTab)
   
@@ -173,21 +173,7 @@ export function UnifiedSettingsModal({
     }
   }
 
-  const getStatusIcon = () => {
-    if (cloudSync.syncStatus.isSyncing) {
-      return <RefreshCw className="w-5 h-5 animate-spin text-blue-500" />
-    }
-    if (!cloudSync.syncStatus.isOnline) {
-      return <CloudOff className="w-5 h-5 text-gray-400" />
-    }
-    if (cloudSync.syncStatus.error) {
-      return <AlertTriangle className="w-5 h-5 text-red-500" />
-    }
-    if (cloudSync.syncStatus.lastSync) {
-      return <CheckCircle className="w-5 h-5 text-green-500" />
-    }
-    return <Cloud className="w-5 h-5 text-gray-500" />
-  }
+
 
   if (!isOpen) return null
 
@@ -201,11 +187,16 @@ export function UnifiedSettingsModal({
 
   return (
     <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center p-2 sm:p-4 z-50">
-      <div className="theme-card rounded-xl sm:rounded-2xl shadow-2xl w-full max-w-sm sm:max-w-2xl md:max-w-3xl lg:max-w-5xl max-h-[95vh] sm:max-h-[90vh] overflow-hidden border border-white/10 dark:border-white/20 flex flex-col lg:flex-row">
+      <div role="dialog" aria-modal="true" aria-labelledby="settings-modal-title"
+           className="theme-card rounded-xl sm:rounded-2xl shadow-2xl border border-white/10 dark:border-white/20
+                      flex flex-col lg:flex-row overflow-hidden
+                      w-[95vw] h-[85vh]
+                      sm:w-[90vw] sm:h-[80vh] sm:max-w-[800px] sm:max-h-[600px]
+                      lg:w-[900px] lg:h-[600px]">
         {/* Mobile Header with Tab Navigation */}
-        <div className="lg:hidden border-b border-[var(--settings-sidebar-border)] p-3 sm:p-4">
+        <div className="lg:hidden border-b border-[var(--settings-sidebar-border)] p-3 sm:p-4 flex-shrink-0">
           <div className="flex items-center justify-between mb-3">
-            <h2 className="text-lg font-semibold theme-text-primary">{t('settings.title')}</h2>
+            <h2 id="settings-modal-title" className="text-lg font-semibold theme-text-primary">{t('settings.title')}</h2>
             <button
               onClick={onClose}
               className="p-2 text-gray-400 hover:text-gray-600 dark:text-gray-400 dark:hover:text-gray-200 transition-colors bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-full shadow-lg hover:shadow-xl"
@@ -236,9 +227,9 @@ export function UnifiedSettingsModal({
         </div>
 
         {/* Desktop Sidebar Navigation */}
-        <div className="hidden lg:block w-64 bg-gradient-to-b from-[var(--settings-sidebar-bg)] to-[var(--filter-bg)] border-r border-[var(--settings-sidebar-border)] p-4">
+        <div className="hidden lg:block w-64 flex-shrink-0 bg-gradient-to-b from-[var(--settings-sidebar-bg)] to-[var(--filter-bg)] border-r border-[var(--settings-sidebar-border)] p-4">
           <div className="flex items-center mb-6">
-            <h2 className="text-lg font-semibold theme-text-primary">{t('settings.title')}</h2>
+            <h2 id="settings-modal-title" className="text-lg font-semibold theme-text-primary">{t('settings.title')}</h2>
           </div>
 
           <nav className="space-y-2">
@@ -260,7 +251,7 @@ export function UnifiedSettingsModal({
         </div>
 
         {/* Content Area */}
-        <div className="flex-1 overflow-y-auto relative">
+        <div className="flex-1 overflow-y-auto relative min-h-0">
           {/* Desktop Close Button */}
           <button
             onClick={onClose}

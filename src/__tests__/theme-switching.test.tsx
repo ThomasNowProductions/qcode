@@ -1,4 +1,4 @@
-import { render, screen, fireEvent, act } from '@testing-library/react'
+import { act } from '@testing-library/react'
 import { useDarkMode } from '@/hooks/useDarkMode'
 import { renderHook } from '@testing-library/react'
 

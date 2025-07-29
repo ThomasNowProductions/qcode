@@ -37,20 +37,9 @@ export function useDarkMode() {
     // Apply dark mode class to document
     if (shouldBeDark) {
       document.documentElement.classList.add('dark')
-      console.log('🎨 Theme Debug: Applied dark mode class')
     } else {
       document.documentElement.classList.remove('dark')
-      console.log('🎨 Theme Debug: Removed dark mode class')
     }
-
-    // Log current CSS variables for debugging
-    const computedStyle = getComputedStyle(document.documentElement)
-    console.log('🎨 Theme Debug: Current CSS variables:', {
-      background: computedStyle.getPropertyValue('--background'),
-      foreground: computedStyle.getPropertyValue('--foreground'),
-      accentBlue: computedStyle.getPropertyValue('--accent-blue'),
-      cardBg: computedStyle.getPropertyValue('--card-bg')
-    })
 
     // Save preference
     localStorage.setItem('themeMode', theme)
