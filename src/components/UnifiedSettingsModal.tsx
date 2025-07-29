@@ -202,7 +202,8 @@ export function UnifiedSettingsModal({
   return (
     <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center p-2 sm:p-4 z-50">
       <div role="dialog" aria-modal="true" aria-labelledby="settings-modal-title"
-           className="theme-card rounded-xl sm:rounded-2xl shadow-2xl border border-white/10 dark:border-white/20 settings-modal-fixed lg:flex-row
+           className="theme-card rounded-xl sm:rounded-2xl shadow-2xl border border-white/10 dark:border-white/20
+                      flex flex-col lg:flex-row overflow-hidden
                       w-[95vw] h-[85vh]
                       sm:w-[90vw] sm:h-[80vh] sm:max-w-[800px] sm:max-h-[600px]
                       lg:w-[900px] lg:h-[600px]">
@@ -240,7 +241,7 @@ export function UnifiedSettingsModal({
         </div>
 
         {/* Desktop Sidebar Navigation */}
-        <div className="hidden lg:block w-64 bg-gradient-to-b from-[var(--settings-sidebar-bg)] to-[var(--filter-bg)] border-r border-[var(--settings-sidebar-border)] p-4">
+        <div className="hidden lg:block w-64 flex-shrink-0 bg-gradient-to-b from-[var(--settings-sidebar-bg)] to-[var(--filter-bg)] border-r border-[var(--settings-sidebar-border)] p-4">
           <div className="flex items-center mb-6">
             <h2 id="settings-modal-title" className="text-lg font-semibold theme-text-primary">{t('settings.title')}</h2>
           </div>
@@ -264,7 +265,7 @@ export function UnifiedSettingsModal({
         </div>
 
         {/* Content Area */}
-        <div className="settings-content-area relative">
+        <div className="flex-1 overflow-y-auto relative min-h-0">
           {/* Desktop Close Button */}
           <button
             onClick={onClose}

@@ -333,46 +333,30 @@ button, input, select, textarea {
 }
 
 /* Fixed Settings Modal Styles */
-.settings-modal-fixed {
-  /* Ensure proper flex behavior for fixed dimensions */
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-}
-
-.settings-modal-fixed .settings-content-area {
-  /* Ensure content area can scroll independently */
-  flex: 1;
-  overflow-y: auto;
-  min-height: 0;
-  /* Add smooth scrolling */
-  scroll-behavior: smooth;
-}
-
-/* Ensure proper scrollbar styling */
-.settings-content-area::-webkit-scrollbar {
+/* Custom scrollbar styling for modal content */
+.overflow-y-auto::-webkit-scrollbar {
   width: 6px;
 }
 
-.settings-content-area::-webkit-scrollbar-track {
+.overflow-y-auto::-webkit-scrollbar-track {
   background: transparent;
 }
 
-.settings-content-area::-webkit-scrollbar-thumb {
+.overflow-y-auto::-webkit-scrollbar-thumb {
   background: rgba(0, 0, 0, 0.2);
   border-radius: 3px;
 }
 
-.settings-content-area::-webkit-scrollbar-thumb:hover {
+.overflow-y-auto::-webkit-scrollbar-thumb:hover {
   background: rgba(0, 0, 0, 0.3);
 }
 
 /* Dark mode scrollbar */
-.dark .settings-content-area::-webkit-scrollbar-thumb {
+.dark .overflow-y-auto::-webkit-scrollbar-thumb {
   background: rgba(255, 255, 255, 0.2);
 }
 
-.dark .settings-content-area::-webkit-scrollbar-thumb:hover {
+.dark .overflow-y-auto::-webkit-scrollbar-thumb:hover {
   background: rgba(255, 255, 255, 0.3);
 }
 
