@@ -318,6 +318,99 @@ button, input, select, textarea {
 .theme-blue-800 { color: var(--accent-blue-800); }
 .theme-blue-900 { color: var(--accent-blue-900); }
 
+/* Mobile responsive utilities */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+.touch-manipulation {
+  touch-action: manipulation;
+}
+
+/* Mobile-specific responsive breakpoints */
+@media (max-width: 320px) {
+  /* Extra small mobile devices */
+  .settings-modal-container {
+    padding: 0.5rem;
+  }
+
+  .settings-content {
+    padding: 0.75rem;
+  }
+}
+
+@media (min-width: 321px) and (max-width: 480px) {
+  /* Small mobile devices */
+  .settings-modal-container {
+    padding: 0.75rem;
+  }
+
+  .settings-content {
+    padding: 1rem;
+  }
+}
+
+@media (min-width: 481px) and (max-width: 768px) {
+  /* Large mobile devices and small tablets */
+  .settings-modal-container {
+    padding: 1rem;
+  }
+
+  .settings-content {
+    padding: 1.25rem;
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  /* Tablets */
+  .settings-modal-container {
+    padding: 1.5rem;
+  }
+
+  .settings-content {
+    padding: 1.5rem;
+  }
+}
+
+@media (min-width: 1025px) {
+  /* Desktop */
+  .settings-modal-container {
+    padding: 2rem;
+  }
+
+  .settings-content {
+    padding: 2rem;
+  }
+}
+
+/* Ensure proper touch targets on mobile */
+@media (max-width: 768px) {
+  button, input, select, textarea, label {
+    min-height: 44px;
+  }
+
+  /* Improve text readability on mobile */
+  body {
+    font-size: 16px; /* Prevents zoom on iOS */
+  }
+
+  /* Better spacing for mobile forms */
+  .form-group {
+    margin-bottom: 1.5rem;
+  }
+
+  /* Responsive text sizes */
+  h1 { font-size: 1.5rem; }
+  h2 { font-size: 1.25rem; }
+  h3 { font-size: 1.125rem; }
+  h4 { font-size: 1rem; }
+}
+
 .theme-bg-blue-50 { background-color: var(--accent-blue-50); }
 .theme-bg-blue-100 { background-color: var(--accent-blue-100); }
 .theme-bg-blue-200 { background-color: var(--accent-blue-200); }

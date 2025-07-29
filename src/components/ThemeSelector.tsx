@@ -37,7 +37,7 @@ export function ThemeSelector({ className = '' }: ThemeSelectorProps) {
           <button
             key={value}
             onClick={() => setThemeMode(value)}
-            className={`flex items-center gap-3 p-3 rounded-lg border-2 transition-all duration-200 ${
+            className={`flex items-center gap-3 p-3 sm:p-4 rounded-lg border-2 transition-all duration-200 min-h-[44px] touch-manipulation ${
               theme === value
                 ? 'theme-border-blue-500 theme-bg-blue-50 theme-blue-700 shadow-sm'
                 : 'border-gray-200 dark:border-gray-600 hover:border-gray-300 dark:hover:border-gray-500 theme-text-primary hover:bg-gray-50 dark:hover:bg-gray-700/30'

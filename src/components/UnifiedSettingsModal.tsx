@@ -200,20 +200,53 @@ export function UnifiedSettingsModal({
   ]
 
   return (
-    <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 z-50">
-      <div className="theme-card rounded-2xl shadow-2xl max-w-5xl w-full max-h-[90vh] overflow-hidden border border-white/10 dark:border-white/20 flex">
-        {/* Sidebar Navigation */}
-        <div className="w-64 bg-gradient-to-b from-[var(--settings-sidebar-bg)] to-[var(--filter-bg)] border-r border-[var(--settings-sidebar-border)] p-4">
+    <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center p-2 sm:p-4 z-50">
+      <div className="theme-card rounded-xl sm:rounded-2xl shadow-2xl w-full max-w-sm sm:max-w-2xl md:max-w-3xl lg:max-w-5xl max-h-[95vh] sm:max-h-[90vh] overflow-hidden border border-white/10 dark:border-white/20 flex flex-col lg:flex-row">
+        {/* Mobile Header with Tab Navigation */}
+        <div className="lg:hidden border-b border-[var(--settings-sidebar-border)] p-3 sm:p-4">
+          <div className="flex items-center justify-between mb-3">
+            <h2 className="text-lg font-semibold theme-text-primary">{t('settings.title')}</h2>
+            <button
+              onClick={onClose}
+              className="p-2 text-gray-400 hover:text-gray-600 dark:text-gray-400 dark:hover:text-gray-200 transition-colors bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-full shadow-lg hover:shadow-xl"
+            >
+              <X size={20} />
+            </button>
+          </div>
+
+          {/* Mobile Tab Navigation - Horizontal Scrolling */}
+          <div className="overflow-x-auto scrollbar-hide">
+            <div className="flex gap-2 min-w-max pb-1">
+              {tabs.map((tab) => (
+                <button
+                  key={tab.id}
+                  onClick={() => setActiveTab(tab.id)}
+                  className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-all duration-300 whitespace-nowrap min-h-[44px] ${
+                    activeTab === tab.id
+                      ? 'bg-gradient-to-r from-[var(--settings-active-bg)] to-blue-500 text-white shadow-lg border-2 border-[var(--settings-active-border)]'
+                      : 'theme-text-secondary hover:theme-text-primary hover:bg-white/50 dark:hover:bg-white/10 border border-transparent'
+                  }`}
+                >
+                  <tab.icon size={16} className={activeTab === tab.id ? 'text-white' : ''} />
+                  <span className="hidden sm:inline">{tab.label}</span>
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Desktop Sidebar Navigation */}
+        <div className="hidden lg:block w-64 bg-gradient-to-b from-[var(--settings-sidebar-bg)] to-[var(--filter-bg)] border-r border-[var(--settings-sidebar-border)] p-4">
           <div className="flex items-center mb-6">
             <h2 className="text-lg font-semibold theme-text-primary">{t('settings.title')}</h2>
           </div>
-          
+
           <nav className="space-y-2">
             {tabs.map((tab) => (
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
-                className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-300 transform ${
+                className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-300 transform min-h-[44px] ${
                   activeTab === tab.id
                     ? 'bg-gradient-to-r from-[var(--settings-active-bg)] to-blue-500 text-white shadow-lg scale-105 border-2 border-[var(--settings-active-border)]'
                     : 'theme-text-secondary hover:theme-text-primary hover:bg-white/50 dark:hover:bg-white/10 hover:scale-102 hover:shadow-md'
@@ -228,13 +261,14 @@ export function UnifiedSettingsModal({
 
         {/* Content Area */}
         <div className="flex-1 overflow-y-auto relative">
+          {/* Desktop Close Button */}
           <button
             onClick={onClose}
-            className="absolute top-4 right-4 p-2 text-gray-400 hover:text-gray-600 dark:text-gray-400 dark:hover:text-gray-200 transition-colors z-10 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-full shadow-lg hover:shadow-xl"
+            className="hidden lg:block absolute top-4 right-4 p-2 text-gray-400 hover:text-gray-600 dark:text-gray-400 dark:hover:text-gray-200 transition-colors z-10 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-full shadow-lg hover:shadow-xl min-h-[44px] min-w-[44px]"
           >
             <X size={20} />
           </button>
-          <div className="p-6 pr-16">
+          <div className="p-3 sm:p-4 lg:p-6 lg:pr-16">
             {/* General Tab */}
             {activeTab === 'general' && (
               <div className="space-y-6">
@@ -281,7 +315,7 @@ export function UnifiedSettingsModal({
                         onClose()
                         onRestartTutorial()
                       }}
-                      className="flex items-center gap-2 px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors text-sm font-medium"
+                      className="flex items-center gap-2 px-4 py-3 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors text-sm font-medium min-h-[44px] touch-manipulation"
                     >
                       <RotateCcw size={16} />
                       {t('onboarding.navigation.restart', 'Restart Tutorial')}
@@ -311,7 +345,7 @@ export function UnifiedSettingsModal({
                     </div>
                     <button
                       onClick={handleExport}
-                      className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-semibold px-4 py-2.5 rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1 hover:scale-105"
+                      className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-semibold px-4 py-3 rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1 hover:scale-105 min-h-[44px] touch-manipulation"
                     >
                       <Download size={16} />
                       {t('settings.export.exportButton')}
@@ -325,10 +359,10 @@ export function UnifiedSettingsModal({
                 </div>
 
                 <div className="space-y-3">
-                  <div className="theme-code-display border-2 border-dashed rounded-lg p-6 text-center">
-                    <Upload className="mx-auto h-12 w-12 text-gray-400 dark:text-gray-500 mb-4" />
+                  <div className="theme-code-display border-2 border-dashed rounded-lg p-4 sm:p-6 text-center">
+                    <Upload className="mx-auto h-10 w-10 sm:h-12 sm:w-12 text-gray-400 dark:text-gray-500 mb-3 sm:mb-4" />
                     <label htmlFor="import-file" className="cursor-pointer">
-                      <span className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-700 to-blue-800 hover:from-blue-800 hover:to-blue-900 text-white font-semibold px-4 py-2.5 rounded-lg transition-all duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-0.5">
+                      <span className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-700 to-blue-800 hover:from-blue-800 hover:to-blue-900 text-white font-semibold px-4 py-3 rounded-lg transition-all duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 min-h-[44px] touch-manipulation">
                         <Upload size={16} />
                         {t('settings.import.selectButton')}
                       </span>
@@ -352,7 +386,7 @@ export function UnifiedSettingsModal({
                     </p>
                     <button
                       onClick={handleClearAll}
-                      className="inline-flex items-center gap-2 bg-gradient-to-r from-red-600 to-pink-600 hover:from-red-700 hover:to-pink-700 text-white font-semibold px-4 py-2.5 rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1 hover:scale-105"
+                      className="inline-flex items-center gap-2 bg-gradient-to-r from-red-600 to-pink-600 hover:from-red-700 hover:to-pink-700 text-white font-semibold px-4 py-3 rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1 hover:scale-105 min-h-[44px] touch-manipulation"
                     >
                       <Trash2 size={16} />
                       {t('settings.import.clearButton')}
@@ -373,7 +407,7 @@ export function UnifiedSettingsModal({
                 {/* Sync Status */}
                 <div className="space-y-3">
                   <h4 className="text-lg font-medium theme-text-primary">{t('cloudSync.status.title')}</h4>
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div className="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/30 dark:to-indigo-900/30 p-4 rounded-xl border border-blue-200 dark:border-blue-700">
                       <div className="text-sm theme-text-secondary">{t('cloudSync.status.label')}</div>
                       <div className="font-medium theme-text-primary">
@@ -386,7 +420,7 @@ export function UnifiedSettingsModal({
                     <div className="bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/30 dark:to-emerald-900/30 p-4 rounded-xl border border-green-200 dark:border-green-700">
                       <div className="text-sm theme-text-secondary">{t('cloudSync.status.lastSync')}</div>
                       <div className="font-medium theme-text-primary">
-                        {cloudSync.syncStatus.lastSync 
+                        {cloudSync.syncStatus.lastSync
                           ? cloudSync.syncStatus.lastSync.toLocaleString()
                           : t('cloudSync.status.never')
                         }
@@ -417,7 +451,7 @@ export function UnifiedSettingsModal({
                   <button
                     onClick={handleManualSync}
                     disabled={cloudSync.syncStatus.isSyncing || !cloudSync.syncStatus.isOnline}
-                    className="w-full bg-gradient-to-r from-blue-500 to-indigo-500 hover:from-blue-600 hover:to-indigo-600 disabled:from-gray-300 disabled:to-gray-400 disabled:cursor-not-allowed text-white py-3 px-4 rounded-xl font-medium transition-all duration-300 flex items-center justify-center gap-2 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+                    className="w-full bg-gradient-to-r from-blue-500 to-indigo-500 hover:from-blue-600 hover:to-indigo-600 disabled:from-gray-300 disabled:to-gray-400 disabled:cursor-not-allowed text-white py-3 px-4 rounded-xl font-medium transition-all duration-300 flex items-center justify-center gap-2 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 min-h-[44px] touch-manipulation"
                   >
                     <RefreshCw className={`w-4 h-4 ${cloudSync.syncStatus.isSyncing ? 'animate-spin' : ''}`} />
                     {cloudSync.syncStatus.isSyncing ? t('cloudSync.status.syncing') : t('cloudSync.manualSync.syncNow')}
@@ -428,12 +462,12 @@ export function UnifiedSettingsModal({
                 <div className="space-y-3">
                   <h4 className="text-lg font-medium theme-text-primary">{t('cloudSync.autoSync.title')}</h4>
                   <div className="space-y-4">
-                    <label className="flex items-center gap-3">
+                    <label className="flex items-center gap-3 py-2 cursor-pointer">
                       <input
                         type="checkbox"
                         checked={cloudSync.syncSettings.autoSync}
                         onChange={handleAutoSyncToggle}
-                        className="w-4 h-4 text-blue-500 rounded border-gray-300 focus:ring-blue-500"
+                        className="w-5 h-5 text-blue-500 rounded border-gray-300 focus:ring-blue-500 touch-manipulation"
                       />
                       <span className="theme-text-primary">{t('cloudSync.autoSync.enableAutoSync')}</span>
                     </label>
@@ -446,7 +480,7 @@ export function UnifiedSettingsModal({
                         <select
                           value={cloudSync.syncSettings.syncInterval}
                           onChange={(e) => handleSyncIntervalChange(Number(e.target.value))}
-                          className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white"
+                          className="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white min-h-[44px] touch-manipulation"
                         >
                           <option value={5}>{t('cloudSync.autoSync.intervals.5min')}</option>
                           <option value={15}>{t('cloudSync.autoSync.intervals.15min')}</option>
@@ -464,14 +498,14 @@ export function UnifiedSettingsModal({
                   <h4 className="text-lg font-medium theme-text-primary">{t('cloudSync.conflictResolution.title')}</h4>
                   <div className="space-y-2">
                     {(['local', 'remote', 'merge'] as ConflictResolution[]).map((resolution) => (
-                      <label key={resolution} className="flex items-center gap-3">
+                      <label key={resolution} className="flex items-center gap-3 py-2 cursor-pointer">
                         <input
                           type="radio"
                           name="conflictResolution"
                           value={resolution}
                           checked={cloudSync.syncSettings.conflictResolution === resolution}
                           onChange={() => handleConflictResolutionChange(resolution)}
-                          className="w-4 h-4 text-blue-500 border-gray-300 focus:ring-blue-500"
+                          className="w-5 h-5 text-blue-500 border-gray-300 focus:ring-blue-500 touch-manipulation"
                         />
                         <span className="theme-text-primary">
                           {t(`cloudSync.conflictResolution.${resolution}`)}
@@ -500,12 +534,12 @@ export function UnifiedSettingsModal({
                           {getProviderIcon(provider.id)}
                           <span className="font-medium theme-text-primary">{provider.name}</span>
                         </div>
-                        <label className="flex items-center gap-2">
+                        <label className="flex items-center gap-2 py-2 cursor-pointer">
                           <input
                             type="checkbox"
                             checked={cloudSync.syncSettings.enabledProviders.includes(provider.id)}
                             onChange={() => handleToggleProvider(provider.id)}
-                            className="w-4 h-4 text-blue-500 rounded border-gray-300 focus:ring-blue-500"
+                            className="w-5 h-5 text-blue-500 rounded border-gray-300 focus:ring-blue-500 touch-manipulation"
                           />
                           <span className="text-sm theme-text-secondary">{t('cloudSync.providers.enabled')}</span>
                         </label>
@@ -527,12 +561,12 @@ export function UnifiedSettingsModal({
                               value={githubToken}
                               onChange={(e) => setGithubToken(e.target.value)}
                               placeholder={t('cloudSync.providers.githubSetup.tokenPlaceholder')}
-                              className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white pr-10"
+                              className="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white pr-12 min-h-[44px] touch-manipulation"
                             />
                             <button
                               type="button"
                               onClick={() => setIsTokenVisible(!isTokenVisible)}
-                              className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300"
+                              className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300 p-2 min-h-[44px] min-w-[44px] flex items-center justify-center touch-manipulation"
                             >
                               {isTokenVisible ? '👁️' : '👁️‍🗨️'}
                             </button>
@@ -545,7 +579,7 @@ export function UnifiedSettingsModal({
                           <button
                             onClick={handleAddGithubProvider}
                             disabled={!githubToken.trim()}
-                            className="bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 disabled:from-gray-300 disabled:to-gray-400 text-white px-4 py-2 rounded-xl font-medium transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+                            className="bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 disabled:from-gray-300 disabled:to-gray-400 text-white px-4 py-3 rounded-xl font-medium transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 min-h-[44px] touch-manipulation"
                           >
                             {t('cloudSync.providers.githubSetup.addButton')}
                           </button>
@@ -636,12 +670,12 @@ export function UnifiedSettingsModal({
                   </h4>
                   
                   <div className="space-y-4">
-                    <label className="flex items-center gap-3">
+                    <label className="flex items-start gap-3 py-2 cursor-pointer">
                       <input
                         type="checkbox"
                         checked={developerSettings.showAdvancedReleaseNotes}
                         onChange={(e) => updateDeveloperSettings({ showAdvancedReleaseNotes: e.target.checked })}
-                        className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                        className="w-5 h-5 mt-0.5 rounded border-gray-300 text-blue-600 focus:ring-blue-500 touch-manipulation"
                       />
                       <div>
                         <span className="text-sm font-medium theme-text-primary">
@@ -653,12 +687,12 @@ export function UnifiedSettingsModal({
                       </div>
                     </label>
 
-                    <label className="flex items-center gap-3">
+                    <label className="flex items-start gap-3 py-2 cursor-pointer">
                       <input
                         type="checkbox"
                         checked={developerSettings.enableChangelogPopup}
                         onChange={(e) => updateDeveloperSettings({ enableChangelogPopup: e.target.checked })}
-                        className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                        className="w-5 h-5 mt-0.5 rounded border-gray-300 text-blue-600 focus:ring-blue-500 touch-manipulation"
                       />
                       <div>
                         <span className="text-sm font-medium theme-text-primary">
@@ -676,7 +710,7 @@ export function UnifiedSettingsModal({
                           onClose()
                           onAdvancedReleaseNotes()
                         }}
-                        className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-semibold px-4 py-2.5 rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1 hover:scale-105"
+                        className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-semibold px-4 py-3 rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1 hover:scale-105 min-h-[44px] touch-manipulation"
                       >
                         <FileText size={16} />
                         {t('settings.developer.releaseNotes.openReleaseNotes')}
@@ -704,7 +738,7 @@ export function UnifiedSettingsModal({
                         loadDemoData()
                         window.location.reload()
                       }}
-                      className="inline-flex items-center gap-2 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-semibold px-4 py-2.5 rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1 hover:scale-105"
+                      className="inline-flex items-center gap-2 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-semibold px-4 py-3 rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1 hover:scale-105 min-h-[44px] touch-manipulation"
                     >
                       <Sparkles size={16} />
                       {t('settings.developer.sampleData.loadSampleButton')}
