@@ -26,9 +26,6 @@ export default function AnalyticsPage() {
     // Analytics page doesn't need settings functionality currently
   }
   
-  const handleSyncClick = () => {
-    // Analytics page doesn't need sync functionality currently
-  }
 
   if (isLoading) {
     return (
@@ -55,10 +52,9 @@ export default function AnalyticsPage() {
 
   return (
     <div className="min-h-screen transition-colors">
-      <Header 
+      <Header
         onNotificationClick={handleNotificationClick}
         onSettingsClick={handleSettingsClick}
-        onSyncClick={handleSyncClick}
       />
       
       <main className="max-w-6xl mx-auto px-4 py-8">
