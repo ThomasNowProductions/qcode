@@ -34,7 +34,6 @@ export default function HomePage() {
     filterCodes,
     getStats,
     getExpiringSoon,
-    manualSync,
   } = useDiscountCodes()
 
   // Onboarding tutorial state
@@ -76,7 +75,7 @@ export default function HomePage() {
   const [isUnifiedModalOpen, setIsUnifiedModalOpen] = useState(false)
   const [isReleaseNotesOpen, setIsReleaseNotesOpen] = useState(false)
   const [showNotificationBanner, setShowNotificationBanner] = useState(true)
-  const [initialTab, setInitialTab] = useState<'general' | 'data' | 'cloud' | 'appearance' | 'advanced'>('general')
+  const [initialTab, setInitialTab] = useState<'general' | 'data' | 'appearance' | 'advanced'>('general')
 
   // Create refs for each discount code for scrolling
   const codeRefs = useRef<{ [key: string]: React.RefObject<HTMLDivElement | null> }>({})
@@ -242,10 +241,6 @@ export default function HomePage() {
           setInitialTab('general')
           setIsUnifiedModalOpen(true)
         }}
-        onSyncClick={() => {
-          setInitialTab('cloud')
-          setIsUnifiedModalOpen(true)
-        }}
       />
       
       <main className="max-w-4xl mx-auto px-4 py-8">
@@ -323,7 +318,6 @@ export default function HomePage() {
       <UnifiedSettingsModal
         isOpen={isUnifiedModalOpen}
         onClose={() => setIsUnifiedModalOpen(false)}
-        onManualSync={manualSync}
         onRestartTutorial={handleRestartTutorial}
         initialTab={initialTab}
       />

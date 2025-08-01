@@ -1,9 +1,8 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { X, Download, Upload, Trash2, Heart, Shield, Settings, Sparkles, FileText, RotateCcw, Cloud, RefreshCw, Github, HardDrive, Smartphone, Palette, Globe, Database, Sliders } from 'lucide-react'
+import { X, Download, Upload, Trash2, Heart, Shield, Settings, Sparkles, FileText, RotateCcw, Palette, Globe, Database, Sliders } from 'lucide-react'
 import { useDiscountCodes } from '@/hooks/useDiscountCodes'
-import { useCloudSync } from '@/hooks/useCloudSync'
 import { useDarkMode } from '@/hooks/useDarkMode'
 import { exportCodes, importCodes } from '@/utils/storage'
 import { loadDemoData } from '@/utils/demo-data'
@@ -11,30 +10,26 @@ import { useTranslation } from 'react-i18next'
 import { LanguageSwitcher } from './LanguageSwitcher'
 import { ThemeSelector } from './ThemeSelector'
 import type { DeveloperSettings } from '@/types/changelog'
-import type { ConflictResolution } from '@/types/cloud-sync'
 
 interface UnifiedSettingsModalProps {
   isOpen: boolean
   onClose: () => void
   onAdvancedReleaseNotes?: () => void
   onRestartTutorial?: () => void
-  onManualSync?: () => Promise<boolean>
   initialTab?: SettingsTab
 }
 
-type SettingsTab = 'general' | 'data' | 'cloud' | 'appearance' | 'advanced'
+type SettingsTab = 'general' | 'data' | 'appearance' | 'advanced'
 
 export function UnifiedSettingsModal({
   isOpen,
   onClose,
   onAdvancedReleaseNotes,
   onRestartTutorial,
-  onManualSync,
   initialTab = 'general'
 }: UnifiedSettingsModalProps) {
   const { t } = useTranslation()
   const { codes } = useDiscountCodes()
-  const cloudSync = useCloudSync()
   const { } = useDarkMode()
   
   const [activeTab, setActiveTab] = useState<SettingsTab>(initialTab)
@@ -45,9 +40,6 @@ export function UnifiedSettingsModal({
       setActiveTab(initialTab)
     }
   }, [isOpen, initialTab])
-  const [showProviderSetup, setShowProviderSetup] = useState(false)
-  const [githubToken, setGithubToken] = useState('')
-  const [isTokenVisible, setIsTokenVisible] = useState(false)
 
   // Developer settings
   const [developerSettings, setDeveloperSettings] = useState<DeveloperSettings>(() => {
@@ -112,75 +104,12 @@ export function UnifiedSettingsModal({
     }
   }
 
-  // Cloud Sync functions
-  const handleManualSync = async () => {
-    if (onManualSync) {
-      await onManualSync()
-    }
-  }
-
-  const handleAddGithubProvider = () => {
-    if (githubToken.trim()) {
-      cloudSync.addGitHubProvider(githubToken.trim())
-      setGithubToken('')
-      setShowProviderSetup(false)
-    }
-  }
-
-  const handleToggleProvider = (providerId: string) => {
-    const currentEnabled = cloudSync.syncSettings.enabledProviders
-    const newEnabled = currentEnabled.includes(providerId)
-      ? currentEnabled.filter(id => id !== providerId)
-      : [...currentEnabled, providerId]
-    
-    cloudSync.saveSyncSettings({
-      ...cloudSync.syncSettings,
-      enabledProviders: newEnabled
-    })
-  }
-
-  const handleConflictResolutionChange = (resolution: ConflictResolution) => {
-    cloudSync.saveSyncSettings({
-      ...cloudSync.syncSettings,
-      conflictResolution: resolution
-    })
-  }
-
-  const handleAutoSyncToggle = () => {
-    cloudSync.saveSyncSettings({
-      ...cloudSync.syncSettings,
-      autoSync: !cloudSync.syncSettings.autoSync
-    })
-  }
-
-  const handleSyncIntervalChange = (interval: number) => {
-    cloudSync.saveSyncSettings({
-      ...cloudSync.syncSettings,
-      syncInterval: interval
-    })
-  }
-
-  const getProviderIcon = (providerId: string) => {
-    switch (providerId) {
-      case 'github-gist':
-        return <Github className="w-4 h-4" />
-      case 'local-cloud':
-        return <HardDrive className="w-4 h-4" />
-      case 'file-system':
-        return <Smartphone className="w-4 h-4" />
-      default:
-        return <Cloud className="w-4 h-4" />
-    }
-  }
-
-
 
   if (!isOpen) return null
 
   const tabs = [
     { id: 'general' as SettingsTab, label: t('settings.tabs.general', 'General'), icon: Settings },
     { id: 'data' as SettingsTab, label: t('settings.tabs.data', 'Data Management'), icon: Database },
-    { id: 'cloud' as SettingsTab, label: t('settings.tabs.cloud', 'Cloud Sync'), icon: Cloud },
     { id: 'appearance' as SettingsTab, label: t('settings.tabs.appearance', 'Appearance'), icon: Palette },
     { id: 'advanced' as SettingsTab, label: t('settings.tabs.advanced', 'Advanced'), icon: Sliders },
   ]
@@ -387,237 +316,6 @@ export function UnifiedSettingsModal({
               </div>
             )}
 
-            {/* Cloud Sync Tab */}
-            {activeTab === 'cloud' && (
-              <div className="space-y-6">
-                <div>
-                  <h3 className="text-xl font-semibold theme-text-primary mb-2">{t('cloudSync.title')}</h3>
-                  <p className="text-sm theme-text-secondary">{t('cloudSync.subtitle')}</p>
-                </div>
-
-                {/* Sync Status */}
-                <div className="space-y-3">
-                  <h4 className="text-lg font-medium theme-text-primary">{t('cloudSync.status.title')}</h4>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div className="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/30 dark:to-indigo-900/30 p-4 rounded-xl border border-blue-200 dark:border-blue-700">
-                      <div className="text-sm theme-text-secondary">{t('cloudSync.status.label')}</div>
-                      <div className="font-medium theme-text-primary">
-                        {cloudSync.syncStatus.isSyncing ? t('cloudSync.status.syncing') :
-                         !cloudSync.syncStatus.isOnline ? t('cloudSync.status.offline') :
-                         cloudSync.syncStatus.error ? t('cloudSync.status.error') :
-                         cloudSync.syncStatus.lastSync ? t('cloudSync.status.synced') : t('cloudSync.status.notSynced')}
-                      </div>
-                    </div>
-                    <div className="bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/30 dark:to-emerald-900/30 p-4 rounded-xl border border-green-200 dark:border-green-700">
-                      <div className="text-sm theme-text-secondary">{t('cloudSync.status.lastSync')}</div>
-                      <div className="font-medium theme-text-primary">
-                        {cloudSync.syncStatus.lastSync
-                          ? cloudSync.syncStatus.lastSync.toLocaleString()
-                          : t('cloudSync.status.never')
-                        }
-                      </div>
-                    </div>
-                  </div>
-                  
-                  {cloudSync.syncStatus.error && (
-                    <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-3">
-                      <div className="text-red-800 dark:text-red-400 text-sm">
-                        {cloudSync.syncStatus.error}
-                      </div>
-                    </div>
-                  )}
-
-                  {cloudSync.syncStatus.conflictCount > 0 && (
-                    <div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-lg p-3">
-                      <div className="text-amber-800 dark:text-amber-400 text-sm">
-                        {cloudSync.syncStatus.conflictCount} {t('cloudSync.status.conflictsNeedResolution')}
-                      </div>
-                    </div>
-                  )}
-                </div>
-
-                {/* Manual Sync */}
-                <div className="space-y-3">
-                  <h4 className="text-lg font-medium theme-text-primary">{t('cloudSync.manualSync.title')}</h4>
-                  <button
-                    onClick={handleManualSync}
-                    disabled={cloudSync.syncStatus.isSyncing || !cloudSync.syncStatus.isOnline}
-                    className="w-full bg-gradient-to-r from-blue-500 to-indigo-500 hover:from-blue-600 hover:to-indigo-600 disabled:from-gray-300 disabled:to-gray-400 disabled:cursor-not-allowed text-white py-3 px-4 rounded-xl font-medium transition-all duration-300 flex items-center justify-center gap-2 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 min-h-[44px] touch-manipulation"
-                  >
-                    <RefreshCw className={`w-4 h-4 ${cloudSync.syncStatus.isSyncing ? 'animate-spin' : ''}`} />
-                    {cloudSync.syncStatus.isSyncing ? t('cloudSync.status.syncing') : t('cloudSync.manualSync.syncNow')}
-                  </button>
-                </div>
-
-                {/* Auto Sync Settings */}
-                <div className="space-y-3">
-                  <h4 className="text-lg font-medium theme-text-primary">{t('cloudSync.autoSync.title')}</h4>
-                  <div className="space-y-4">
-                    <label className="flex items-center gap-3 py-2 cursor-pointer">
-                      <input
-                        type="checkbox"
-                        checked={cloudSync.syncSettings.autoSync}
-                        onChange={handleAutoSyncToggle}
-                        className="w-5 h-5 text-blue-500 rounded border-gray-300 focus:ring-blue-500 touch-manipulation"
-                      />
-                      <span className="theme-text-primary">{t('cloudSync.autoSync.enableAutoSync')}</span>
-                    </label>
-                    
-                    {cloudSync.syncSettings.autoSync && (
-                      <div>
-                        <label className="block text-sm font-medium theme-text-primary mb-2">
-                          {t('cloudSync.autoSync.syncInterval')}
-                        </label>
-                        <select
-                          value={cloudSync.syncSettings.syncInterval}
-                          onChange={(e) => handleSyncIntervalChange(Number(e.target.value))}
-                          className="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white min-h-[44px] touch-manipulation"
-                        >
-                          <option value={5}>{t('cloudSync.autoSync.intervals.5min')}</option>
-                          <option value={15}>{t('cloudSync.autoSync.intervals.15min')}</option>
-                          <option value={30}>{t('cloudSync.autoSync.intervals.30min')}</option>
-                          <option value={60}>{t('cloudSync.autoSync.intervals.1hour')}</option>
-                          <option value={240}>{t('cloudSync.autoSync.intervals.4hours')}</option>
-                        </select>
-                      </div>
-                    )}
-                  </div>
-                </div>
-
-                {/* Conflict Resolution */}
-                <div className="space-y-3">
-                  <h4 className="text-lg font-medium theme-text-primary">{t('cloudSync.conflictResolution.title')}</h4>
-                  <div className="space-y-2">
-                    {(['local', 'remote', 'merge'] as ConflictResolution[]).map((resolution) => (
-                      <label key={resolution} className="flex items-center gap-3 py-2 cursor-pointer">
-                        <input
-                          type="radio"
-                          name="conflictResolution"
-                          value={resolution}
-                          checked={cloudSync.syncSettings.conflictResolution === resolution}
-                          onChange={() => handleConflictResolutionChange(resolution)}
-                          className="w-5 h-5 text-blue-500 border-gray-300 focus:ring-blue-500 touch-manipulation"
-                        />
-                        <span className="theme-text-primary">
-                          {t(`cloudSync.conflictResolution.${resolution}`)}
-                        </span>
-                      </label>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Cloud Providers */}
-                <div className="space-y-3">
-                  <div className="flex items-center justify-between">
-                    <h4 className="text-lg font-medium theme-text-primary">{t('cloudSync.providers.title')}</h4>
-                    <button
-                      onClick={() => setShowProviderSetup(!showProviderSetup)}
-                      className="text-blue-500 hover:text-blue-600 text-sm font-medium"
-                    >
-                      {t('cloudSync.providers.addProvider')}
-                    </button>
-                  </div>
-                  
-                  <div className="space-y-2">
-                    {cloudSync.providers.map((provider) => (
-                      <div key={provider.id} className="flex items-center justify-between p-4 bg-gradient-to-r from-gray-50 to-blue-50 dark:from-gray-800/50 dark:to-blue-900/30 rounded-xl border border-gray-200 dark:border-gray-600">
-                        <div className="flex items-center gap-3">
-                          {getProviderIcon(provider.id)}
-                          <span className="font-medium theme-text-primary">{provider.name}</span>
-                        </div>
-                        <label className="flex items-center gap-2 py-2 cursor-pointer">
-                          <input
-                            type="checkbox"
-                            checked={cloudSync.syncSettings.enabledProviders.includes(provider.id)}
-                            onChange={() => handleToggleProvider(provider.id)}
-                            className="w-5 h-5 text-blue-500 rounded border-gray-300 focus:ring-blue-500 touch-manipulation"
-                          />
-                          <span className="text-sm theme-text-secondary">{t('cloudSync.providers.enabled')}</span>
-                        </label>
-                      </div>
-                    ))}
-                  </div>
-
-                  {showProviderSetup && (
-                    <div className="border-2 border-dashed border-blue-300 dark:border-blue-600 rounded-xl p-6 space-y-4 bg-gradient-to-br from-blue-50/50 to-indigo-50/50 dark:from-blue-900/20 dark:to-indigo-900/20">
-                      <h4 className="font-medium theme-text-primary">{t('cloudSync.providers.githubSetup.title')}</h4>
-                      <div className="space-y-3">
-                        <div>
-                          <label className="block text-sm font-medium theme-text-primary mb-1">
-                            {t('cloudSync.providers.githubSetup.tokenLabel')}
-                          </label>
-                          <div className="relative">
-                            <input
-                              type={isTokenVisible ? 'text' : 'password'}
-                              value={githubToken}
-                              onChange={(e) => setGithubToken(e.target.value)}
-                              placeholder={t('cloudSync.providers.githubSetup.tokenPlaceholder')}
-                              className="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white pr-12 min-h-[44px] touch-manipulation"
-                            />
-                            <button
-                              type="button"
-                              onClick={() => setIsTokenVisible(!isTokenVisible)}
-                              className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300 p-2 min-h-[44px] min-w-[44px] flex items-center justify-center touch-manipulation"
-                            >
-                              {isTokenVisible ? '👁️' : '👁️‍🗨️'}
-                            </button>
-                          </div>
-                          <p className="text-xs theme-text-muted mt-1">
-                            {t('cloudSync.providers.githubSetup.tokenHelp')}
-                          </p>
-                        </div>
-                        <div className="flex gap-2">
-                          <button
-                            onClick={handleAddGithubProvider}
-                            disabled={!githubToken.trim()}
-                            className="bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 disabled:from-gray-300 disabled:to-gray-400 text-white px-4 py-3 rounded-xl font-medium transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 min-h-[44px] touch-manipulation"
-                          >
-                            {t('cloudSync.providers.githubSetup.addButton')}
-                          </button>
-                          <button
-                            onClick={() => setShowProviderSetup(false)}
-                            className="bg-gradient-to-r from-gray-500 to-slate-500 hover:from-gray-600 hover:to-slate-600 text-white px-4 py-2 rounded-xl font-medium transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
-                          >
-                            {t('cloudSync.providers.githubSetup.cancelButton')}
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  )}
-                </div>
-
-                {/* Recent Events */}
-                {cloudSync.syncEvents.length > 0 && (
-                  <div className="space-y-3">
-                    <div className="flex items-center justify-between">
-                      <h4 className="text-lg font-medium theme-text-primary">{t('cloudSync.activity.title')}</h4>
-                      <button
-                        onClick={cloudSync.clearSyncEvents}
-                        className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300 text-sm"
-                      >
-                        {t('cloudSync.activity.clear')}
-                      </button>
-                    </div>
-                    <div className="space-y-2 max-h-32 overflow-y-auto">
-                      {cloudSync.syncEvents.map((event, index) => (
-                        <div key={index} className="text-xs p-3 bg-gradient-to-r from-gray-50 to-blue-50 dark:from-gray-800/50 dark:to-blue-900/30 rounded-lg border border-gray-200 dark:border-gray-600">
-                          <div className="flex items-center gap-2">
-                            <span className={`
-                              inline-block w-2 h-2 rounded-full
-                              ${event.type === 'sync_success' ? 'bg-green-500' :
-                                event.type === 'sync_error' ? 'bg-red-500' :
-                                event.type === 'conflict_detected' ? 'bg-amber-500' :
-                                'bg-blue-500'}
-                            `} />
-                            <span className="theme-text-secondary">{event.message}</span>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                )}
-              </div>
-            )}
 
             {/* Appearance Tab */}
             {activeTab === 'appearance' && (

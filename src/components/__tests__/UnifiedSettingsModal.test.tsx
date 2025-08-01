@@ -7,15 +7,6 @@ jest.mock('@/hooks/useDiscountCodes', () => ({
   useDiscountCodes: () => ({ codes: [] })
 }))
 
-jest.mock('@/hooks/useCloudSync', () => ({
-  useCloudSync: () => ({
-    isEnabled: false,
-    isConnected: false,
-    lastSync: null,
-    syncStatus: 'idle',
-    providers: []
-  })
-}))
 
 jest.mock('@/hooks/useDarkMode', () => ({
   useDarkMode: () => ({
@@ -32,7 +23,6 @@ jest.mock('react-i18next', () => ({
       const translations: Record<string, string> = {
         'settings.tabs.general': 'General',
         'settings.tabs.data': 'Data Management',
-        'settings.tabs.cloud': 'Cloud Sync',
         'settings.tabs.appearance': 'Appearance',
         'settings.tabs.advanced': 'Advanced',
         'settings.title': 'Settings',
@@ -51,43 +41,6 @@ jest.mock('react-i18next', () => ({
         'settings.about.privacyPoints.2': 'Your privacy is protected',
         'settings.about.privacyPoints.3': 'Open source and transparent',
         'common.appName': 'QCode',
-        'cloudSync.conflictResolution.local': 'Prefer Local',
-        'cloudSync.conflictResolution.remote': 'Prefer Remote',
-        'cloudSync.conflictResolution.merge': 'Merge Changes',
-        'cloudSync.title': 'Cloud Sync',
-        'cloudSync.subtitle': 'Sync your data across devices',
-        'cloudSync.status.title': 'Sync Status',
-        'cloudSync.status.label': 'Status',
-        'cloudSync.status.syncing': 'Syncing...',
-        'cloudSync.status.offline': 'Offline',
-        'cloudSync.status.error': 'Error',
-        'cloudSync.status.synced': 'Synced',
-        'cloudSync.status.notSynced': 'Not Synced',
-        'cloudSync.status.lastSync': 'Last Sync',
-        'cloudSync.status.never': 'Never',
-        'cloudSync.status.conflictsNeedResolution': 'conflicts need resolution',
-        'cloudSync.manualSync.title': 'Manual Sync',
-        'cloudSync.manualSync.syncNow': 'Sync Now',
-        'cloudSync.autoSync.title': 'Auto Sync',
-        'cloudSync.autoSync.enableAutoSync': 'Enable Auto Sync',
-        'cloudSync.autoSync.syncInterval': 'Sync Interval',
-        'cloudSync.autoSync.intervals.5min': '5 minutes',
-        'cloudSync.autoSync.intervals.15min': '15 minutes',
-        'cloudSync.autoSync.intervals.30min': '30 minutes',
-        'cloudSync.autoSync.intervals.1hour': '1 hour',
-        'cloudSync.autoSync.intervals.4hours': '4 hours',
-        'cloudSync.conflictResolution.title': 'Conflict Resolution',
-        'cloudSync.providers.title': 'Cloud Providers',
-        'cloudSync.providers.addProvider': 'Add Provider',
-        'cloudSync.providers.enabled': 'Enabled',
-        'cloudSync.providers.githubSetup.title': 'GitHub Setup',
-        'cloudSync.providers.githubSetup.tokenLabel': 'GitHub Token',
-        'cloudSync.providers.githubSetup.tokenPlaceholder': 'Enter your GitHub token',
-        'cloudSync.providers.githubSetup.tokenHelp': 'Create a personal access token',
-        'cloudSync.providers.githubSetup.addButton': 'Add Provider',
-        'cloudSync.providers.githubSetup.cancelButton': 'Cancel',
-        'cloudSync.activity.title': 'Recent Activity',
-        'cloudSync.activity.clear': 'Clear',
         'settings.appearance.title': 'Appearance',
         'settings.appearance.subtitle': 'Customize the look and feel',
         'settings.appearance.theme.label': 'Theme',
@@ -146,7 +99,7 @@ describe('UnifiedSettingsModal Fixed Sizing', () => {
     expect(modal).toBeInTheDocument()
 
     // Test that tab labels are present in the DOM
-    const tabs = ['Data Management', 'Cloud Sync', 'Appearance', 'Advanced']
+    const tabs = ['Data Management', 'Appearance', 'Advanced']
 
     tabs.forEach(tabName => {
       const tabButtons = screen.getAllByText(tabName)
