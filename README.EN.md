@@ -13,47 +13,19 @@ A modern Progressive Web App (PWA) for storing and managing discount codes, buil
 - **Expiry Date Tracking** - Get alerts for soon-to-expire codes
 - **Favorites** - Mark important codes as favorites
 - **Usage Tracking** - Track how often you use your codes
-- **Cloud Synchronization** - Sync across all your devices via GitHub Gist or local files
 
 ### 📱 Progressive Web App
 - **Offline Functionality** - Works without internet connection
 - **Installable** - Install as an app on your phone/computer
 - **Responsive Design** - Perfect on all devices
 - **Native Experience** - Feels like a real app
-- **Background Sync** - Automatic sync when online
 
 ### 🎨 User Experience
 - **Modern Design** - Clean, user-friendly interface
 - **Dark/Light Mode** - Automatic theme support
 - **Touch-friendly** - Optimized for touch controls
 - **Accessibility** - Accessible to everyone
-- **Real-time Sync Status** - See sync status immediately
 
-## ☁️ Cloud Sync Features
-
-### Supported Providers
-- **GitHub Gist** - Use your GitHub account for cloud storage
-- **Local File** - Sync via local files (File System Access API)
-- **Local Cloud** - Local storage for development/testing
-
-### Sync Features
-- **Automatic Sync** - Configurable interval sync (5-240 minutes)
-- **Conflict Resolution** - Smart merge, local prefer, or remote prefer
-- **Background Sync** - Sync happens automatically in the background
-- **Multiple Devices** - Sync between multiple devices
-- **Offline Queue** - Changes are synchronized when online
-- **Data Integrity** - Checksums for data validation
-
-### Conflict Resolution
-- **Smart Merge** (recommended) - Intelligent merging of changes
-- **Local Prefer** - Local changes take precedence
-- **Remote Prefer** - Cloud changes take precedence
-
-### Setup GitHub Sync
-1. Go to [GitHub Personal Access Tokens](https://github.com/settings/tokens)
-2. Create a new token with 'gist' scope
-3. Add the token in Cloud Sync settings
-4. Automatic sync will be enabled
 
 ## 🛠️ Technical Stack
 
@@ -64,7 +36,6 @@ A modern Progressive Web App (PWA) for storing and managing discount codes, buil
 - **Data**: LocalStorage with cloud sync support
 - **PWA**: Service Worker for offline functionality
 - **Build**: Turbopack for fast development
-- **Cloud Sync**: GitHub Gist API, File System Access API
 
 ## 🚀 Quick Start
 
@@ -102,18 +73,14 @@ src/
 │   ├── SearchAndFilter.tsx # Search and filter interface
 │   ├── DiscountCodeCard.tsx # Individual code card
 │   ├── AddCodeModal.tsx   # Modal for new codes
-│   ├── CloudSync.tsx      # Cloud sync interface
 │   ├── SyncStatusIndicator.tsx # Sync status display
 │   └── EmptyState.tsx     # Empty state display
 ├── hooks/                 # Custom React hooks
 │   ├── useDiscountCodes.ts # State management for codes
-│   └── useCloudSync.ts    # Cloud sync functionality
 ├── types/                 # TypeScript definitions
 │   ├── discount-code.ts   # Code interfaces and types
-│   └── cloud-sync.ts      # Cloud sync interfaces
 └── utils/                 # Utility functions
     ├── storage.ts         # LocalStorage helpers
-    ├── cloud-providers.ts # Cloud provider implementations
     └── sync-utils.ts      # Sync utility functions
 ```
 
@@ -167,15 +134,8 @@ The app uses custom React hooks for central state management:
 ### useDiscountCodes
 - LocalStorage for persistence
 - Optimistic updates for fast UX
-- Automatic cloud sync integration
 - Sync metadata tracking
 
-### useCloudSync
-- Multi-provider support
-- Automatic sync scheduling
-- Conflict detection and resolution
-- Real-time sync status
-- Background sync queue
 
 ## 📱 PWA Features
 
@@ -188,9 +148,6 @@ The app can be installed on:
 ### Offline Functionality
 - All saved codes are available offline
 - New codes are stored locally
-- Background sync queue for changes
-- Automatic sync when connection is restored
-- Sync status indication in the interface
 
 ### Notifications
 - Alerts for soon-to-expire codes
@@ -198,7 +155,6 @@ The app can be installed on:
 
 ## 🎯 Future Features
 
-- [x] Cloud synchronization between devices
 - [ ] QR code scanning for automatic code input
 - [ ] Barcode support
 - [ ] Shared codes between users
